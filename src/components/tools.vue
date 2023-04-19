@@ -1,0 +1,205 @@
+<template>
+  <div>
+    <DropdownItem @click="() => addText()" :draggable="true" @dragend="onDragend('text')"><Icon type="logo-tumblr" /><span style="margin-left:10px">Text</span></DropdownItem>
+    <DropdownItem @click="() => addRect()" :draggable="true" @dragend="onDragend('rect')"><Icon type="ios-square-outline" /><span style="margin-left:10px">Rectangle</span></DropdownItem>
+    <DropdownItem @click="() => addCircle()" :draggable="true" @dragend="onDragend('circle')"><Icon type="ios-radio-button-off" /><span style="margin-left:10px">Circle</span></DropdownItem>
+  </div>
+</template>
+
+<script>
+import { v4 as uuid } from 'uuid';
+import initializeLineDrawing from '@/core/initializeLineDrawing';
+
+// default property
+const defaultPosition = { shadow: '', fontFamily: 'arial' };
+// drag properties
+const dragOption = {
+  left: 0,
+  top: 0,
+};
+export default {
+  name: 'ToolBar',
+  inject: ['canvas', 'fabric'],
+  data() {
+    return {
+      isDrawingLineMode: false,
+      isArrow: false,
+    };
+  },
+  created() {
+    // line drawing
+    console.log(this.canvas)
+    this.drawHandler = initializeLineDrawing(this.canvas.c, defaultPosition);
+
+    this.canvas.c.on('drop', (opt) => {
+      // The distance of the canvas element from the left and top of the browser
+      const offset = {
+        left: this.canvas.c.getSelectionElement().getBoundingClientRect().left,
+        top: this.canvas.c.getSelectionElement().getBoundingClientRect().top,
+      };
+
+      // Convert mouse coordinates to canvas coordinates (unscaled and translated coordinates)
+      const point = {
+        x: opt.e.x - offset.left,
+        y: opt.e.y - offset.top,
+      };
+
+      // Transformed coordinates, restorePointerVpt is not affected by viewport transformation
+      const pointerVpt = this.canvas.c.restorePointerVpt(point);
+      dragOption.left = pointerVpt.x;
+      dragOption.top = pointerVpt.y;
+    });
+  },
+  methods: {
+    // Record the type of element currently intended to be created when dragging starts
+    onDragend(type) {
+      // todo drag and drop optimization this.canvas.editor.dragAddItem(event, item);
+      switch (type) {
+        case 'text':
+          this.addText(dragOption);
+          break;
+        case 'textBox':
+          this.addTextBox(dragOption);
+          break;
+        case 'rect':
+          this.addRect(dragOption);
+          break;
+        case 'circle':
+          this.addCircle(dragOption);
+          break;
+        case 'triangle':
+          this.addTriangle(dragOption);
+          break;
+        default:
+      }
+    },
+    addText(option) {
+      const text = new this.fabric.IText(this.$t('everything_is_fine'), {
+        ...defaultPosition,
+        ...option,
+        fontSize: 20,
+        id: uuid(),
+      });
+      this.canvas.c.add(text);
+      if (!option) {
+        text.center();
+      }
+      this.canvas.c.setActiveObject(text);
+    },
+    addImg(e) {
+      const imgEl = e.target.cloneNode(true);
+      const imgInstance = new this.fabric.Image(imgEl, {
+        ...defaultPosition,
+        id: uuid(),
+        name: 'picturedefault',
+      });
+      this.canvas.c.add(imgInstance);
+      this.canvas.c.renderAll();
+    },
+    addTextBox(option) {
+      const text = new this.fabric.Textbox(this.$t('everything_goes_well'), {
+        ...defaultPosition,
+        ...option,
+        splitByGrapheme: true,
+        width: 400,
+        fontSize: 80,
+        id: uuid(),
+      });
+      this.canvas.c.add(text);
+      if (!option) {
+        text.center();
+      }
+      this.canvas.c.setActiveObject(text);
+    },
+    addTriangle(option) {
+      const triangle = new this.fabric.Triangle({
+        ...defaultPosition,
+        width: 400,
+        height: 400,
+        fill: '#92706B',
+      });
+      this.canvas.c.add(triangle);
+      if (!option) {
+        triangle.center();
+      }
+      this.canvas.c.setActiveObject(triangle);
+    },
+    addCircle(option) {
+      const circle = new this.fabric.Circle({
+        ...defaultPosition,
+        ...option,
+        radius: 150,
+        fill: '#57606B',
+        id: uuid(),
+        name: 'circle',
+      });
+      this.canvas.c.add(circle);
+      if (!option) {
+        circle.center();
+      }
+      this.canvas.c.setActiveObject(circle);
+    },
+    addRect(option) {
+      const rect = new this.fabric.Rect({
+        ...defaultPosition,
+        ...option,
+        fill: '#F57274',
+        width: 400,
+        height: 400,
+        id: uuid(),
+        name: 'rect',
+      });
+      this.canvas.c.add(rect);
+      if (!option) {
+        rect.center();
+      }
+      this.canvas.c.setActiveObject(rect);
+    },
+    drawingLineModeSwitch(isArrow) {
+      this.isArrow = isArrow;
+      this.isDrawingLineMode = !this.isDrawingLineMode;
+      this.drawHandler.setMode(this.isDrawingLineMode);
+      this.drawHandler.setArrow(isArrow);
+      this.canvas.c.forEachObject((obj) => {
+        if (obj.id !== 'workspace') {
+          obj.selectable = !this.isDrawingLineMode;
+          obj.evented = !this.isDrawingLineMode;
+        }
+      });
+    },
+  },
+};
+</script>
+
+<style scoped lang="less">
+.tool-box {
+  display: flex;
+  justify-content: space-around;
+  span {
+    flex: 1;
+    text-align: center;
+    padding: 5px 0;
+    background: #f6f6f6;
+    margin-left: 2px;
+    cursor: pointer;
+    &:hover {
+      background: #edf9ff;
+      svg {
+        fill: #2d8cf0;
+      }
+    }
+  }
+  .bg {
+    background: #d8d8d8;
+
+    &:hover {
+      svg {
+        fill: #2d8cf0;
+      }
+    }
+  }
+}
+.img {
+  width: 20px;
+}
+</style>

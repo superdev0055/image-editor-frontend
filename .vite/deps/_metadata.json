@@ -1,0 +1,47 @@
+{
+  "hash": "2e489aa6",
+  "browserHash": "d842887a",
+  "optimized": {
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "7b3cb91f",
+      "needsInterop": false
+    },
+    "vue3-lazyload": {
+      "src": "../../node_modules/vue3-lazyload/dist/index.mjs",
+      "file": "vue3-lazyload.js",
+      "fileHash": "f0e8aff1",
+      "needsInterop": false
+    },
+    "view-ui-plus": {
+      "src": "../../node_modules/view-ui-plus/dist/viewuiplus.min.js",
+      "file": "view-ui-plus.js",
+      "fileHash": "090a4c61",
+      "needsInterop": true
+    },
+    "vue3-clipboard": {
+      "src": "../../node_modules/vue3-clipboard/dist/vue3-clipboard-es.js",
+      "file": "vue3-clipboard.js",
+      "fileHash": "79c715eb",
+      "needsInterop": false
+    },
+    "bootstrap-vue-3": {
+      "src": "../../node_modules/bootstrap-vue-3/dist/bootstrap-vue-3.es.js",
+      "file": "bootstrap-vue-3.js",
+      "fileHash": "4ecc7276",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-YNANQ2IB": {
+      "file": "chunk-YNANQ2IB.js"
+    },
+    "chunk-CPU6U5HQ": {
+      "file": "chunk-CPU6U5HQ.js"
+    },
+    "chunk-OL3AADLO": {
+      "file": "chunk-OL3AADLO.js"
+    }
+  }
+}
