@@ -3,9 +3,7 @@
       <div
           class="list-styles"
           v-for="element in list"
-          :key="element.name"
-          @dragenter.prevent
-          @dragover.prevent
+          :key="element.id"
       >
         <div class="layerBox row">
           <div class="col-md-8" style="margin-top:5px">
@@ -13,22 +11,29 @@
             <Checkbox/>
             <label>{{element.name}}</label>
           </div>
+
           <div class="col-md-4">
             <Tooltip content="Click to unlock or lock" placement="top">
-              <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-              <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
+              <Button v-if="element.lock" @click="doLock(false,element.id)" icon="md-lock" type="text"></Button>
+              <Button v-else @click="doLock(true,element.id)" icon="md-unlock" type="text"></Button>
             </Tooltip>
             <Tooltip content="Click to view or unview" placement="top">
-              <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
-              <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
+              <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(true,element.id)" type="text"></Button>
+              <Button v-else @click="doView(false,element.id)" icon="ios-eye-outline" type="text"></Button>
             </Tooltip>
             <Dropdown>
               <Button icon="ios-more" style="border: none;" size="sm">
               </Button>
               <template #list>
                   <DropdownMenu>
-                    <clone></clone>
-                    <dele></dele>
+                    <DropdownItem  size="small">
+                      <Button @click="clone(element.id)" icon="ios-copy" type="text" size="small"></Button>
+                      <span style="font-size:10px">Duplicate layer1</span>
+                    </DropdownItem>
+                    <DropdownItem size="small">
+                      <Button @click="del(element.id)" icon="ios-trash" type="text" size="small"></Button>
+                      <span style="font-size:10px">Delete</span>
+                    </DropdownItem>
                   </DropdownMenu>
               </template>
             </Dropdown>
@@ -55,11 +60,23 @@
 import { defineComponent } from 'vue'
 import select from '@/mixins/select';
 import { VueDraggableNext } from 'vue-draggable-next'
+import dele from "./del.vue";
+import clone from "./clone.vue";
+import { v4 as uuid } from 'uuid';
+const lockAttrs = [
+  'lockMovementX',
+  'lockMovementY',
+  'lockRotation',
+  'lockScalingX',
+  'lockScalingY',
+];
 export default defineComponent({
   name: 'ToolBar',
   mixins: [select],
   components: {
     draggable: VueDraggableNext,
+    dele,
+    clone
   },
   data() {
     return {
@@ -84,56 +101,98 @@ export default defineComponent({
     }, 500);
   },
   methods: {
- 
-    doView(isView){
-      isView ? this.view() : this.unView();
+    checkLock(){
+      // console.log("asdfsadfsadfasdf")
+      return true;
     },
-    view(){
+    doView(isView,id){
+      var item = this.list.filter((arg)=>{
+        return arg.id == id;
+      });
+      isView ? this.view(item) : this.unView(item);
+      this.list = this.list.map((arg)=>{
+        if(arg.id == id){
+          arg.view = isView;
+        }
+        return arg;
+      });  
+    },
+    view(item){
       this.isView = false;
-      this.changeCommon("opacity",0);
+      console.log(item[0])
+      item[0].set('opacity',0/100);
+      this.canvas.c.renderAll();
       this.lock();
     },
-    unView(){
+    unView(item){
+      console.log(item)
       this.isView = true
-      this.changeCommon("opacity",100);
+      item[0].set('opacity',100/100);
+      this.canvas.c.renderAll();
       this.unLock();      
     },
-    doLock(isLock) {
-      isLock ? this.lock() : this.unLock();
+    doLock(isLock,id) {
+      var item = this.list.filter((arg)=>{
+        return arg.id == id;
+      });
+      
+      isLock ? this.lock(item) : this.unLock(item);
+      this.list = this.list.map((arg)=>{
+        if(arg.id == id){
+          arg.lock = isLock;
+        }
+        return arg;
+      });      
     },
-    lock() {
+    lock(item) {
       // Modify custom properties
-      this.mSelectActive.hasControls = false;
+      item[0].hasControls = false;
       // Modify default properties
       lockAttrs.forEach((key) => {
-        this.mSelectActive[key] = true;
+        item[0][key] = true;
       });
 
-      this.mSelectActive.selectable = false;
+      item[0].selectable = false;
 
-      this.isLock = true;
-      this.canvas.c.renderAll();
     },
-    unLock() {
+    unLock(item) {
       // Modify custom properties
-      this.mSelectActive.hasControls = true;
+      item[0].hasControls = true;
       // Modify default properties
       lockAttrs.forEach((key) => {
-        this.mSelectActive[key] = false;
+        item[0][key] = false;
       });
-      this.mSelectActive.selectable = true;
+      item[0].selectable = true;
 
       this.isLock = false;
-      this.canvas.c.renderAll();
     },
-
+    clone(id) {
+      var item = this.list.filter((arg)=>{
+        return arg.id == id;
+      });      
+      item[0].clone((cloned) => {
+        this.canvas.c.discardActiveObject();
+        // Spacing settings
+        const grid = 10;
+        cloned.set({
+          left: cloned.left + grid,
+          top: cloned.top + grid,
+          id: uuid(),
+        });
+        this.canvas.c.add(cloned);
+        this.canvas.c.setActiveObject(cloned);
+        this.canvas.c.requestRenderAll();
+      })
+    },
+    del(id) {
+      this.canvas.editor.del(id);
+    },    
     //for drag and drop
     onMoveCallback(evt, originalEvent) {
     },
     log(event,original) {
       var arr = {id:'',index:0,direction:"",moveCount:0};
-          console.log("asdds")
-      //after search element's move and re-render 
+      //after search element's move and re-render
       for(var i=0;i<this.tempList.length;i++){
         var tempIn = this.list.findIndex(arg=>this.tempList[i].id == arg.id);
         if(Math.abs(tempIn - i) > arr.index){
@@ -166,6 +225,8 @@ export default defineComponent({
       this.list = [...this.canvas.c.getObjects()]
         .reverse()
         .map((item) => {
+          item.view = true;
+          item.lock = false;
           return item;
           // const { type, id, name, text } = item;
           // return {

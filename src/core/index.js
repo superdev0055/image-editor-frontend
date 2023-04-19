@@ -24,9 +24,22 @@ class Editor extends EventEmitter {
     initControlsRotate(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
   }
-
-  clone() {
+  del(id){
+    var a = this.canvas.getObjects().forEach((item) => {
+              if(item.id == "empty"){
+                return false;
+              }else{
+                if(item.id == id){
+                  this.canvas.remove(item)
+                }
+              }
+            });
+    this.canvas.requestRenderAll();
+    this.canvas.discardActiveObject();            
+  }
+  clone(item) {
     const activeObject = this.canvas.getActiveObject();
+    console.log(activeObject)
     if (activeObject.length === 0) return;
     activeObject.clone((cloned) => {
       this.canvas.discardActiveObject();

@@ -18,11 +18,13 @@ export default {
   methods: {
     del() {
       const activeObject = this.canvas.c.getActiveObjects();
+      console.log(this.canvas.c)
       if (activeObject) {
         activeObject.map((item) => {
           if(item.id == "empty"){
             return false;
           }else{
+            console.log(item)
             this.canvas.c.remove(item)
           }
         });

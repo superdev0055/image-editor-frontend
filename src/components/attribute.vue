@@ -1,63 +1,62 @@
 <template>
   <div v-if="mSelectMode === 'one'" style="font-size:12px" id="attribute">
     <!-- general properties -->
+    <!-- Right Head -->
+    <div style="margin-left:15px"> 
+      <div class="flex-item right-top mt-3" v-if="textType.includes(mSelectOneType)">
+        <Button icon="md-arrow-round-back" class="border-btn" @click="mainPanel()"></Button>
+        <h2 style="font-family: initial;margin-left:10px">T</h2>
+        <Input style="margin-left:20px;width:75%">
+
+        </Input>
+      </div>
+      
+      <div class="flex-item right-top mt-3" v-if="imgType.includes(mSelectOneType)">
+        <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
+        <h2 style="margin-left:10px"><Icon type="ios-image" /></h2>
+        <Input style="margin-left:20px;width:75%" ></Input>
+      </div>      
+      <div class="flex-item right-top mt-3" v-if="rectType.includes(mSelectOneType)">
+        <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
+        <h2 style="margin-left:10px"><Icon type="ios-square-outline" /></h2>
+        <Input style="margin-left:20px;width:75%" ></Input>
+      </div> 
+      <div class="flex-item right-top mt-3" v-if="circleType.includes(mSelectOneType)">
+        <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
+        <h2 style="margin-left:10px"><Icon type="ios-radio-button-off" /></h2>
+        <Input style="margin-left:20px;width:75%" ></Input>
+      </div>     
+    </div>
+    <!-- Right Head -->
+
+    <!-- layer setting -->
+    <div class="mt-2 customborder"></div>
+    <div class="mt-2 row" style="">
+      <div class="col-md-4"><layer1></layer1></div>
+      <div class="col-md-4" style="margin-left:170px">
+        <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
+          <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
+          <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
+        </Tooltip>
+        <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
+          <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
+          <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
+        </Tooltip>
+        <Dropdown>
+            <Button icon="ios-more" style="border: none;" size="sm">
+            </Button>
+            <template #list>
+                <DropdownMenu>
+                  <clone></clone>
+                  <dele></dele>
+                </DropdownMenu>
+            </template>
+        </Dropdown>
+      </div>
+    </div>
+    <!-- layer setting -->    
+    <div class="customborder"></div>
     <div v-show="baseType.includes(mSelectOneType)">
-
-      <!-- Right Head -->
-      <div style="margin-left:15px"> 
-        <div class="flex-item right-top mt-3" v-if="textType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn" @click="mainPanel()"></Button>
-          <h2 style="font-family: initial;margin-left:10px">T</h2>
-          <Input style="margin-left:20px;width:75%">
-
-          </Input>
-        </div>
-        
-        <div class="flex-item right-top mt-3" v-if="imgType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-          <h2 style="margin-left:10px"><Icon type="ios-image" /></h2>
-          <Input style="margin-left:20px;width:75%" ></Input>
-        </div>      
-        <div class="flex-item right-top mt-3" v-if="rectType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-          <h2 style="margin-left:10px"><Icon type="ios-square-outline" /></h2>
-          <Input style="margin-left:20px;width:75%" ></Input>
-        </div> 
-        <div class="flex-item right-top mt-3" v-if="circleType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-          <h2 style="margin-left:10px"><Icon type="ios-radio-button-off" /></h2>
-          <Input style="margin-left:20px;width:75%" ></Input>
-        </div>     
-      </div>
-      <!-- Right Head -->
-
-      <!-- layer setting -->
-      <div class="mt-2 customborder"></div>
-      <div class="mt-2 row" style="">
-        <div class="col-md-4"><layer1></layer1></div>
-        <div class="col-md-4" style="margin-left:170px">
-          <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
-            <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-            <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
-          </Tooltip>
-          <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
-            <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
-            <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
-          </Tooltip>
-          <Dropdown>
-              <Button icon="ios-more" style="border: none;" size="sm">
-              </Button>
-              <template #list>
-                  <DropdownMenu>
-                    <clone></clone>
-                    <dele></dele>
-                  </DropdownMenu>
-              </template>
-          </Dropdown>
-        </div>
-      </div>
-      <!-- layer setting -->
-      <div class="customborder"></div>
       <!-- control part -->
       <div class="control" style="margin-left:15px">
         <div class="row mt-3 mb-3" style="align-items: center;">
@@ -67,10 +66,9 @@
           <div class="col col-lg-2">
             <div class="content">
               <Input
-                v-model="baseAttr.sizeX"
-                @on-change="(value) => changeCommon('resizeX', value)"
+                v-model="baseAttr.width"
+                @on-change="(value) => changeCommon('width', value)"
                 show-input
-                size="small"
                 type="number"
                 style="width: 80px"
               >
@@ -83,10 +81,10 @@
           <div class="col col-lg-2">
             <div class="content">
               <Input
-                v-model="baseAttr.sizeY"
-                @on-change="(value) => changeCommon('resizeY', value)"
+                type="number"
+                v-model="baseAttr.height"
+                @on-change="(value) => changeCommon('height', value)"
                 show-input
-                size="small"
                 style="width: 80px"
               >
                 <template #append>
@@ -131,19 +129,86 @@
             </div>
           </div>
         </div>
-        <div class="row mb-3" style="display: flex; align-items: center;">
-          <div class="col col-lg-9">
-            Rotate
-          </div>                
-          <div class="col col-lg-2">
-            <InputNumber size="small" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" />
-          </div>
-        </div>
+
       </div>
       <!-- control part -->
     </div>
-    <div class="customborder mt-2"></div>
+    <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
+      <div class="row mb-3" style="display: flex; align-items: center;">
+        <flip></flip>
+        <div class="col col-lg-2">
+          <Input type="number" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" style="width:80px">
+            <template #append>
+              <span>o</span>
+            </template> 
+          </Input>
+        </div>
+      </div>
+    </div>
+    <div v-show="shapeType.includes(mSelectOneType)" style="margin-left:15px">
+      <div class="row mb-3" style="display: flex; align-items: center;">
+        <div class="col col-lg-9">
+          Rotate
+        </div>                
+        <div class="col col-lg-2">
+          <Input type="number" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" style="width:80px">
+            <template #append>
+              <span>o</span>
+            </template> 
+          </Input>
+        </div>
+      </div>      
+      <div v-show="rectType.includes(mSelectOneType)" class="row mb-3" style="display: flex; align-items: center;">
+        <div class="col col-lg-9">
+          Round
+        </div>                
+        <div class="col col-lg-2">
+          <Input type="number" v-model="baseAttr.round" :max="360" @on-change="(value)=>changeCommon('round', value)" style="width:80px">
+            <template #append>
+              <span>o</span>
+            </template> 
+          </Input>
+        </div>
+      </div>
+      <div class="row mb-3" style="display: flex; align-items: center;">
+        <div class="col col-lg-9">
+          Fill
+        </div>                
+        <div class="col col-lg-2">
+          <Color :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"  style="width:80px"></Color>
+        </div>
+      </div>
+    <div class="row mb-3" style="display: flex; align-items: center;">
+      <div class="col col-lg-7">
+        Border
+      </div>          
+      <div class="col col-lg-2">
+        <ColorPicker
+          v-model="baseAttr.stroke"
+          @on-change="(value) => changeCommon('stroke', value)"
+          alpha
+          style="width:80px"
+        />
+      </div>                
+      <div class="col col-lg-2">
+        <Input
+          type="number"
+          v-model="baseAttr.strokeWidth"
+          :max="360"
+          @on-change="(value) => changeCommon('strokeWidth', value)"
+          show-input
+          style="width:80px"
+        >
+          <template #append>
+            <span>o</span>
+          </template>             
+        </Input>          
+      </div>
+    </div>
+  </div>
+                
     <div v-show="textType.includes(mSelectOneType)" class="mt-4">
+      <div class="customborder mt-2"></div>
       <div class="text-part" style="margin-left:15px"> 
         <label>Text</label>
         <Input v-model="fontAttr.string" @on-change="changeString" class="mb-2 mt-2" style="width:91%">
@@ -229,6 +294,7 @@ import layer1 from './layer1.vue'
 import Color from './color.vue';
 import dele from "./del.vue";
 import clone from "./clone.vue"
+import flip from "./flip.vue"
 import $ from "jquery";
 const lockAttrs = [
   'lockMovementX',
@@ -248,7 +314,8 @@ export default {
     Color,
     layer1,
     dele,
-    clone
+    clone,
+    flip
   },
   data() {
     return {
@@ -259,14 +326,15 @@ export default {
         'text',
         'i-text',
         'textbox',
-        'rect',
-        'circle',
         'triangle',
         'image',
         'group',
         'line',
         'arrow',
+        "rect",
+        "circle"
       ],
+      shapeType:["rect","circle"],
       rectType:["rect"],
       circleType:["circle"],
       // text element
@@ -275,6 +343,7 @@ export default {
       imgType: ['image'],
       // general properties
       baseAttr: {
+        round:0,
         sizeX: 0,
         sizeY: 0,
         opacity: 0,
@@ -415,6 +484,10 @@ export default {
       const activeObject = this.canvas.c.getActiveObjects()[0];
       if (activeObject) {
         // base
+        console.log(activeObject);
+        this.baseAttr.round = activeObject.get('rx');
+        this.baseAttr.height = activeObject.get('height');
+        this.baseAttr.width = activeObject.get('width');
         this.baseAttr.opacity = activeObject.get('opacity') * 100;
         this.baseAttr.fill = activeObject.get('fill');
         this.baseAttr.left = activeObject.get('left');
@@ -423,7 +496,6 @@ export default {
         this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
         this.baseAttr.shadow = activeObject.get('shadow') || {};
         this.baseAttr.angle = activeObject.get('angle') || 0;
-
         const textTypes = ['i-text', 'text', 'textbox'];
         if (textTypes.includes(activeObject.type)) {
           this.fontAttr.string = activeObject.get('text');
@@ -456,9 +528,6 @@ export default {
   methods: {
     mainPanel(){
       $("#attribute").hide(); 
-      // this.canvas.c.clear();
-      // this.mSelectMode = ''
-      // this.mSelectMode = "one"      
       if(this.mSelectMode != ""){
         this.$emit('changeSelectMode','')
       }else{
@@ -507,31 +576,10 @@ export default {
         this.mSelectActive[key] = false;
       });
       this.mSelectActive.selectable = true;
-
       this.isLock = false;
       this.canvas.c.renderAll();
     },
-    position(name) {
-      this.canvas.editor.centerAlign.position(name);
-    },
-    notSelectOneMode() {
-      return this.mSelectMode !== 'one';
-    },
-    flip(type) {
-      const activeObject = this.canvas.c.getActiveObject();
-      activeObject.set(`flip${type}`, !activeObject[`flip${type}`]).setCoords();
-      this.canvas.c.requestRenderAll();
-    },
-    // image properties
-    imgBlur(blur) {
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      if (activeObject) {
-        const filter = new this.fabric.Image.filters.Blur({ blur });
-        activeObject.filters = [filter];
-        activeObject.applyFilters();
-        this.canvas.c.renderAll();
-      }
-    },
+
     changeString(value){
       if(typeof(value)=="string"){
         var string = value;
@@ -574,38 +622,39 @@ export default {
         }); 
     },
     // Generic property changes
-    changeCommon(key, value) {
+    changeCommon(key, evt) {
       const activeObject = this.canvas.c.getActiveObjects()[0];
-      if (key === 'resizeX') {
-        activeObject.set({
-          scaleX: value/100,
-          scaleY: this.baseAttr.sizeY/100
-        });
+      if (key === 'fill') {
+        activeObject.set(key, evt);
         this.canvas.c.renderAll();
         return;
       }
-
-      if (key === 'resizeY') {
-        activeObject.set({
-          scaleX: this.baseAttr.sizeX/100,
-          scaleY: value/100
-        });
+      if (key === 'stroke') {
+        activeObject.set(key, evt);
         this.canvas.c.renderAll();
         return;
-      }
+      }      
       // Transparency special conversion
       if (key === 'opacity') {
-        activeObject && activeObject.set(key, value / 100);
+        console.log(activeObject)
+        activeObject && activeObject.set(key, Number(evt.target.value) / 100);
         this.canvas.c.renderAll();
         return;
       }
       // Rotation Angle Adaptation
       if (key === 'angle') {
-        activeObject.rotate(value);
+        activeObject.rotate(Number(evt.target.value));
         this.canvas.c.renderAll();
         return;
       }
-      activeObject && activeObject.set(key, value);
+      if(key == "round"){
+        activeObject.set("ry", Number(evt.target.value))
+        activeObject.set("rx", Number(evt.target.value))
+        this.canvas.c.renderAll();
+        console.log("round")
+        return;
+      }
+      activeObject && activeObject.set(key, Number(evt.target.value));
       this.canvas.c.renderAll();
     },
     // border settings
