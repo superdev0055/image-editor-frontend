@@ -12,21 +12,18 @@ export default {
   name: 'ToolBar',
   mixins: [select],
   inject:["path","param_id"],
-  props: {
-      selectMode: String
-  },    
   data() {
     return {
       showModal: false,
       svgStr: ''
     };
   },
-  created() {
-    this.event.on('selectOne', (items) => {
-      this.isLock = !items[0].hasControls;
-      this.mSelectActive = items[0];
-    });
-  },
+  // created() {
+  //   this.event.on('selectOne', (items) => {
+  //     this.isLock = !items[0].hasControls;
+  //     this.mSelectActive = items[0];
+  //   });
+  // },
   mounted(){
     if(this.path.slice(8) == "create"){
       this.insertEmptyFile(emptyData);
@@ -94,18 +91,12 @@ export default {
         this.canvas.c.renderAll();
         // // Remove image elements from the page
         imgEl.remove();
-        // $("#attribute").hide(); 
-        // if(this.mSelectMode != ""){
-        //   this.$emit('changeSelectMode','')
-        // }else{
-        //   this.$emit('changeSelectMode',this.mSelectMode)
-        // }        
       };
     },
     insertFileFromJSON(id){
-      axios.get('http://localhost:3000/feed-image?id='+id)
+      axios.get('http://localhost:3000/feed-image/'+id)
         .then(resp => {
-            var data = resp.data[0];
+            var data = resp.data;
             var jsonFile = JSON.stringify(data);
             downFontByJSON(jsonFile).then(() => {
                 this.canvas.c.loadFromJSON(jsonFile, () => {
@@ -118,6 +109,8 @@ export default {
                     this.canvas.c.renderAll();
                 });
               });          
+        
+        
         })
         .catch(error => {
             console.log(error);

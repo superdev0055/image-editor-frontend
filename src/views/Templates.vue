@@ -1,4 +1,5 @@
 <template>
+<div>
   <div style="display:none">
     <div>asdfasdf</div>
       <div id="workspace" style="width: 920px;height:500px; position: relative; background: #f1f1f1;">
@@ -18,15 +19,9 @@
         <GridItem>
           <div><img src="" style="width:100%;height:250px" id="image1"/><router-link to="/editor/edit/1"><Button style="margin-top:25px" type="primary">edit</Button></router-link></div>
         </GridItem>
-        <!-- <GridItem>
-          <div><img style="width:100%;height:300px" src="../assets/img/empty.png"/></div>
-        </GridItem>
-        <GridItem>
-          <div><img style="width:100%;height:300px" src="../assets/img/empty.png"/></div>
-        </GridItem>                 -->
       </Grid>   
     </div>
-  
+  </div>
 
 </template>
 <script>
@@ -45,6 +40,7 @@ const canvas = {};
 export default {
   name: 'Templates',
   mounted() {
+  
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
       stopContextMenu: true,
@@ -60,9 +56,10 @@ export default {
       width: 900,
       height: 900,
     });
+
     axios.get('http://localhost:3000/feed-image')
       .then(resp => {
-          var data = resp.data;
+          var data = resp.data['feed-image'];
           data.forEach((e ,i)=> {
           var jsonFile = JSON.stringify(data[i]);
           downFontByJSON(jsonFile).then(() => {
@@ -91,7 +88,6 @@ export default {
               });
             });          
 
-            // console.log(`${e.first_name}, ${e.last_name}, ${e.email}`);
           });          
 
       })

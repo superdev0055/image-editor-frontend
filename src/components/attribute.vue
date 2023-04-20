@@ -33,7 +33,7 @@
     <div class="mt-2 customborder"></div>
     <div class="mt-2 row" style="">
       <div class="col-md-4"><layer1></layer1></div>
-      <div class="col-md-4" style="margin-left:170px">
+      <div class="col-md-4" style="margin-left:150px">
         <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
           <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
           <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
@@ -595,6 +595,7 @@ export default {
     },
     mainPanel(){
       this.canvas.c.discardActiveObject();
+      this.canvas.c.requestRenderAll();
     },
     changeAddTab(value){
       console.log(value)

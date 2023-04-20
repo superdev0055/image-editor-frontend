@@ -36,8 +36,7 @@ export function downFontByJSON(str) {
         item.type.includes('text') && !skipFonts.includes(item.fontFamily)
     )
     .map((item) => item.fontFamily);
-  console.log(fontFamilys, '22');
-  const fontFamilysAll = fontFamilys.map((fontName) => {
+    const fontFamilysAll = fontFamilys.map((fontName) => {
     const font = new FontFaceObserver(fontName);
     return font.load(null, 150000);
   });

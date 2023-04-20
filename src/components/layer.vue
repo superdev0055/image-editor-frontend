@@ -222,21 +222,14 @@ export default defineComponent({
     },
     getList() {
       // Do not change the original array Inversion
-      console.log(this.canvas.c.getObjects())
-      console.log(this.canvas.c.getObjects())
+      // console.log(this.canvas.c.getObjects())
+      // console.log(this.canvas.c.getObjects())
       this.list = [...this.canvas.c.getObjects()]
         .reverse()
         .map((item) => {
           item.view = true;
           item.lock = false;
           return item;
-          // const { type, id, name, text } = item;
-          // return {
-          //   type,
-          //   id,
-          //   name,
-          //   text,
-          // };
         })
         .filter((item) => {
             return item.id !== 'workspace'
