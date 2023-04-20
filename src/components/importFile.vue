@@ -12,6 +12,9 @@ export default {
   name: 'ToolBar',
   mixins: [select],
   inject:["path","param_id"],
+  props: {
+      selectMode: String
+  },    
   data() {
     return {
       showModal: false,
@@ -72,6 +75,7 @@ export default {
     },    
     // insert image file
     insertImgFile(file,type) {
+        console.log("file")
       const imgEl = document.createElement('img');
       imgEl.src = file || this.imgFile;
       // insert page
@@ -90,6 +94,12 @@ export default {
         this.canvas.c.renderAll();
         // // Remove image elements from the page
         imgEl.remove();
+        // $("#attribute").hide(); 
+        // if(this.mSelectMode != ""){
+        //   this.$emit('changeSelectMode','')
+        // }else{
+        //   this.$emit('changeSelectMode',this.mSelectMode)
+        // }        
       };
     },
     insertFileFromJSON(id){

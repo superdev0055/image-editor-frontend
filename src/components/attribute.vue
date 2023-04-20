@@ -228,7 +228,7 @@
       <div class="customborder mt-2"></div>
       <div class="text-part" style="margin-left:15px"> 
         <label>Text</label>
-        <Input v-model="fontAttr.string" @on-change="changeString" class="mb-2 mt-2" style="width:91%">
+        <Input v-model="fontAttr.string" @on-change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
           <template #append>
             <Select style="width: 70px" @on-change="changeAddTab" size="small">
                 <Option value="[avability]">[avability]</Option>
@@ -309,7 +309,6 @@
             v-model="baseAttr.stroke"
             @on-change="(value) => changeCommon('stroke', value)"
             alpha
-            style="width:80px"
           />
         </div>                
         <div class="col col-lg-2">
@@ -361,6 +360,7 @@ import dele from "./del.vue";
 import clone from "./clone.vue"
 import flip from "./flip.vue"
 import align from "./align.vue"
+// import EventHandle from '@/utils/eventHandler';
 import $ from "jquery";
 const lockAttrs = [
   'lockMovementX',
@@ -373,9 +373,6 @@ const lockAttrs = [
 export default {
   name: 'ToolBar',
   mixins: [select],
-  props: {
-      selectMode: String
-  },    
   components: {
     Color,
     layer1,
@@ -593,13 +590,11 @@ export default {
   computed:{
   },
   methods: {
+    observe(){
+      console.log("asdf")
+    },
     mainPanel(){
-      $("#attribute").hide(); 
-      if(this.mSelectMode != ""){
-        this.$emit('changeSelectMode','')
-      }else{
-        this.$emit('changeSelectMode',this.mSelectMode)
-      }
+      this.canvas.c.discardActiveObject();
     },
     changeAddTab(value){
       console.log(value)
@@ -647,13 +642,22 @@ export default {
       this.canvas.c.renderAll();
     },
 
+    //delete shortTag
+    textKeyPress(value){
+      var string = this.fontAttr.string
+      if(value.keyCode == 8){
+        string = string.slice(0,string.lastIndexOf('['));
+        this.changeString(string) 
+      }
+
+    },
     changeString(value){
       if(typeof(value)=="string"){
         var string = value;
       }else{
         var string = value.target.value;
       }
-      this.fontAttr.string = value;
+      this.fontAttr.string = string;
       const activeObject = this.canvas.c.getActiveObjects()[0];
       activeObject && activeObject.set('text',string);
       this.canvas.c.renderAll();

@@ -18,11 +18,13 @@ class EventHandle extends EventEmitter {
   _selected() {
     const actives = this.handler.getActiveObjects();
     if (actives && actives.length === 1) {
+      console.log("one")
       this.emit('selectOne', actives);
     } else if (actives && actives.length > 1) {
       this.mSelectMode = 'multiple';
       this.emit('selectMultiple', actives);
     } else {
+      console.log("ddddddd")
       this.emit('selectCancel');
     }
   }

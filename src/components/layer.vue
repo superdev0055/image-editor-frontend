@@ -222,6 +222,8 @@ export default defineComponent({
     },
     getList() {
       // Do not change the original array Inversion
+      console.log(this.canvas.c.getObjects())
+      console.log(this.canvas.c.getObjects())
       this.list = [...this.canvas.c.getObjects()]
         .reverse()
         .map((item) => {
@@ -243,22 +245,6 @@ export default defineComponent({
     },    
     //for drag and drop
 
-  },
-  watch:{
-    list(){
-      console.log("watch")
-        // console.log(changeIndex)
-        // var tempIdx = this.tempList.findIndex((item)=>item.id == evt.draggedContext.element.id);
-        // var listIdx = this.list.findIndex((item)=>item.id == evt.draggedContext.element.id);
-        // if(tempIdx-listIdx < 0){
-        //   this.canvas.editor.up(evt.draggedContext.element);
-        // }else{
-        //   this.canvas.editor.down(evt.draggedContext.element);
-        // }
-        // this.tempList = this.list.map(item=>item);
-      // }
-
-    }
-  }  
+  }
 })
 </script>

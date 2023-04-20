@@ -59,9 +59,6 @@ import bgBar from "./colorBar.vue"
 export default {
   name: 'canvasSize',
   mixins: [select],
-  props: {
-      selectMode: String
-  },  
   inject: ['canvas', 'fabric'],
   data() {
     return {

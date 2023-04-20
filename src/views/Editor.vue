@@ -33,9 +33,9 @@
       </div>
       <div class="right-box">
         <div v-if="show">
-          <set-size :selectMode="selectMode"></set-size>
+          <set-size></set-size>
         </div>
-          <attribute v-if="show" :selectMode="selectMode" @changeSelectMode="changeSelectMode"></attribute>
+          <attribute v-if="show"></attribute>
       </div>
     </Content>
   </div>
@@ -75,6 +75,7 @@ import mouseMenu from '@/components/contextMenu/index.vue';
 import EventHandle from '@/utils/eventHandler';
 
 import { fabric } from 'fabric';
+import $ from "jquery";
 import Editor from '@/core';
 
 const event = new EventHandle();
@@ -96,7 +97,6 @@ export default {
       show: false,
       select: null,
       ruler: true,
-      selectMode:'1'
     };
   },
   components: {
@@ -142,15 +142,8 @@ export default {
     canvas.c.renderAll();
   },
   methods:{
-    changeSelectMode(arg){
-      console.log(arg)
-      console.log("editor");
-      if(this.selectMode == '1'){
-        console.log("t")
-        this.selectMode = '2';
-      }else{
-        this.selectMode = '1';
-      }
+    test(){
+      console.log("test")
     }
   }
 };
