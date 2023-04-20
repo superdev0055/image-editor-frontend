@@ -144,6 +144,23 @@
           </Input>
         </div>
       </div>
+      <div class="row mb-3" style="display: flex; align-items: center;">
+        <div class="col col-lg-8">
+          Fit mode
+        </div>                
+        <div class="col col-lg-3">
+          <Button icon="ios-expand"></Button>
+          <Button icon="md-expand" style="margin-left:20px"></Button>
+        </div>
+      </div>       
+      <div class="row mb-3" style="display: flex; align-items: center;">
+        <div class="col col-lg-6">
+          Alignment
+        </div>                
+        <div class="col col-lg-6">
+          <align></align>
+        </div>
+      </div>      
     </div>
     <div v-show="shapeType.includes(mSelectOneType)" style="margin-left:15px">
       <div class="row mb-3" style="display: flex; align-items: center;">
@@ -205,7 +222,7 @@
         </Input>          
       </div>
     </div>
-  </div>
+    </div>
                 
     <div v-show="textType.includes(mSelectOneType)" class="mt-4">
       <div class="customborder mt-2"></div>
@@ -282,6 +299,54 @@
           </div>   
         </div>          
       </div>
+      <div class="customborder mt-4"></div>
+      <div class="row mb-3 mt-4" style="display: flex; align-items: center;margin-left:15px">
+        <div class="col col-lg-7">
+          Border
+        </div>          
+        <div class="col col-lg-2">
+          <ColorPicker
+            v-model="baseAttr.stroke"
+            @on-change="(value) => changeCommon('stroke', value)"
+            alpha
+            style="width:80px"
+          />
+        </div>                
+        <div class="col col-lg-2">
+          <Input
+            type="number"
+            v-model="baseAttr.strokeWidth"
+            :max="360"
+            @on-change="(value) => changeCommon('strokeWidth', value)"
+            show-input
+            style="width:80px"
+          >
+            <template #append>
+              <span>o</span>
+            </template>             
+          </Input>          
+        </div>
+      </div>      
+      <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:15px;">
+        <div class="col col-lg-9">
+          Round
+        </div>                
+        <div class="col col-lg-2">
+          <Input type="number" v-model="baseAttr.round" :max="360" @on-change="(value)=>changeCommon('round', value)" style="width:80px">
+            <template #append>
+              <span>o</span>
+            </template> 
+          </Input>
+        </div>
+      </div>   
+      <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:15px;">
+        <div class="col col-lg-6">
+          Alignment
+        </div>                
+        <div class="col col-lg-6">
+          <align></align>
+        </div>
+      </div>         
     </div>
   </div>
 </template>
@@ -295,6 +360,7 @@ import Color from './color.vue';
 import dele from "./del.vue";
 import clone from "./clone.vue"
 import flip from "./flip.vue"
+import align from "./align.vue"
 import $ from "jquery";
 const lockAttrs = [
   'lockMovementX',
@@ -315,7 +381,8 @@ export default {
     layer1,
     dele,
     clone,
-    flip
+    flip,
+    align,
   },
   data() {
     return {

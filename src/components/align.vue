@@ -1,8 +1,8 @@
 <template>
-  <div v-if="this.mSelectMode === 'multiple'" class="box attr-item">
+  <div  class="box attr-item">
     <!-- Horizontal alignment -->
     <Tooltip :content="$t('group_align.left')">
-      <Button :disabled="notMultiple()" @click="left" size="small" type="text">
+      <Button  @click="left" size="small" type="text">
         <svg
           t="1650442284704"
           class="icon"
@@ -18,7 +18,7 @@
       </Button>
     </Tooltip>
     <Tooltip :content="$t('group_align.centerX')">
-      <Button :disabled="notMultiple()" @click="xcenter" size="small" type="text">
+      <Button  @click="xcenter" size="small" type="text">
         <svg
           t="1650442754876"
           class="icon"
@@ -38,7 +38,7 @@
       </Button>
     </Tooltip>
     <Tooltip :content="$t('group_align.right')">
-      <Button :disabled="notMultiple()" @click="right" size="small" type="text">
+      <Button  @click="right" size="small" type="text">
         <svg
           t="1650442299564"
           class="icon"
@@ -58,7 +58,7 @@
     </Tooltip>
     <!-- vertical alignment -->
     <Tooltip :content="$t('group_align.top')">
-      <Button :disabled="notMultiple()" @click="top" size="small" type="text">
+      <Button  @click="top" size="small" type="text">
         <svg
           t="1650442692910"
           class="icon"
@@ -78,7 +78,7 @@
       </Button>
     </Tooltip>
     <Tooltip :content="$t('group_align.centerY')">
-      <Button :disabled="notMultiple()" @click="ycenter" size="small" type="text">
+      <Button  @click="ycenter" size="small" type="text">
         <svg
           t="1650442732396"
           class="icon"
@@ -98,7 +98,7 @@
       </Button>
     </Tooltip>
     <Tooltip :content="$t('group_align.bottom')">
-      <Button :disabled="notMultiple()" @click="bottom" size="small" type="text">
+      <Button  @click="bottom" size="small" type="text">
         <svg
           t="1650442674784"
           class="icon"
@@ -113,47 +113,6 @@
             d="M1170.285714 987.428571a36.571429 36.571429 0 0 0-36.571428-36.571428H36.571429a36.571429 36.571429 0 0 0 0 73.142857h1097.142857a36.571429 36.571429 0 0 0 36.571428-36.571429z m-219.428571-146.285714v-512a36.571429 36.571429 0 0 0-36.571429-36.571428h-219.428571a36.571429 36.571429 0 0 0-36.571429 36.571428v512a36.571429 36.571429 0 0 0 36.571429 36.571429h219.428571a36.571429 36.571429 0 0 0 36.571429-36.571429z m-438.857143 0V36.571429a36.571429 36.571429 0 0 0-36.571429-36.571429h-219.428571a36.571429 36.571429 0 0 0-36.571429 36.571429v804.571428a36.571429 36.571429 0 0 0 36.571429 36.571429h219.428571a36.571429 36.571429 0 0 0 36.571429-36.571429z"
             fill="#666666"
             p-id="921"
-          ></path>
-        </svg>
-      </Button>
-    </Tooltip>
-    <!-- average alignment -->
-    <Tooltip :content="$t('group_align.averageX')">
-      <Button :disabled="notMultiple()" @click="xequation" size="small" type="text">
-        <svg
-          t="1650442800956"
-          class="icon"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="1910"
-          width="14"
-          height="14"
-        >
-          <path
-            d="M96 0a32 32 0 0 1 32 32v960a32 32 0 0 1-64 0V32A32 32 0 0 1 96 0z m832 0a32 32 0 0 1 32 32v960a32 32 0 0 1-64 0V32a32 32 0 0 1 32-32zM384 800v-576a32 32 0 0 1 32-32h192a32 32 0 0 1 32 32v576a32 32 0 0 1-32 32h-192a32 32 0 0 1-32-32z"
-            fill="#515151"
-            p-id="1911"
-          ></path>
-        </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('group_align.averageY')">
-      <Button :disabled="notMultiple()" @click="yequation" size="small" type="text">
-        <svg
-          t="1650442784286"
-          class="icon"
-          viewBox="0 0 1170 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="1712"
-          width="14"
-          height="14"
-        >
-          <path
-            d="M1170.285714 36.571429a36.571429 36.571429 0 0 1-36.571428 36.571428H36.571429a36.571429 36.571429 0 0 1 0-73.142857h1097.142857a36.571429 36.571429 0 0 1 36.571428 36.571429z m0 950.857142a36.571429 36.571429 0 0 1-36.571428 36.571429H36.571429a36.571429 36.571429 0 0 1 0-73.142857h1097.142857a36.571429 36.571429 0 0 1 36.571428 36.571428zM256 365.714286h658.285714a36.571429 36.571429 0 0 1 36.571429 36.571428v219.428572a36.571429 36.571429 0 0 1-36.571429 36.571428h-658.285714a36.571429 36.571429 0 0 1-36.571429-36.571428v-219.428572a36.571429 36.571429 0 0 1 36.571429-36.571428z"
-            fill="#515151"
-            p-id="1713"
           ></path>
         </svg>
       </Button>

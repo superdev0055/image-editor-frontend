@@ -3,9 +3,9 @@
       flip
     </div>                
     <div class="col col-lg-3">
-      <div v-if="mSelectMode === 'one'" class="box attr-item">
+      <div class="box attr-item">
         <Tooltip :content="$t('flip.x')">
-          <Button :disabled="notSelectOneMode()" @click="flip('X')" type="text">
+          <Button  @click="flip('X')" type="text">
             <svg
               t="1650443094178"
               class="icon"
