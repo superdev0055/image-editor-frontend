@@ -72,7 +72,6 @@ export default {
     bgBar
   },
   mounted() {
-    // console.log(this.selectMode)
     // setTimeout(() => {
     //     this.temp = this.mSelectMode
     // },500);    
@@ -84,9 +83,6 @@ export default {
     });
   },
   methods: {
-    test(){
-      console.log("asd")
-    },
     setSizeBy(width, height) {
       this.width = width;
       this.height = height;
@@ -113,7 +109,6 @@ export default {
     },
 
     selectMode(){
-      console.log("aaaaa");        
       if(this.selectMode === '1'){
         this.mSelectMode = '';
         this.$forceUpdate();

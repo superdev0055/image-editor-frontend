@@ -34,6 +34,7 @@
       <div class="right-box">
         <div v-if="show">
           <set-size></set-size>
+          <group></group>
         </div>
           <attribute v-if="show"></attribute>
       </div>
@@ -79,6 +80,7 @@ import $ from "jquery";
 import Editor from '@/core';
 
 const event = new EventHandle();
+event.setMaxListeners(100)
 const canvas = {};
 export default {
   name: 'Editor',
@@ -97,6 +99,7 @@ export default {
       show: false,
       select: null,
       ruler: true,
+      param_id:this.$route.params.id
     };
   },
   components: {
@@ -125,7 +128,6 @@ export default {
   created() {
   },
   mounted() {
-
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
       stopContextMenu: true,
@@ -134,18 +136,10 @@ export default {
     canvas.c = this.canvas;
     event.init(canvas.c);
     canvas.editor = new Editor(canvas.c);
-    // setTimeout(() => {
-    //   console.log(canvas.editor._workspaceSendToBack())
-    // }, 3000);
     this.show = true;
     this.$Spin.hide();      
     canvas.c.renderAll();
   },
-  methods:{
-    test(){
-      console.log("test")
-    }
-  }
 };
 </script>
 <style scoped lang="less">

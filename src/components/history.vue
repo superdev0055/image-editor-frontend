@@ -84,7 +84,6 @@ export default {
     },
     // render from data
     renderCanvas(data) {
-      console.log("asdf")
       this.canvas.c.clear();
       this.canvas.c.loadFromJSON(data, this.canvas.c.renderAll.bind(this.canvas.c));
       this.canvas.c.requestRenderAll();

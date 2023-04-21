@@ -22,7 +22,7 @@
               <Button v-else @click="doView(false,element.id)" icon="ios-eye-outline" type="text"></Button>
             </Tooltip>
             <Dropdown>
-              <Button icon="ios-more" style="border: none;" size="sm">
+              <Button icon="ios-more" type="text">
               </Button>
               <template #list>
                   <DropdownMenu>

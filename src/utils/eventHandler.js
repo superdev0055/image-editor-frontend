@@ -8,7 +8,6 @@ class EventHandle extends EventEmitter {
     })
     this.handler.on('selection:updated', (e) => this._selected(e));
     this.handler.on('selection:cleared', (e) =>{
-      console.log("ffffffff");
       this._selected(e);
     })
   }
@@ -18,13 +17,11 @@ class EventHandle extends EventEmitter {
   _selected() {
     const actives = this.handler.getActiveObjects();
     if (actives && actives.length === 1) {
-      console.log("one")
       this.emit('selectOne', actives);
     } else if (actives && actives.length > 1) {
       this.mSelectMode = 'multiple';
       this.emit('selectMultiple', actives);
     } else {
-      console.log("ddddddd")
       this.emit('selectCancel');
     }
   }

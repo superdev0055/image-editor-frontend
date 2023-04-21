@@ -14,15 +14,15 @@
 
           <div class="col-md-4">
             <Tooltip content="Click to unlock or lock" placement="top">
-              <Button v-if="element.lock" @click="doLock(false,element.id)" icon="md-lock" type="text"></Button>
-              <Button v-else @click="doLock(true,element.id)" icon="md-unlock" type="text"></Button>
+              <Button v-if="element.lock" @click="doLock(element.id)" icon="md-lock" type="text"></Button>
+              <Button v-else @click="doLock(element.id)" icon="md-unlock" type="text"></Button>
             </Tooltip>
             <Tooltip content="Click to view or unview" placement="top">
-              <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(true,element.id)" type="text"></Button>
-              <Button v-else @click="doView(false,element.id)" icon="ios-eye-outline" type="text"></Button>
+              <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(element.id)" type="text"></Button>
+              <Button v-else @click="doView(element.id)" icon="ios-eye-outline" type="text"></Button>
             </Tooltip>
             <Dropdown>
-              <Button icon="ios-more" style="border: none;" size="sm">
+              <Button icon="ios-more" type="text">
               </Button>
               <template #list>
                   <DropdownMenu>
@@ -102,69 +102,51 @@ export default defineComponent({
   },
   methods: {
     checkLock(){
-      // console.log("asdfsadfsadfasdf")
       return true;
     },
-    doView(isView,id){
-      var item = this.list.filter((arg)=>{
-        return arg.id == id;
-      });
-      isView ? this.view(item) : this.unView(item);
-      this.list = this.list.map((arg)=>{
+    doView(id){
+      this.list.forEach((arg)=>{
         if(arg.id == id){
-          arg.view = isView;
+          arg.view ? this.view(arg) : this.unView(arg);
         }
-        return arg;
-      });  
+      });
     },
     view(item){
-      this.isView = false;
-      console.log(item[0])
-      item[0].set('opacity',0/100);
+      item.set('opacity',(0/100));
       this.canvas.c.renderAll();
-      this.lock();
     },
     unView(item){
-      console.log(item)
-      this.isView = true
-      item[0].set('opacity',100/100);
+      item.set('opacity',(100/100));
       this.canvas.c.renderAll();
-      this.unLock();      
+      // this.unLock(item);      
     },
-    doLock(isLock,id) {
-      var item = this.list.filter((arg)=>{
-        return arg.id == id;
-      });
-      
-      isLock ? this.lock(item) : this.unLock(item);
-      this.list = this.list.map((arg)=>{
+    doLock(id) {
+      this.list.forEach((arg)=>{
         if(arg.id == id){
-          arg.lock = isLock;
+          arg.lock ? this.unLock(arg):this.lock(arg) ;
         }
-        return arg;
       });      
+       
     },
     lock(item) {
       // Modify custom properties
-      item[0].hasControls = false;
+      item.hasControls = false;
       // Modify default properties
       lockAttrs.forEach((key) => {
-        item[0][key] = true;
+        item[key] = true;
       });
-
-      item[0].selectable = false;
-
+      item.selectable = false;
+      this.canvas.c.renderAll();
     },
     unLock(item) {
       // Modify custom properties
-      item[0].hasControls = true;
+      item.hasControls = true;
       // Modify default properties
       lockAttrs.forEach((key) => {
-        item[0][key] = false;
+        item[key] = false;
       });
-      item[0].selectable = true;
-
-      this.isLock = false;
+      item.selectable = true;
+      this.canvas.c.renderAll();
     },
     clone(id) {
       var item = this.list.filter((arg)=>{
@@ -221,14 +203,33 @@ export default defineComponent({
       }
     },
     getList() {
-      // Do not change the original array Inversion
-      // console.log(this.canvas.c.getObjects())
-      // console.log(this.canvas.c.getObjects())
       this.list = [...this.canvas.c.getObjects()]
         .reverse()
         .map((item) => {
-          item.view = true;
-          item.lock = false;
+          if(item.opacity == 0){
+            item.view = false;
+          }else{
+            item.view = true;
+          }
+          if(item.hasControls == false && item.selectable == false){
+            item.lock = true;
+          }else{
+            item.lock = false;
+          }
+          switch(item.type){
+            case "i-text":
+              item.name = item.text.slice(0,10)+"...";
+              break;
+            case "image":
+              item.name = "image"+item.id.slice(0,5)
+              break;
+            case "rect" :
+              item.name = "rect"+item.id.slice(0,5)
+              break;
+            case "circle" :
+              item.name = "circle"+item.id.slice(0,5)
+              break;
+          }      
           return item;
         })
         .filter((item) => {

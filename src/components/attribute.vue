@@ -43,7 +43,7 @@
           <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
         </Tooltip>
         <Dropdown>
-            <Button icon="ios-more" style="border: none;" size="sm">
+            <Button icon="ios-more" type="text">
             </Button>
             <template #list>
                 <DropdownMenu>
@@ -192,7 +192,7 @@
           Fill
         </div>                
         <div class="col col-lg-2">
-          <Color :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"  style="width:80px"></Color>
+          <Color :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"></Color>
         </div>
       </div>
     <div class="row mb-3" style="display: flex; align-items: center;">
@@ -204,7 +204,6 @@
           v-model="baseAttr.stroke"
           @on-change="(value) => changeCommon('stroke', value)"
           alpha
-          style="width:80px"
         />
       </div>                
       <div class="col col-lg-2">
@@ -360,7 +359,6 @@ import dele from "./del.vue";
 import clone from "./clone.vue"
 import flip from "./flip.vue"
 import align from "./align.vue"
-// import EventHandle from '@/utils/eventHandler';
 import $ from "jquery";
 const lockAttrs = [
   'lockMovementX',
@@ -533,11 +531,6 @@ export default {
   },
 
   created() {
-    this.event.on('selectOne', (items) => {
-      this.isLock = !items[0].hasControls;
-      this.mSelectActive = items[0];
-    });
-
     this.event.on('selectCancel', () => {
       this.baseAttr.fill = '';
       this.$forceUpdate();
@@ -548,7 +541,6 @@ export default {
       const activeObject = this.canvas.c.getActiveObjects()[0];
       if (activeObject) {
         // base
-        console.log(activeObject);
         this.baseAttr.round = activeObject.get('rx');
         this.baseAttr.height = activeObject.get('height');
         this.baseAttr.width = activeObject.get('width');
@@ -591,16 +583,13 @@ export default {
   },
   methods: {
     observe(){
-      console.log("asdf")
     },
     mainPanel(){
       this.canvas.c.discardActiveObject();
       this.canvas.c.requestRenderAll();
     },
     changeAddTab(value){
-      console.log(value)
       this.changeString(this.fontAttr.string+value);
-      console.log(this.fontAttr.string)
     },
     doView(isView){
       isView ? this.view() : this.unView();
@@ -620,7 +609,7 @@ export default {
     },
     lock() {
       // Modify custom properties
-      this.mSelectActived.hasControls = false;
+      this.mSelectActive.hasControls = false;
       // Moify default properties
       lockAttrs.forEach((key) => {
         this.mSelectActive[key] = true;
@@ -708,8 +697,13 @@ export default {
       }      
       // Transparency special conversion
       if (key === 'opacity') {
-        console.log(activeObject)
-        activeObject && activeObject.set(key, Number(evt.target.value) / 100);
+        
+        if(typeof(evt) == "number"){
+          evt = Number(evt)
+        }else{
+          evt = Number(evt.target.value)
+        }
+        activeObject && activeObject.set(key, evt / 100);
         this.canvas.c.renderAll();
         return;
       }
@@ -723,7 +717,6 @@ export default {
         activeObject.set("ry", Number(evt.target.value))
         activeObject.set("rx", Number(evt.target.value))
         this.canvas.c.renderAll();
-        console.log("round")
         return;
       }
       activeObject && activeObject.set(key, Number(evt.target.value));
@@ -732,7 +725,6 @@ export default {
     // border settings
     borderSet(key) {
       const activeObject = this.canvas.c.getActiveObjects()[0];
-      console.log(key, activeObject);
       if (activeObject) {
         const stroke = this.strokeDashList.find((item) => item.label === key);
         activeObject.set(stroke.value);

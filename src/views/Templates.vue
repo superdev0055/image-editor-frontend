@@ -22,7 +22,6 @@
       </Grid>   
     </div>
   </div>
-
 </template>
 <script>
 // import element
@@ -57,7 +56,7 @@ export default {
       height: 900,
     });
 
-    axios.get('http://localhost:3000/feed-image')
+    axios.get('https://image-editor-fabric-server.vercel.app/feed-image')
       .then(resp => {
           var data = resp.data['feed-image'];
           data.forEach((e ,i)=> {

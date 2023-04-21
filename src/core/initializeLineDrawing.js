@@ -9,7 +9,6 @@ function initializeLineDrawing(canvas, defaultPosition) {
   let lineToDraw;
   let pointer;
   let pointerPoints;
-  console.log(canvas);
   canvas.on('mouse:down', (o) => {
     if (!isDrawingLineMode) return;
 

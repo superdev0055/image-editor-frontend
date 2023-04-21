@@ -61,7 +61,6 @@ export default {
           top: 100,
         });
         // set zoom
-        console.log(imgInstance);
         this.canvas.c.add(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
         this.canvas.c.renderAll();
@@ -72,7 +71,6 @@ export default {
     },    
     // insert image file
     insertImgFile(file,type) {
-        console.log("file")
       const imgEl = document.createElement('img');
       imgEl.src = file || this.imgFile;
       // insert page
@@ -105,12 +103,11 @@ export default {
                     const { left, top, width, height } = workspace;                  
                     workspace.set('selectable', false);
                     workspace.set('hasControls', false);
+                    this.insertEmptyFile(emptyData);
                     this.canvas.c.requestRenderAll();
                     this.canvas.c.renderAll();
                 });
               });          
-        
-        
         })
         .catch(error => {
             console.log(error);

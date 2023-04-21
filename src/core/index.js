@@ -39,7 +39,6 @@ class Editor extends EventEmitter {
   }
   clone(item) {
     const activeObject = this.canvas.getActiveObject();
-    console.log(activeObject)
     if (activeObject.length === 0) return;
     activeObject.clone((cloned) => {
       this.canvas.discardActiveObject();
@@ -74,7 +73,6 @@ class Editor extends EventEmitter {
     const activeObj = this.canvas.getActiveObject();
     const activegroup = activeObj.toGroup();
     const objectsInGroup = activegroup.getObjects();
-    console.log(objectsInGroup)
     activegroup.clone((newgroup) => {
       newgroup.set('id', uuid());
       this.canvas.remove(activegroup);
@@ -86,16 +84,24 @@ class Editor extends EventEmitter {
     });
   }
 
-  up(list) {
-    console.log("ddddddd")
-    list.bringForward();
-    this.canvas.renderAll();
-    this._workspaceSendToBack();   
+  up(list = '') {
+    if(list != ''){
+      list.bringForward();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();   
+    }else{
+      const actives = this.canvas.getActiveObjects();
+      if (actives && actives.length === 1) {
+        const activeObject = this.canvas.getActiveObjects()[0];
+        activeObject && activeObject.bringForward();
+        this.canvas.renderAll();
+        this._workspaceSendToBack();
+      }   
+    }
   }
 
   upTop() {
     const actives = this.canvas.getActiveObjects();
-    console.log(actives)
     if (actives && actives.length === 1) {
       const activeObject = this.canvas.getActiveObjects()[0];
       activeObject && activeObject.bringToFront();
@@ -104,10 +110,18 @@ class Editor extends EventEmitter {
     }
   }
 
-  down(list) {
-    list.sendBackwards();
-    this.canvas.renderAll();
-    this._workspaceSendToBack(); 
+  down(list = '') {
+    if(list != ''){
+      list.sendBackwards();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();
+    }else{
+      const activeObject = this.canvas.getActiveObjects()[0];
+      activeObject && activeObject.sendBackwards();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();      
+    }
+ 
   }
 
   downTop() {

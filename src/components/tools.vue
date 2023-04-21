@@ -28,7 +28,6 @@ export default {
   },
   created() {
     // line drawing
-    console.log(this.canvas)
     this.drawHandler = initializeLineDrawing(this.canvas.c, defaultPosition);
 
     this.canvas.c.on('drop', (opt) => {
