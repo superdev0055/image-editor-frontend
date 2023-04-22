@@ -150,6 +150,24 @@
             </Input>
           </div>
         </div>
+        <!-- emptypattern part -->
+        <div class="row mb-3" style="display: flex; align-items: center;">
+          <div class="col col-lg-10">
+            Remove white background
+          </div>                
+          <div class="col col-lg-2">
+            <Switch size="small" v-model="removeBgState" @on-change="nonShowBg"/>
+          </div>
+        </div>          
+        <div class="row mb-3" style="display: flex; align-items: center;">
+          <div class="col col-lg-10">
+            Trim image
+          </div>                
+          <div class="col col-lg-2">
+            <Switch size="small" v-model="trimBgState" @on-change="trimBg"/>
+          </div>
+        </div>          
+
         <div class="row mb-3" style="display: flex; align-items: center;">
           <div class="col col-lg-8">
             Fit mode
@@ -170,7 +188,7 @@
 
 
 
-      </div>
+        </div>
       <div v-show="shapeType.includes(mSelectOneType)" style="margin-left:15px">
         <div class="row mb-3" style="display: flex; align-items: center;">
           <div class="col col-lg-9">
@@ -439,6 +457,7 @@ import dele from "./del.vue";
 import clone from "./clone.vue"
 import flip from "./flip.vue"
 import align from "./align.vue"
+import {removeBg,trimBg,emptyData} from '@/utils/imgConstant' 
 import $ from "jquery";
 const lockAttrs = [
   'lockMovementX',
@@ -477,10 +496,11 @@ export default {
       borderState:false,
       fillState:false,
       //layer restriction
-
-
       isLock: false,
       isView:true,
+      emptyPatternState:"showBg", //emptyPatternState includes 'showBg' ,'trimBg',"nonShowBg" 
+      removeBgState:false,
+      trimBgState:false,  
       // common element
       baseType: [
         'text',
@@ -624,7 +644,6 @@ export default {
         '<svg t="1650441512015" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3704" width="18" height="18"><path d="M313.6 198.4h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533333z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z m115.2 170.666666h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533334z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z" p-id="3705"></path></svg>',
         '<svg t="1650441519862" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3854" width="18" height="18"><path d="M454.4 283.733333v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h341.333334c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-341.333334c-8.533333 0-14.933333-2.133333-19.2-8.533334-4.266667-4.266667-8.533333-10.666667-8.533333-19.2z m-226.133333 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h569.6c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333H256c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533333-19.2z m113.066666 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533334-19.2 6.4-6.4 12.8-8.533333 19.2-8.533334h454.4c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-454.4c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533334-19.2z m-170.666666 170.666666v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-4.266667-8.533333-10.666667-8.533333-19.2z" p-id="3855"></path></svg>',
       ],
-      selectMode:false
     };
   },
 
@@ -638,6 +657,13 @@ export default {
       this.mSelectActive = items[0];      
       const activeObject = this.canvas.c.getActiveObjects()[0];
       if (activeObject) {
+        this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
+        if(this.emptyPatternState == "removeBg"){
+          this.removeBgState = true; 
+        }else if(this.emptyPatternState == "trimBg"){
+          this.trimBgState = true
+        }
+
         // base
         this.baseAttr.round = activeObject.get('rx');
         this.baseAttr.height = activeObject.get('height');
@@ -675,11 +701,32 @@ export default {
   
   },
   mounted(){
-
   },
   computed:{
   },
   methods: {
+
+    //emptyImage
+    nonShowBg(evt){
+      this.removeBgState = evt
+      this.checkEmpty();
+    },
+    trimBg(evt){
+      this.trimBgState = evt
+      this.checkEmpty();
+    },   
+    checkEmpty(){
+      if(this.trimBgState == true){
+        this.emptyPatternState = "trimBg"
+        return;
+      }
+      if(this.removeBgState == true){
+        this.emptyPatternState = "removeBg"
+        return;
+      }
+      this.emptyPatternState = "showBg"
+    },
+    //emptyImage
     //layer restriction
     startDate(evt){
       console.log(evt)
@@ -885,7 +932,65 @@ export default {
       activeObject && activeObject.set(key, nValue);
       this.canvas.c.renderAll();
     },
+    insertEmpty(file){
+      var originLeft = this.canvas.c.getActiveObjects()[0].left;
+      var originTop = this.canvas.c.getActiveObjects()[0].top;
+      var originHeight = this.canvas.c.getActiveObjects()[0].height;
+      var originWidth = this.canvas.c.getActiveObjects()[0].width;
+
+      const imgEl = document.createElement('img');
+      imgEl.src = file
+      document.body.appendChild(imgEl);
+      imgEl.onload = () => {
+        if(originWidth > imgEl.width && originHeight>imgEl.height){
+          var left = originLeft + (originWidth-imgEl.width)/2  ;
+          var top = originTop + (originHeight-imgEl.height)/2;
+        }else{
+          console.log(originLeft,originWidth+imgEl.width)
+          var left = originLeft + (originWidth/2)-(imgEl.width/2);
+          var top = originTop + (originHeight/2)-(imgEl.height/2);
+        }
+        // Create a picture object
+        const imgInstance = new this.fabric.Image(imgEl, {
+          id: this.emptyPatternState,
+          name: 'picture1',
+          left: left,
+          top: top,
+        });
+        imgInstance.scale(0.7);
+
+        // set zoom
+        this.canvas.c.remove(this.canvas.c.getActiveObjects()[0])
+        this.canvas.c.add(imgInstance);
+        this.canvas.c.setActiveObject(imgInstance);
+        // this.canvas.c.renderAll();
+        // // Remove image elements from the page
+        imgEl.remove();
+      }      
+    }
   },
+  watch:{
+    emptyPatternState(){
+      var id = this.canvas.c.getActiveObjects()[0].id;
+      console.log(id);
+      if(id  == "removeBg" || id == "trimBg" || id=="showBg"){
+        if(this.emptyPatternState == "removeBg"){
+          console.log("remove")
+          this.insertEmpty(removeBg);
+          return true;
+        }else if(this.emptyPatternState == "trimBg"){
+          console.log("trim")
+          this.insertEmpty(trimBg);
+          return true;
+        }else{
+          console.log("showBg");
+          this.insertEmpty(emptyData);
+          return true;
+        }
+      }
+
+    }
+  }
 };
 </script>
 

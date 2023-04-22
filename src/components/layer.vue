@@ -1,5 +1,5 @@
 <template>
-    <draggable class="dragArea list-group w-full" :list="list" @change="log">
+    <draggable class="dragArea list-group w-full" :list="list" @change="log" animation="100"  >
       <div
           class="list-styles"
           v-for="element in list"

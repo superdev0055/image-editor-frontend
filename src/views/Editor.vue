@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <header class="header text-center">
-
       <Button icon="md-arrow-round-back" class="left-btn" @click="selectM()"></Button>
       <img src="@/assets/img/person.png" class="img-person" />
       <div style="">

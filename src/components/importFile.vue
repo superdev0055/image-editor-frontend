@@ -6,7 +6,7 @@
 import { getImgStr, selectFiles,downFontByJSON } from '@/utils/utils';
 import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
-import {emptyData} from '@/utils/imgConstant' 
+import {emptyData,bgImg} from '@/utils/imgConstant' 
 import axios from "axios";
 export default {
   name: 'ToolBar',
@@ -49,27 +49,27 @@ export default {
     // insert empty file
     insertEmptyFile(file,type) {
        setTimeout(() => {
-      const imgEl = document.createElement('img');
-      imgEl.src = file || this.imgFile;
-      document.body.appendChild(imgEl);
-      imgEl.onload = () => {
-        // Create a picture object
-        const imgInstance = new this.fabric.Image(imgEl, {
-          id: "empty",
-          name: 'picture1',
-          left: -250,
-          top: -50,
-        });
-        imgInstance.scale(0.7);
+          const imgEl = document.createElement('img');
+          imgEl.src = file || this.imgFile;
+          document.body.appendChild(imgEl);
+          imgEl.onload = () => {
+            // Create a picture object
+            const imgInstance = new this.fabric.Image(imgEl, {
+              id: "showBg",
+              name: 'picture1',
+              left: -250,
+              top: -50,
+            });
+            imgInstance.scale(0.7);
 
-        // set zoom
-        this.canvas.c.add(imgInstance);
-        this.canvas.c.setActiveObject(imgInstance);
-        this.canvas.c.renderAll();
-        // // Remove image elements from the page
-        imgEl.remove();
-      };          
-      }, 200);
+            // set zoom
+            this.canvas.c.add(imgInstance);
+            this.canvas.c.setActiveObject(imgInstance);
+            this.canvas.c.renderAll();
+            // // Remove image elements from the page
+            imgEl.remove();
+        };          
+      }, 5);
 
     },    
     

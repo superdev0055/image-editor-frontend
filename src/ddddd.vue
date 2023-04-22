@@ -61,7 +61,6 @@ export default {
     axios.get('http://localhost:3000/feed-image')
       .then(resp => {
           var data = resp.data['feed-image'];
-          console.log(data)
           data.forEach((e ,i)=> {
           var jsonFile = JSON.stringify(data[i]);
           downFontByJSON(jsonFile).then(() => {
@@ -89,8 +88,6 @@ export default {
                   document.getElementById("image"+i).src = dataUrl
               });
             });          
-
-            // console.log(`${e.first_name}, ${e.last_name}, ${e.email}`);
           });          
 
       })

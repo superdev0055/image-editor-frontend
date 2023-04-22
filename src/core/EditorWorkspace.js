@@ -10,7 +10,7 @@
  */
 
 import { fabric } from 'fabric';
-
+import {bgImg} from '@/utils/imgConstant'
 class EditorWorkspace {
   constructor(canvas, option) {
     this.canvas = canvas;
@@ -36,56 +36,56 @@ class EditorWorkspace {
 
   //Initialize the canvas
   _initWorkspace() {
-    const { width, height } = this.option;
-    fabric.Image.fromURL('https://previews.123rf.com/images/kolibrico/kolibrico2002/kolibrico200200005/139369246-vector-empty-transparent-background-vector-transparency-grid-seamless-pattern.jpg', (workspace) => {
-      var shadow = new fabric.Shadow({
-        color: "gray",
-        blur: 50,
-        offsetX: 0,
-        offsetY: 0,
-      });      
-      workspace.scale(0.6);
-      workspace.set({
-        left: 0,
-        id: 'workspace',
-        top: 0,
-        hoverCursor: 'selection',
-        shadow:shadow,
-      });
-      workspace.set('selectable', false);
-      workspace.set('hasControls', false);
-      workspace.hoverCursor = 'selection';
-
-      this.canvas.centerObject(workspace);
-      this.canvas.add(workspace);
-      this.canvas.renderAll();
-      this.workspace = workspace;
-      this.auto();
-    });    
     // const { width, height } = this.option;
-    // var shadow = new fabric.Shadow({
-    //   color: "gray",
-    //   blur: 50,
-    //   offsetX: 0,
-    //   offsetY: 0,
-    // });      
-    // const workspace = new fabric.Rect({
-    //   fill: '#ffffff',
-    //   width,
-    //   height,
-    //   id: 'workspace',
-    //   shadow:shadow
-    // });
+    // var workspace = new fabric.Image();
+    // workspace.src = bgImg
+    //   var shadow = new fabric.Shadow({
+    //     color: "gray",
+    //     blur: 50,
+    //     offsetX: 0,
+    //     offsetY: 0,
+    //   });      
+    //   workspace.scale(0.6);
+    //   workspace.set({
+    //     left: 0,
+    //     id: 'workspace',
+    //     top: 0,
+    //     hoverCursor: 'selection',
+    //     shadow:shadow,
+    //   });
+    //   workspace.set('selectable', false);
+    //   workspace.set('hasControls', false);
+    //   workspace.hoverCursor = 'selection';
 
-    // workspace.set('selectable', false);
-    // workspace.set('hasControls', false);
-    // workspace.hoverCursor = 'selection';
-    // this.canvas.add(workspace);
-    // this.canvas.centerObject(workspace);
-    // this.canvas.renderAll();
+    //   this.canvas.centerObject(workspace);
+    //   this.canvas.add(workspace);
+    //   this.canvas.renderAll();
+    //   this.workspace = workspace;
+    //   this.auto();
+    const { width, height } = this.option;
+    var shadow = new fabric.Shadow({
+      color: "gray",
+      blur: 50,
+      offsetX: 0,
+      offsetY: 0,
+    });      
+    const workspace = new fabric.Rect({
+      fill: '#ffffff',
+      width,
+      height,
+      id: 'workspace',
+      shadow:shadow
+    });
 
-    // this.workspace = workspace;
-    // this.auto();
+    workspace.set('selectable', false);
+    workspace.set('hasControls', false);
+    workspace.hoverCursor = 'selection';
+    this.canvas.add(workspace);
+    this.canvas.centerObject(workspace);
+    this.canvas.renderAll();
+
+    this.workspace = workspace;
+    this.auto();
   }
 
   // Initialize the listener

@@ -1,17 +1,9 @@
 <template>
   <div class="save-box">
-
     <Dropdown style="margin-left: 10px" @on-click="saveWith">
       <Button type="primary" size="small" style="font-size:11px" @click="saveJson">
         {{saveType}}
       </Button>
-      <!-- <template #list>
-        <DropdownMenu>
-          <DropdownItem name="clipboard">{{ $t('copy_to_clipboard') }}</DropdownItem>
-          <DropdownItem name="saveImg">{{ $t('save_as_picture') }}</DropdownItem>
-          <DropdownItem name="saveJson" divided>{{ $t('save_as_json') }}</DropdownItem>
-        </DropdownMenu>
-      </template> -->
     </Dropdown>
   </div>
 </template>
