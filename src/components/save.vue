@@ -2,16 +2,16 @@
   <div class="save-box">
 
     <Dropdown style="margin-left: 10px" @on-click="saveWith">
-      <Button type="primary" size="small" style="font-size:11px">
-        Save Image 
+      <Button type="primary" size="small" style="font-size:11px" @click="saveJson">
+        {{saveType}}
       </Button>
-      <template #list>
+      <!-- <template #list>
         <DropdownMenu>
           <DropdownItem name="clipboard">{{ $t('copy_to_clipboard') }}</DropdownItem>
           <DropdownItem name="saveImg">{{ $t('save_as_picture') }}</DropdownItem>
           <DropdownItem name="saveJson" divided>{{ $t('save_as_json') }}</DropdownItem>
         </DropdownMenu>
-      </template>
+      </template> -->
     </Dropdown>
   </div>
 </template>
@@ -19,23 +19,53 @@
 <script>
 import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
-
+import axios from "axios";
 export default {
   name: 'saveBar',
+  inject:["path","param_id"],
   mixins: [select],
   data() {
-    return {};
+    return {
+      saveType:"Save Image"
+    };
   },
+
+  mounted(){
+    if(this.path.slice(8) == "create"){
+      this.saveType = "Save Image"
+    }else{
+      this.saveType = "Edit Image"
+    }
+    
+  },  
   methods: {
     saveWith(type) {
       this[type]();
     },
     saveJson() {
-      const dataUrl = this.canvas.editor.getJson();
-      const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
-        JSON.stringify(dataUrl, null, '\t')
-      )}`;
-      this.downFile(fileStr, 'json');
+      if(this.saveType == "Save Image"){
+        const dataUrl = this.canvas.editor.getJson();
+        const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+          JSON.stringify(dataUrl, null, '\t')
+        )}`;
+        axios.post("http://localhost:3000/feed-image/create",{data:dataUrl}).then((res)=>{
+          alert(res.data)
+        })
+        console.log(fileStr);
+        // this.downFile(fileStr, 'json');
+      }else{
+        console.log("edit")
+
+        const dataUrl = this.canvas.editor.getJson();
+        const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+          JSON.stringify(dataUrl, null, '\t')
+        )}`;
+        axios.post("http://localhost:3000/feed-image/edit/"+this.param_id,{data:dataUrl}).then((res)=>{
+          alert(res.data)
+        })
+        // this.downFile(fileStr, 'json');        
+      }
+
     },
     saveSvg() {
       const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');

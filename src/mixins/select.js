@@ -19,7 +19,7 @@ export default {
     });
 
     this.event.on('selectMultiple', (e) => {
-      this.mSelectMode = 'multiple';
+      this.mSelectMode = 'one';
       this.mSelectId = '';
       this.mSelectIds = e.map((item) => item.id);
     });

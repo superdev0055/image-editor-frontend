@@ -1,8 +1,6 @@
 
 import EventEmitter from 'events';
-// import { fabric } from 'fabric';
 import { v4 as uuid } from 'uuid';
-
 // alignment guidelines
 import initAligningGuidelines from '@/core/initAligningGuidelines';
 import initControlsRotate from '@/core/initControlsRotate';
@@ -37,8 +35,11 @@ class Editor extends EventEmitter {
     this.canvas.requestRenderAll();
     this.canvas.discardActiveObject();            
   }
-  clone(item) {
+  clone() {
     const activeObject = this.canvas.getActiveObject();
+    if(activeObject.id == "empty"){
+      return true;
+    }
     if (activeObject.length === 0) return;
     activeObject.clone((cloned) => {
       this.canvas.discardActiveObject();

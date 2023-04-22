@@ -54,8 +54,6 @@ export default {
     methods: {
         getFeedImage(){
           this.modal = true;
-          // console.dir(document.getElementById("feed-images"))
-          // console.dir()
           axios.get('http://localhost:3000/feed-image/feed-image')
             .then(resp => {
                 var data = resp.data;

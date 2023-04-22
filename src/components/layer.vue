@@ -6,10 +6,10 @@
           :key="element.id"
       >
         <div class="layerBox row">
-          <div class="col-md-8" style="margin-top:5px">
+          <div class="col-md-8" style="margin-top:5px;">
             <Icon type="md-apps" style="margin-right:15px;"/>
-            <Checkbox/>
-            <label>{{element.name}}</label>
+            <Checkbox v-model="element.select" @change="changeSelect(element)"/>
+            <label style="cursor: pointer;" @click="selectElem(element)">{{element.name}}</label>
           </div>
 
           <div class="col-md-4">
@@ -101,6 +101,19 @@ export default defineComponent({
     }, 500);
   },
   methods: {
+    changeSelect(item){
+      var selectElem = this.list.filter(item=>{
+        if(item.select == true){
+          this.canvas.c.remove(item);
+          return item;
+        }
+      });
+      var group = new fabric.Group(selectElem);
+    },
+    selectElem(item){
+      this.canvas.c.setActiveObject(item);
+      this.canvas.c.requestRenderAll();      
+    },    
     checkLock(){
       return true;
     },
@@ -149,6 +162,9 @@ export default defineComponent({
       this.canvas.c.renderAll();
     },
     clone(id) {
+      if(id == "empty"){
+        return true;
+      }
       var item = this.list.filter((arg)=>{
         return arg.id == id;
       });      
@@ -206,6 +222,7 @@ export default defineComponent({
       this.list = [...this.canvas.c.getObjects()]
         .reverse()
         .map((item) => {
+          item.select = false;
           if(item.opacity == 0){
             item.view = false;
           }else{

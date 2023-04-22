@@ -1,350 +1,430 @@
 <template>
   <div v-if="mSelectMode === 'one'" style="font-size:12px" id="attribute">
     <!-- general properties -->
-    <!-- Right Head -->
-    <div style="margin-left:15px"> 
-      <div class="flex-item right-top mt-3" v-if="textType.includes(mSelectOneType)">
-        <Button icon="md-arrow-round-back" class="border-btn" @click="mainPanel()"></Button>
-        <h2 style="font-family: initial;margin-left:10px">T</h2>
-        <Input style="margin-left:20px;width:75%">
-
-        </Input>
+    <div style="">
+      <!-- Right Head -->
+      <div style="margin-left:15px"> 
+        <div class="flex-item right-top mt-3" v-if="textType.includes(mSelectOneType)">
+          <Button icon="md-arrow-round-back" class="border-btn" @click="mainPanel()"></Button>
+          <h2 style="font-family: initial;margin-left:10px">T</h2>
+          <Input style="margin-left:20px;width:75%">
+          </Input>
+        </div>
+        
+        <div class="flex-item right-top mt-3" v-if="imgType.includes(mSelectOneType)">
+          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
+          <h2 style="margin-left:10px"><Icon type="ios-image" /></h2>
+          <Input style="margin-left:20px;width:75%" ></Input>
+        </div>      
+        <div class="flex-item right-top mt-3" v-if="rectType.includes(mSelectOneType)">
+          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
+          <h2 style="margin-left:10px"><Icon type="ios-square-outline" /></h2>
+          <Input style="margin-left:20px;width:75%" ></Input>
+        </div> 
+        <div class="flex-item right-top mt-3" v-if="circleType.includes(mSelectOneType)">
+          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
+          <h2 style="margin-left:10px"><Icon type="ios-radio-button-off" /></h2>
+          <Input style="margin-left:20px;width:75%" ></Input>
+        </div>     
       </div>
-      
-      <div class="flex-item right-top mt-3" v-if="imgType.includes(mSelectOneType)">
-        <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-        <h2 style="margin-left:10px"><Icon type="ios-image" /></h2>
-        <Input style="margin-left:20px;width:75%" ></Input>
-      </div>      
-      <div class="flex-item right-top mt-3" v-if="rectType.includes(mSelectOneType)">
-        <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-        <h2 style="margin-left:10px"><Icon type="ios-square-outline" /></h2>
-        <Input style="margin-left:20px;width:75%" ></Input>
-      </div> 
-      <div class="flex-item right-top mt-3" v-if="circleType.includes(mSelectOneType)">
-        <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-        <h2 style="margin-left:10px"><Icon type="ios-radio-button-off" /></h2>
-        <Input style="margin-left:20px;width:75%" ></Input>
-      </div>     
-    </div>
-    <!-- Right Head -->
+      <!-- Right Head -->
 
-    <!-- layer setting -->
-    <div class="mt-2 customborder"></div>
-    <div class="mt-2 row" style="">
-      <div class="col-md-4"><layer1></layer1></div>
-      <div class="col-md-4" style="margin-left:150px">
-        <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
-          <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-          <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
-        </Tooltip>
-        <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
-          <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
-          <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
-        </Tooltip>
-        <Dropdown>
-            <Button icon="ios-more" type="text">
-            </Button>
-            <template #list>
-                <DropdownMenu>
-                  <clone></clone>
-                  <dele></dele>
-                </DropdownMenu>
-            </template>
-        </Dropdown>
+      <!-- layer setting -->
+      <div class="mt-2 customborder"></div>
+      <div class="mt-2" style="height: 40px;margin-right:40px">
+        <div style="float:left"><layer1></layer1></div>
+        <div style="float:right">
+          <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
+            <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
+            <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
+          </Tooltip>
+          <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
+            <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
+            <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
+          </Tooltip>
+          <Dropdown placement="bottom-end">
+              <Button icon="ios-more" type="text">
+              </Button>
+              <template #list>
+                  <DropdownMenu>
+                    <clone></clone>
+                    <dele></dele>
+                  </DropdownMenu>
+              </template>
+          </Dropdown>
+        </div>
       </div>
+      <!-- layer setting -->    
     </div>
-    <!-- layer setting -->    
-    <div class="customborder"></div>
-    <div v-show="baseType.includes(mSelectOneType)">
-      <!-- control part -->
-      <div class="control" style="margin-left:15px">
-        <div class="row mt-3 mb-3" style="align-items: center;">
-          <div class="col col-lg-7">
-            Size
+    <div class="setBox">
+      <div class="customborder"></div>
+      <div v-show="baseType.includes(mSelectOneType)">
+        <!-- control part -->
+        <div class="control" style="margin-left:15px">
+          <div class="row mt-3 mb-3" style="align-items: center;">
+            <div class="col col-lg-7">
+              Size
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <Input
+                  v-model="baseAttr.width"
+                  @on-change="(value) => changeCommon('width', value)"
+                  show-input
+                  size="small"
+                  type="number"
+                  style="width: 80px"
+                >
+                <template #append>
+                  <span>W</span>
+                </template>              
+                </Input>
+              </div>
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <Input
+                  type="number"
+                  v-model="baseAttr.height"
+                  @on-change="(value) => changeCommon('height', value)"
+                  size="small"
+                  show-input
+                  style="width: 80px"
+                >
+                  <template #append>
+                    <span>H</span>
+                  </template>                   
+                </Input>
+              </div>
+            </div>
           </div>
+          <div class="row mb-3" style="align-items: center;">
+            <div class="col col-lg-7">
+              Position
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <Input
+                  v-model="baseAttr.left"
+                  @on-change="(value) => changeCommon('left', value)"
+                  size="small"
+                  show-input
+                  type="number"
+                  style="width: 80px"
+                >
+                  <template #append>
+                    <span>X</span>
+                  </template>                 
+                </Input>
+              </div>
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <Input
+                  v-model="baseAttr.top"
+                  @on-change="(value) => changeCommon('top', value)"
+                  size="small"
+                  show-input
+                  type="number"
+                  style="width: 80px"
+                >
+                  <template #append>
+                    <span>Y</span>
+                  </template>                 
+                </Input>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- control part -->
+      </div>
+      <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
+        <div class="row mb-3" style="display: flex; align-items: center;">
+          <flip></flip>
           <div class="col col-lg-2">
-            <div class="content">
-              <Input
-                v-model="baseAttr.width"
-                @on-change="(value) => changeCommon('width', value)"
-                show-input
-                type="number"
-                style="width: 80px"
-              >
+            <Input type="number" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" style="width:80px">
               <template #append>
-                <span>W</span>
-              </template>              
-              </Input>
-            </div>
-          </div>
-          <div class="col col-lg-2">
-            <div class="content">
-              <Input
-                type="number"
-                v-model="baseAttr.height"
-                @on-change="(value) => changeCommon('height', value)"
-                show-input
-                style="width: 80px"
-              >
-                <template #append>
-                  <span>H</span>
-                </template>                   
-              </Input>
-            </div>
+                <span>o</span>
+              </template> 
+            </Input>
           </div>
         </div>
-        <div class="row mb-3" style="align-items: center;">
-          <div class="col col-lg-7">
-            Position
+        <div class="row mb-3" style="display: flex; align-items: center;">
+          <div class="col col-lg-8">
+            Fit mode
+          </div>                
+          <div class="col col-lg-3">
+            <Button icon="ios-expand"></Button>
+            <Button icon="md-expand" style="margin-left:20px"></Button>
           </div>
-          <div class="col col-lg-2">
-            <div class="content">
-              <Input
-                v-model="baseAttr.left"
-                @on-change="(value) => changeCommon('left', value)"
-                show-input
-                type="number"
-                style="width: 80px"
-              >
-                <template #append>
-                  <span>X</span>
-                </template>                 
-              </Input>
-            </div>
+        </div>       
+        <div class="row mb-3" style="display: flex; align-items: center;">
+          <div class="col col-lg-6">
+            Alignment
+          </div>                
+          <div class="col col-lg-6">
+            <align></align>
           </div>
-          <div class="col col-lg-2">
-            <div class="content">
-              <Input
-                v-model="baseAttr.top"
-                @on-change="(value) => changeCommon('top', value)"
-                show-input
-                type="number"
-                style="width: 80px"
-              >
-                <template #append>
-                  <span>Y</span>
-                </template>                 
-              </Input>
-            </div>
-          </div>
-        </div>
+        </div>      
+
+
 
       </div>
-      <!-- control part -->
-    </div>
-    <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
-      <div class="row mb-3" style="display: flex; align-items: center;">
-        <flip></flip>
-        <div class="col col-lg-2">
-          <Input type="number" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" style="width:80px">
+      <div v-show="shapeType.includes(mSelectOneType)" style="margin-left:15px">
+        <div class="row mb-3" style="display: flex; align-items: center;">
+          <div class="col col-lg-9">
+            Rotate
+          </div>                
+          <div class="col col-lg-2">
+            <Input type="number" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" style="width:80px">
+              <template #append>
+                <span>o</span>
+              </template> 
+            </Input>
+          </div>
+        </div>      
+        <div v-show="rectType.includes(mSelectOneType)" class="row mb-3" style="display: flex; align-items: center;">
+          <div class="col col-lg-9">
+            Round
+          </div>                
+          <div class="col col-lg-2">
+            <Input type="number" v-model="baseAttr.round" :max="360" @on-change="(value)=>changeCommon('round', value)" style="width:80px">
+              <template #append>
+                <span>o</span>
+              </template> 
+            </Input>
+          </div>
+        </div>
+        <!-- shape fill -->
+        <div>
+        <div class="customborder mt-2"></div>
+          <div class="row mb-3 mt-3" style="display: flex; align-items: center;">
+            <div class="col col-lg-10">
+              Fill
+            </div>                
+            <div class="col col-lg-2">
+              <Switch size="small" @on-change="showFill" true-color="#13ce66"/>
+            </div>   
+          </div>
+          <div v-if="fillState">
+            <div class="row mb-3" style="display: flex; align-items: center;">
+              <div class="col col-lg-6">
+                Color
+              </div>                
+              <div class="col col-lg-5">
+                <Color :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)" style="width:100%"></Color>
+              </div>
+            </div>   
+          </div>             
+        </div>
+        <!-- shape fill -->        
+        <!-- shape border -->
+        <div class="customborder mt-2"></div>
+        <div>
+          <div class="row mb-3 mt-3" style="display: flex; align-items: center;">
+            <div class="col col-lg-10">
+              Border
+            </div>                
+            <div class="col col-lg-2">
+              <Switch size="small" @on-change="showBorder" true-color="#13ce66"/>
+            </div>   
+          </div>
+          <div v-if="borderState">
+            <div class="row mb-3" style="display: flex; align-items: center;">
+              <div class="col col-lg-6">
+                Color
+              </div>                
+              <div class="col col-lg-5">
+                <ColorPicker
+                  style="width:100%"
+                  v-model="baseAttr.stroke"
+                  @on-change="(value) => changeCommon('stroke', value)"
+                  alpha
+                />
+              </div>
+            </div>   
+            <div class="row mb-3" style="display: flex; align-items: center;">
+              <div class="col col-lg-9">
+                Line thickness
+              </div>                
+              <div class="col col-lg-2">
+                <Input
+                  type="number"
+                  v-model="baseAttr.strokeWidth"
+                  :max="360"
+                  @on-change="(value) => changeCommon('strokeWidth', value)"
+                  show-input
+                  style="width:80px"
+                >
+                  <template #append>
+                    <span>px</span>
+                  </template>             
+                </Input>   
+              </div>
+            </div> 
+          </div>             
+        </div>
+        <!-- shape border -->
+
+      </div>
+                  
+      <div v-show="textType.includes(mSelectOneType)" class="mt-4">
+        <div class="customborder mt-2"></div>
+        <div class="text-part" style="margin-left:15px"> 
+          <label>Text</label>
+          <Input v-model="fontAttr.string" @on-change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
             <template #append>
-              <span>o</span>
-            </template> 
-          </Input>
+              <Select style="width: 70px" @on-change="changeAddTab" size="small">
+                  <Option value="[avability]">[avability]</Option>
+                  <Option value="[brand]">[brand]</Option>
+                  <Option value="[channel]">[channel]</Option>
+              </Select>
+            </template>      
+          </Input>        
         </div>
-      </div>
-      <div class="row mb-3" style="display: flex; align-items: center;">
-        <div class="col col-lg-8">
-          Fit mode
-        </div>                
-        <div class="col col-lg-3">
-          <Button icon="ios-expand"></Button>
-          <Button icon="md-expand" style="margin-left:20px"></Button>
-        </div>
-      </div>       
-      <div class="row mb-3" style="display: flex; align-items: center;">
-        <div class="col col-lg-6">
-          Alignment
-        </div>                
-        <div class="col col-lg-6">
-          <align></align>
-        </div>
-      </div>      
-    </div>
-    <div v-show="shapeType.includes(mSelectOneType)" style="margin-left:15px">
-      <div class="row mb-3" style="display: flex; align-items: center;">
-        <div class="col col-lg-9">
-          Rotate
-        </div>                
-        <div class="col col-lg-2">
-          <Input type="number" v-model="baseAttr.angle" :max="360" @on-change="(value)=>changeCommon('angle', value)" style="width:80px">
-            <template #append>
-              <span>o</span>
-            </template> 
-          </Input>
-        </div>
-      </div>      
-      <div v-show="rectType.includes(mSelectOneType)" class="row mb-3" style="display: flex; align-items: center;">
-        <div class="col col-lg-9">
-          Round
-        </div>                
-        <div class="col col-lg-2">
-          <Input type="number" v-model="baseAttr.round" :max="360" @on-change="(value)=>changeCommon('round', value)" style="width:80px">
-            <template #append>
-              <span>o</span>
-            </template> 
-          </Input>
-        </div>
-      </div>
-      <div class="row mb-3" style="display: flex; align-items: center;">
-        <div class="col col-lg-9">
-          Fill
-        </div>                
-        <div class="col col-lg-2">
-          <Color :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"></Color>
-        </div>
-      </div>
-    <div class="row mb-3" style="display: flex; align-items: center;">
-      <div class="col col-lg-7">
-        Border
-      </div>          
-      <div class="col col-lg-2">
-        <ColorPicker
-          v-model="baseAttr.stroke"
-          @on-change="(value) => changeCommon('stroke', value)"
-          alpha
-        />
-      </div>                
-      <div class="col col-lg-2">
-        <Input
-          type="number"
-          v-model="baseAttr.strokeWidth"
-          :max="360"
-          @on-change="(value) => changeCommon('strokeWidth', value)"
-          show-input
-          style="width:80px"
-        >
-          <template #append>
-            <span>o</span>
-          </template>             
-        </Input>          
-      </div>
-    </div>
-    </div>
-                
-    <div v-show="textType.includes(mSelectOneType)" class="mt-4">
-      <div class="customborder mt-2"></div>
-      <div class="text-part" style="margin-left:15px"> 
-        <label>Text</label>
-        <Input v-model="fontAttr.string" @on-change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
-          <template #append>
-            <Select style="width: 70px" @on-change="changeAddTab" size="small">
-                <Option value="[avability]">[avability]</Option>
-                <Option value="[brand]">[brand]</Option>
-                <Option value="[channel]">[channel]</Option>
+
+        <div class="customborder mt-4"></div>
+        <div class="mt-4 row" style="margin-left:15px;">
+          <div class="col-md-8" style="margin-right:23px">
+            <Select v-model="fontAttr.fontFamily" @on-change="changeFontFamily">
+              <Option v-for="item in fontFamilyList" :value="item" :key="'font-' + item">
+                {{ item }}
+              </Option>
             </Select>
-          </template>      
-        </Input>        
-      </div>
-
-      <div class="customborder mt-4"></div>
-      <div class="mt-4 row" style="margin-left:15px;">
-        <div class="col-md-8" style="margin-right:23px">
-          <Select v-model="fontAttr.fontFamily" @on-change="changeFontFamily">
-            <Option v-for="item in fontFamilyList" :value="item" :key="'font-' + item">
-              {{ item }}
-            </Option>
-          </Select>
+          </div>
+          <div class="col-md-3" style="">
+            <Button>Upload Font</Button>
+          </div>
+          <div class="mt-4" style="margin-top:20px">
+            <div class="flex-item" style="float:left">
+              <InputNumber
+                v-model="fontAttr.fontSize"
+                @on-change="(value) => changeCommon('fontSize', value)"
+                show-input
+                style="width:30%"
+              ></InputNumber>
+              <Color style="margin-top:-10px;margin-left:10px;width:100%" :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"></Color>
+            </div>           
+            <div style="float:right;margin-right:40px">
+              <ButtonGroup class="button-group">
+                <Button @click="changeFontWeight('fontWeight', fontAttr.fontWeight)" class="border-btn" style="margin-left:10px">
+                  <svg viewBox="0 0 1024 1024" width="14" height="14">
+                    <path
+                      d="M793.99865 476a244 244 0 0 0 54-130.42C862.75865 192.98 743.01865 64 593.85865 64H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h63.74v576H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h418.64c141.6 0 268.28-103.5 282-244.8 9.48-96.9-32.78-184.12-101.66-239.2zM418.33865 224h175.52a96 96 0 0 1 0 192h-175.52z m175.52 576h-175.52V576h175.52a112 112 0 0 1 0 224z"
+                      :fill="fontAttr.fontWeight === 'bold' ? '#305ef4' : '#666'"
+                    ></path>
+                  </svg>
+                </Button>
+                <Button @click="changeFontStyle('fontStyle', fontAttr.fontStyle)" class="border-btn" style="margin-left:10px">
+                  <svg viewBox="0 0 1024 1024" width="14" height="14">
+                    <path
+                      d="M832 96v64a32 32 0 0 1-32 32h-125.52l-160 640H608a32 32 0 0 1 32 32v64a32 32 0 0 1-32 32H224a32 32 0 0 1-32-32v-64a32 32 0 0 1 32-32h125.52l160-640H416a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32h384a32 32 0 0 1 32 32z"
+                      :fill="fontAttr.fontStyle === 'italic' ? '#305ef4' : '#666'"
+                    ></path>
+                  </svg>
+                </Button>
+                <Button @click="changeLineThrough('linethrough', fontAttr.linethrough)" class="border-btn" style="margin-left:10px">
+                  <svg viewBox="0 0 1024 1024" width="14" height="14">
+                    <path
+                      d="M893.088 501.792H125.344a32 32 0 0 0 0 64h767.744a32 32 0 0 0 0-64zM448 448h112V208h288V96H160v112h288zM448 640h112v288H448z"
+                      :fill="fontAttr.linethrough ? '#305ef4' : '#666'"
+                    ></path>
+                  </svg>
+                </Button>
+                <Button @click="changeUnderline('underline', fontAttr.underline)" class="border-btn" style="margin-left:10px">
+                  <svg viewBox="0 0 1024 1024" width="14" height="14">
+                    <path
+                      d="M703.232 67.008h127.488v413.248c0 158.016-142.656 286.016-318.72 286.016-176 0-318.72-128-318.72-286.016V67.008h127.488v413.248c0 39.872 18.176 78.144 51.136 107.776 36.8 32.96 86.528 51.072 140.096 51.072s103.36-18.112 140.032-51.136c33.024-29.632 51.2-67.968 51.2-107.776V67.008zM193.28 871.616h637.44v85.376H193.28v-85.376z"
+                      :fill="fontAttr.underline ? '#305ef4' : '#666'"
+                    ></path>
+                  </svg>
+                </Button>
+              </ButtonGroup>              
+            </div>   
+          </div>          
         </div>
-        <div class="col-md-3" style="">
-          <Button>Upload Font</Button>
-        </div>
-        <div class="mt-4" style="margin-top:20px">
-          <div class="flex-item" style="float:left">
-            <InputNumber
-              v-model="fontAttr.fontSize"
-              @on-change="(value) => changeCommon('fontSize', value)"
+        <div class="customborder mt-4"></div>
+        <div class="row mb-3 mt-4" style="display: flex; align-items: center;margin-left:15px">
+          <div class="col col-lg-7">
+            Border
+          </div>          
+          <div class="col col-lg-2">
+            <ColorPicker
+              v-model="baseAttr.stroke"
+              @on-change="(value) => changeCommon('stroke', value)"
+              alpha
+            />
+          </div>                
+          <div class="col col-lg-2">
+            <Input
+              type="number"
+              v-model="baseAttr.strokeWidth"
+              :max="360"
+              @on-change="(value) => changeCommon('strokeWidth', value)"
               show-input
-              style="width:30%"
-            ></InputNumber>
-            <Color style="margin-top:-10px;margin-left:10px;width:100%" :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"></Color>
-          </div>           
-          <div style="float:right;margin-right:40px">
-            <ButtonGroup class="button-group">
-              <Button @click="changeFontWeight('fontWeight', fontAttr.fontWeight)" class="border-btn" style="margin-left:10px">
-                <svg viewBox="0 0 1024 1024" width="14" height="14">
-                  <path
-                    d="M793.99865 476a244 244 0 0 0 54-130.42C862.75865 192.98 743.01865 64 593.85865 64H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h63.74v576H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h418.64c141.6 0 268.28-103.5 282-244.8 9.48-96.9-32.78-184.12-101.66-239.2zM418.33865 224h175.52a96 96 0 0 1 0 192h-175.52z m175.52 576h-175.52V576h175.52a112 112 0 0 1 0 224z"
-                    :fill="fontAttr.fontWeight === 'bold' ? '#305ef4' : '#666'"
-                  ></path>
-                </svg>
-              </Button>
-              <Button @click="changeFontStyle('fontStyle', fontAttr.fontStyle)" class="border-btn" style="margin-left:10px">
-                <svg viewBox="0 0 1024 1024" width="14" height="14">
-                  <path
-                    d="M832 96v64a32 32 0 0 1-32 32h-125.52l-160 640H608a32 32 0 0 1 32 32v64a32 32 0 0 1-32 32H224a32 32 0 0 1-32-32v-64a32 32 0 0 1 32-32h125.52l160-640H416a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32h384a32 32 0 0 1 32 32z"
-                    :fill="fontAttr.fontStyle === 'italic' ? '#305ef4' : '#666'"
-                  ></path>
-                </svg>
-              </Button>
-              <Button @click="changeLineThrough('linethrough', fontAttr.linethrough)" class="border-btn" style="margin-left:10px">
-                <svg viewBox="0 0 1024 1024" width="14" height="14">
-                  <path
-                    d="M893.088 501.792H125.344a32 32 0 0 0 0 64h767.744a32 32 0 0 0 0-64zM448 448h112V208h288V96H160v112h288zM448 640h112v288H448z"
-                    :fill="fontAttr.linethrough ? '#305ef4' : '#666'"
-                  ></path>
-                </svg>
-              </Button>
-              <Button @click="changeUnderline('underline', fontAttr.underline)" class="border-btn" style="margin-left:10px">
-                <svg viewBox="0 0 1024 1024" width="14" height="14">
-                  <path
-                    d="M703.232 67.008h127.488v413.248c0 158.016-142.656 286.016-318.72 286.016-176 0-318.72-128-318.72-286.016V67.008h127.488v413.248c0 39.872 18.176 78.144 51.136 107.776 36.8 32.96 86.528 51.072 140.096 51.072s103.36-18.112 140.032-51.136c33.024-29.632 51.2-67.968 51.2-107.776V67.008zM193.28 871.616h637.44v85.376H193.28v-85.376z"
-                    :fill="fontAttr.underline ? '#305ef4' : '#666'"
-                  ></path>
-                </svg>
-              </Button>
-            </ButtonGroup>              
-          </div>   
-        </div>          
+              style="width:80px"
+            >
+              <template #append>
+                <span>o</span>
+              </template>             
+            </Input>          
+          </div>
+        </div>      
+        <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:15px;">
+          <div class="col col-lg-9">
+            Round
+          </div>                
+          <div class="col col-lg-2">
+            <Input type="number" v-model="baseAttr.round" :max="360" @on-change="(value)=>changeCommon('round', value)" style="width:80px">
+              <template #append>
+                <span>o</span>
+              </template> 
+            </Input>
+          </div>
+        </div>   
+        <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:15px;">
+          <div class="col col-lg-6">
+            Alignment
+          </div>                
+          <div class="col col-lg-6">
+            <align></align>
+          </div>
+        </div>         
       </div>
-      <div class="customborder mt-4"></div>
-      <div class="row mb-3 mt-4" style="display: flex; align-items: center;margin-left:15px">
-        <div class="col col-lg-7">
-          Border
-        </div>          
-        <div class="col col-lg-2">
-          <ColorPicker
-            v-model="baseAttr.stroke"
-            @on-change="(value) => changeCommon('stroke', value)"
-            alpha
-          />
+      <div class="customborder"></div>
+      <!-- Layer restriction -->
+      <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:5px;">
+        <div class="col col-lg-10">
+          Layer time restriction
         </div>                
         <div class="col col-lg-2">
-          <Input
-            type="number"
-            v-model="baseAttr.strokeWidth"
-            :max="360"
-            @on-change="(value) => changeCommon('strokeWidth', value)"
-            show-input
-            style="width:80px"
-          >
-            <template #append>
-              <span>o</span>
-            </template>             
-          </Input>          
+          <Switch size="small" @on-change="showRestriction" true-color="#13ce66"/>
         </div>
+        <div v-if="restrictionState" class="row">
+          <div class="col col-lg-9 mt-3">
+            Generate
+          </div>                
+          <div class="col col-lg-3 mt-3">
+            <Select v-model="model1" size="small" @on-change="selectMode">
+                <Option v-for="item in modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </div>          
+          <div class="col col-lg-6 mt-3">
+            From
+          </div>                
+          <div class="col col-lg-6 mt-3">
+            <DatePicker size="small" type="date" style="width:100%" placeholder="Start date" @on-change="startDate"/>
+          </div>
+          <div class="col col-lg-6 mt-3">
+            To
+          </div>                
+          <div class="col col-lg-6 mt-3">
+            <DatePicker size="small" type="date" style="width:100%" placeholder="End date" @on-change="endDate"/>
+          </div>                      
+        </div>        
       </div>      
-      <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:15px;">
-        <div class="col col-lg-9">
-          Round
-        </div>                
-        <div class="col col-lg-2">
-          <Input type="number" v-model="baseAttr.round" :max="360" @on-change="(value)=>changeCommon('round', value)" style="width:80px">
-            <template #append>
-              <span>o</span>
-            </template> 
-          </Input>
-        </div>
-      </div>   
-      <div class="row mb-3 mt-3" style="display: flex; align-items: center;margin-left:15px;">
-        <div class="col col-lg-6">
-          Alignment
-        </div>                
-        <div class="col col-lg-6">
-          <align></align>
-        </div>
-      </div>         
+      <!-- Layer restriction -->    
     </div>
   </div>
 </template>
@@ -381,6 +461,24 @@ export default {
   },
   data() {
     return {
+      //layer restriction
+      modes: [
+          {
+              value: 'only',
+              label: 'only'
+          },
+          {
+              value: 'except',
+              label: 'except'
+          }
+      ],
+      model1: '',
+      restrictionState:false,
+      borderState:false,
+      fillState:false,
+      //layer restriction
+
+
       isLock: false,
       isView:true,
       // common element
@@ -582,8 +680,27 @@ export default {
   computed:{
   },
   methods: {
-    observe(){
+    //layer restriction
+    startDate(evt){
+      console.log(evt)
     },
+    endDate(evt){
+      console.log(evt)
+    },                
+    selectMode(evt){
+      console.log(this.model1)
+    },
+    showRestriction(){
+      this.restrictionState ? this.restrictionState = false : this.restrictionState = true
+    },
+    showBorder(){
+      this.borderState ? this.borderState = false : this.borderState = true
+    },
+    showFill(){
+      this.fillState ? this.fillState = false : this.fillState = true
+    },    
+    //layer restriction
+
     mainPanel(){
       this.canvas.c.discardActiveObject();
       this.canvas.c.requestRenderAll();
@@ -668,7 +785,6 @@ export default {
       this.$Spin.show();
       // font loading
       const font = new FontFaceObserver(fontName);
-      console.dir(font)
       font
         .load(null, 15000)
         .then(() => {

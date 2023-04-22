@@ -128,7 +128,7 @@ export default {
         ...defaultPosition,
         ...option,
         radius: 150,
-        fill: '#57606B',
+        fill: 'yellow',
         id: uuid(),
         name: 'circle',
       });
@@ -142,7 +142,7 @@ export default {
       const rect = new this.fabric.Rect({
         ...defaultPosition,
         ...option,
-        fill: '#F57274',
+        fill: 'blue',
         width: 400,
         height: 400,
         id: uuid(),

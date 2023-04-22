@@ -1,5 +1,5 @@
 <template>
-  <div class="attr-item box" v-if="isMultiple || isGroup">
+  <div class="attr-item box">
     <!-- <ButtonGroup size="small" v-if="isMultiple || isGroup"> -->
     <!-- Combination buttons are not available for multiple selections -->
     <Button v-if="isMultiple" :disabled="!isMultiple" @click="group" type="text">

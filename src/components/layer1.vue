@@ -1,12 +1,10 @@
 <template>
-    <div class="btn-box">
-      <ButtonGroup size="small">
-        <Button @click="up" class="border-btn"><span v-html="btnIconType('up')" style="margin-left:15px"></span></Button>
-        <Button @click="down" class="border-btn"><span v-html="btnIconType('down')" style="margin-left:15px"></span></Button>
-        <Button @click="upTop" class="border-btn"><span v-html="btnIconType('upTop')" style="margin-left:15px"></span></Button>
-        <Button @click="downTop" class="border-btn"><span v-html="btnIconType('downTop')" style="margin-left:15px"></span></Button>
-      </ButtonGroup>
-    </div>
+  <ButtonGroup size="small">
+    <Button @click="up" class="border-btn"><span v-html="btnIconType('up')" style="margin-left:15px"></span></Button>
+    <Button @click="down" class="border-btn"><span v-html="btnIconType('down')" style="margin-left:15px"></span></Button>
+    <Button @click="upTop" class="border-btn"><span v-html="btnIconType('upTop')" style="margin-left:15px"></span></Button>
+    <Button @click="downTop" class="border-btn"><span v-html="btnIconType('downTop')" style="margin-left:15px"></span></Button>
+  </ButtonGroup>
 </template>
 
 <script>
@@ -115,73 +113,3 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-/deep/ .ivu-tooltip-inner {
-  white-space: normal;
-}
-
-/deep/ .ivu-tooltip {
-  display: block;
-}
-
-/deep/ .ivu-tooltip-rel {
-  display: block;
-}
-.box {
-  width: 100%;
-}
-.layer-box {
-  height: calc(100vh - 170px);
-  overflow-y: auto;
-  margin-bottom: 5px;
-  .ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-  }
-  & > div {
-    padding: 0px 5px;
-    margin: 3px 0;
-    background: #f7f7f7;
-    color: #c8c8c8;
-    border-radius: 3px;
-    font-size: 14px;
-    line-height: 28px;
-    &.active {
-      color: #2d8cf0;
-      background: #f0faff;
-      font-weight: bold;
-    }
-  }
-}
-.btn-box {
-  width: 100%;
-  margin-bottom: 20px;
-  background: #f3f3f3;
-  .ivu-btn-group {
-    display: flex;
-  }
-  .ivu-btn-group > .ivu-btn {
-    flex: 1;
-  }
-}
-svg {
-  vertical-align: text-top;
-}
-/deep/ .ivu-divider-plain.ivu-divider-with-text-left {
-  margin: 10px 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000000;
-}
-</style>
-
-<style lang="less">
-span.active {
-  svg.icon {
-    fill: #2d8cf0;
-  }
-}
-</style>

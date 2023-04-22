@@ -1,7 +1,9 @@
 <template>
   <div v-if="!mSelectMode">
+    
+    <Button @click="set_bg">{{bg_set_title}}</Button>
     <Divider orientation="left" plain>{{ $t('color') }}</Divider>
-    <Form :label-width="40">
+    <Form :label-width="40" id="color-picker">
       <FormItem :label="$t('color')" prop="name">
         <ColorPicker v-model="color" @on-change="setThisColor" alpha size="small" transfer />
       </FormItem>
@@ -33,6 +35,7 @@ export default {
   mixins: [select],
   data() {
     return {
+      bg_set_title:"background setting",
       showModal: false,
       color: '',
       imgFile: '',
@@ -65,6 +68,8 @@ export default {
     };
   },
   methods: {
+    set_bg(){
+    },
     // background color setting
     setThisColor() {
       this.setColor(this.color);
@@ -75,6 +80,11 @@ export default {
       workspace.set('fill', color);
       this.canvas.c.renderAll();
     },
+    clearColor(){
+      const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+      workspace.set('fill', '');
+      this.canvas.c.renderAll();
+    }
   },
 };
 </script>

@@ -32,7 +32,6 @@ function initializeLineDrawing(canvas, defaultPosition) {
 
   canvas.on('mouse:move', (o) => {
     if (!isDrawingLine) return;
-
     pointer = canvas.getPointer(o.e);
 
     if (o.e.shiftKey) {

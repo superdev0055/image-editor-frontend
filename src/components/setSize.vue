@@ -5,7 +5,7 @@
         <div class="row d-flex justify-content-center">
           <div class="col-md-11">
             <div class="image-name mt-2">
-              <label class="font-s">Image name</label>                  
+              <label class="font-s">Image name</label>         
               <b-form-input size="sm"></b-form-input>
             </div>
             <div class="image-size mt-2" style="">
@@ -72,11 +72,6 @@ export default {
     bgBar
   },
   mounted() {
-    // setTimeout(() => {
-    //     this.temp = this.mSelectMode
-    // },500);    
-    // this.set
-    // this.mSelectMode = ""
     this.canvas.editor.editorWorkspace = new EditorWorkspace(this.canvas.c, {
       width: this.width,
       height: this.height,

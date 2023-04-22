@@ -6,7 +6,7 @@
 import { getImgStr, selectFiles,downFontByJSON } from '@/utils/utils';
 import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
-import {emptyData} from '@/utils/emptyConstant' 
+import {emptyData} from '@/utils/imgConstant' 
 import axios from "axios";
 export default {
   name: 'ToolBar',
@@ -18,12 +18,12 @@ export default {
       svgStr: ''
     };
   },
-  // created() {
-  //   this.event.on('selectOne', (items) => {
-  //     this.isLock = !items[0].hasControls;
-  //     this.mSelectActive = items[0];
-  //   });
-  // },
+  created() {
+    this.event.on('selectOne', (items) => {
+      this.isLock = !items[0].hasControls;
+      this.mSelectActive = items[0];
+    });
+  },
   mounted(){
     if(this.path.slice(8) == "create"){
       this.insertEmptyFile(emptyData);
@@ -48,7 +48,7 @@ export default {
     },
     // insert empty file
     insertEmptyFile(file,type) {
-      
+       setTimeout(() => {
       const imgEl = document.createElement('img');
       imgEl.src = file || this.imgFile;
       document.body.appendChild(imgEl);
@@ -57,18 +57,22 @@ export default {
         const imgInstance = new this.fabric.Image(imgEl, {
           id: "empty",
           name: 'picture1',
-          left: 100,
-          top: 100,
+          left: -250,
+          top: -50,
         });
+        imgInstance.scale(0.7);
+
         // set zoom
         this.canvas.c.add(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
         this.canvas.c.renderAll();
         // // Remove image elements from the page
         imgEl.remove();
-      };
+      };          
+      }, 200);
 
     },    
+    
     // insert image file
     insertImgFile(file,type) {
       const imgEl = document.createElement('img');
@@ -82,6 +86,8 @@ export default {
           name: 'picture1',
           left: 100,
           top: 100,
+          selectable:false,
+          hasControls:false
         });
         // set zoom
         this.canvas.c.add(imgInstance);
@@ -103,7 +109,6 @@ export default {
                     const { left, top, width, height } = workspace;                  
                     workspace.set('selectable', false);
                     workspace.set('hasControls', false);
-                    this.insertEmptyFile(emptyData);
                     this.canvas.c.requestRenderAll();
                     this.canvas.c.renderAll();
                 });

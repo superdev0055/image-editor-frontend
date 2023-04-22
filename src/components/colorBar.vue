@@ -1,6 +1,7 @@
 <template>
   <div v-if="!mSelectMode" style="float:right;margin-top:22px">
-    <ColorPicker v-model="color" @on-change="setThisColor" alpha size="small" transfer />
+    <Button @click="set_bg" size="small">{{bg_set_title}}</Button>
+    <ColorPicker v-if="!showColor" v-model="color" @on-change="setThisColor" alpha size="small" transfer />
   </div>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   mixins: [select],
   data() {
     return {
-      showModal: false,
+      bg_set_title:"Add color",
+      showColor: false,
       color: '',
       imgFile: '',
       colorList: [
@@ -45,6 +47,20 @@ export default {
     };
   },
   methods: {
+    clearColor(){
+      const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+      workspace.set('fill', '');
+      this.canvas.c.renderAll();
+    },    
+    set_bg(){
+      if(this.showColor == true){
+        this.showColor = false;
+      }else{
+        this.showColor = true;
+        this.clearColor();
+      }
+      // this.showColor ?this.showColor = false:this.showColor = true;
+    },
     // background color setting
     setThisColor() {
       this.setColor(this.color);

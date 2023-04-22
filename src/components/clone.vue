@@ -15,6 +15,7 @@ export default {
     return {};
   },
   methods: {
+    
     clone() {
       this.canvas.editor.clone();
     },

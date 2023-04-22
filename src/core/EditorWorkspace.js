@@ -37,21 +37,55 @@ class EditorWorkspace {
   //Initialize the canvas
   _initWorkspace() {
     const { width, height } = this.option;
-    const workspace = new fabric.Rect({
-      fill: '#ffffff',
-      width,
-      height,
-      id: 'workspace',
-    });
-    workspace.set('selectable', false);
-    workspace.set('hasControls', false);
-    workspace.hoverCursor = 'selection';
-    this.canvas.add(workspace);
-    this.canvas.centerObject(workspace);
-    this.canvas.renderAll();
+    fabric.Image.fromURL('https://previews.123rf.com/images/kolibrico/kolibrico2002/kolibrico200200005/139369246-vector-empty-transparent-background-vector-transparency-grid-seamless-pattern.jpg', (workspace) => {
+      var shadow = new fabric.Shadow({
+        color: "gray",
+        blur: 50,
+        offsetX: 0,
+        offsetY: 0,
+      });      
+      workspace.scale(0.6);
+      workspace.set({
+        left: 0,
+        id: 'workspace',
+        top: 0,
+        hoverCursor: 'selection',
+        shadow:shadow,
+      });
+      workspace.set('selectable', false);
+      workspace.set('hasControls', false);
+      workspace.hoverCursor = 'selection';
 
-    this.workspace = workspace;
-    this.auto();
+      this.canvas.centerObject(workspace);
+      this.canvas.add(workspace);
+      this.canvas.renderAll();
+      this.workspace = workspace;
+      this.auto();
+    });    
+    // const { width, height } = this.option;
+    // var shadow = new fabric.Shadow({
+    //   color: "gray",
+    //   blur: 50,
+    //   offsetX: 0,
+    //   offsetY: 0,
+    // });      
+    // const workspace = new fabric.Rect({
+    //   fill: '#ffffff',
+    //   width,
+    //   height,
+    //   id: 'workspace',
+    //   shadow:shadow
+    // });
+
+    // workspace.set('selectable', false);
+    // workspace.set('hasControls', false);
+    // workspace.hoverCursor = 'selection';
+    // this.canvas.add(workspace);
+    // this.canvas.centerObject(workspace);
+    // this.canvas.renderAll();
+
+    // this.workspace = workspace;
+    // this.auto();
   }
 
   // Initialize the listener
@@ -237,6 +271,82 @@ class EditorWorkspace {
     this.canvas.renderAll();
     this.canvas.requestRenderAll();
   }
+
+  scaleImageToSlot(image, slot) {
+    // Find smallest ratio of slot:width / image:width and slot:height / image: height
+    let ratio = Math.min(slot.width / image.width, slot.height / image.height);
+    console.log(`ratio width ${slot.width/image.width}, height ${slot.height/image.height}`);
+    console.log('=> ratio', ratio);
+    
+    if(ratio <= 1) {
+      image.scaleToWidth(slot.width);
+      let newHeight = image.height * image.scaleY;
+      if(newHeight < slot.height) {
+        image.scaleToHeight(slot.height);
+      }
+    }
+    else {
+      image.scaleToHeight(slot.height);
+      let newWidth = image.width * image.scaleX;
+      
+      if(newWidth < slot.width) {
+        image.scaleToWidth(slot.width);
+      }
+    }
+    
+    var shiftLeft = (slot.width - (image.width*image.scaleX)) / 2;
+    var shiftTop = (slot.height - (image.height*image.scaleY)) / 2;
+    
+    if(this.alignCenter) {
+      image.set("left",slot.left + shiftLeft);
+      image.set("top",slot.top + shiftTop);
+    }
+    else {
+      if(image.left < slot.left) {
+        // align image to center.
+        image.set("left",slot.left);
+      }
+      if(image.top < slot.top) {
+        image.set("top",slot.top);
+      }    
+    }
+    
+  }
+
+  clipBySlot(ctx, image, slot) {
+    var scaleXTo1 = (1 / image.scaleX);
+    var scaleYTo1 = (1 / image.scaleY);
+    
+    // Save context of the canvas so it can be restored after the clipping
+    ctx.save();
+    
+    ctx.translate(0, 0);
+    ctx.rotate(degToRad(image.angle * -1));
+    ctx.scale(scaleXTo1, scaleYTo1);
+    
+    ctx.beginPath();
+    
+    const boundingRect = image.getBoundingRect();
+    // console.log(`[left] ${image.left} - (${boundingRect.width} / 2)`);
+    
+    ctx.rect(
+      slot.left - image.left - Math.floor(boundingRect.width / 2),
+      slot.top - image.top - Math.floor(boundingRect.height / 2),
+      slot.width,
+      slot.height
+    );
+    ctx.stroke()
+    ctx.closePath();
+    
+    // Restore the original context.
+    ctx.restore();
+  }
+
+  // Since the `angle` property of the Image object is stored 
+  // in degrees, we'll use this to convert it to radians.
+  degToRad(degrees) {
+    return degrees * (Math.PI / 180);
+  }   
 }
 
 export default EditorWorkspace;

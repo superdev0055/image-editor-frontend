@@ -34,7 +34,6 @@
       <div class="right-box">
         <div v-if="show">
           <set-size></set-size>
-          <group></group>
         </div>
           <attribute v-if="show"></attribute>
       </div>
@@ -59,8 +58,6 @@ import dele from '@/components/del.vue';
 
 // left component
 import tools from '@/components/tools.vue';
-import svgEl from '@/components/svgEl.vue';
-import bgBar from '@/components/bgBar.vue';
 import setSize from '@/components/setSize.vue';
 
 // right side component
@@ -69,14 +66,10 @@ import layer from '@/components/layer.vue';
 import attribute from '@/components/attribute.vue';
 import ColorPicker from '@/components/color.vue';
 
-// right click menu
-import mouseMenu from '@/components/contextMenu/index.vue';
-
 // functional components
 import EventHandle from '@/utils/eventHandler';
 
 import { fabric } from 'fabric';
-import $ from "jquery";
 import Editor from '@/core';
 
 const event = new EventHandle();
@@ -93,7 +86,7 @@ export default {
       "param_id":this.$route.params.id
     }
   },    
-  
+
   data() {
     return {
       show: false,
@@ -106,7 +99,6 @@ export default {
     ColorPicker,
     setSize,
     tools,
-    bgBar,
     lock,
     layer,
     align,
@@ -121,11 +113,15 @@ export default {
     centerAlign,
     group,
     zoom,
-    svgEl,
     history,
-    mouseMenu,
   },
   created() {
+
+  },
+  methods:{
+    save(){
+      console.log("asdf")
+    }
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
@@ -138,7 +134,7 @@ export default {
     canvas.editor = new Editor(canvas.c);
     this.show = true;
     this.$Spin.hide();      
-    canvas.c.renderAll();
+    canvas.c.renderAll();       
   },
 };
 </script>
