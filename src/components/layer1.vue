@@ -1,9 +1,43 @@
 <template>
   <ButtonGroup size="small">
-    <Button @click="up" class="border-btn"><span v-html="btnIconType('up')" style="margin-left:15px"></span></Button>
-    <Button @click="down" class="border-btn"><span v-html="btnIconType('down')" style="margin-left:15px"></span></Button>
-    <Button @click="upTop" class="border-btn"><span v-html="btnIconType('upTop')" style="margin-left:15px"></span></Button>
-    <Button @click="downTop" class="border-btn"><span v-html="btnIconType('downTop')" style="margin-left:15px"></span></Button>
+    <Button @click="up" class="border-btn">
+      <!-- <span v-html="btnIconType('up')" style="margin-left:15px"></span> -->
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <rect x="0" y="0" width="24" height="24"/>
+              <path d="M18.5,6 C19.3284271,6 20,6.67157288 20,7.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 C17.6715729,20 17,19.3284271 17,18.5 L17,7.5 C17,6.67157288 17.6715729,6 18.5,6 Z M12.5,11 C13.3284271,11 14,11.6715729 14,12.5 L14,18.5 C14,19.3284271 13.3284271,20 12.5,20 C11.6715729,20 11,19.3284271 11,18.5 L11,12.5 C11,11.6715729 11.6715729,11 12.5,11 Z M6.5,15 C7.32842712,15 8,15.6715729 8,16.5 L8,18.5 C8,19.3284271 7.32842712,20 6.5,20 C5.67157288,20 5,19.3284271 5,18.5 L5,16.5 C5,15.6715729 5.67157288,15 6.5,15 Z" fill="#000000"/>
+          </g>
+      </svg>
+    </Button>
+    <Button @click="down" class="border-btn">
+      <!-- <span v-html="btnIconType('down')" style="margin-left:15px"></span> -->
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <rect x="0" y="0" width="24" height="24"/>
+              <path d="M5.5,6 C6.32842712,6 7,6.67157288 7,7.5 L7,18.5 C7,19.3284271 6.32842712,20 5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,7.5 C4,6.67157288 4.67157288,6 5.5,6 Z M11.5,11 C12.3284271,11 13,11.6715729 13,12.5 L13,18.5 C13,19.3284271 12.3284271,20 11.5,20 C10.6715729,20 10,19.3284271 10,18.5 L10,12.5 C10,11.6715729 10.6715729,11 11.5,11 Z M17.5,15 C18.3284271,15 19,15.6715729 19,16.5 L19,18.5 C19,19.3284271 18.3284271,20 17.5,20 C16.6715729,20 16,19.3284271 16,18.5 L16,16.5 C16,15.6715729 16.6715729,15 17.5,15 Z" fill="#000000"/>
+          </g>
+      </svg>
+    </Button>
+    <Button @click="upTop" class="border-btn">
+      <!-- <span v-html="btnIconType('upTop')" style="margin-left:15px"></span> -->
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <rect x="0" y="0" width="24" height="24"/>
+              <rect fill="#000000" x="4" y="5" width="16" height="3" rx="1.5"/>
+              <path d="M7.5,11 L16.5,11 C17.3284271,11 18,11.6715729 18,12.5 C18,13.3284271 17.3284271,14 16.5,14 L7.5,14 C6.67157288,14 6,13.3284271 6,12.5 C6,11.6715729 6.67157288,11 7.5,11 Z M10.5,17 L13.5,17 C14.3284271,17 15,17.6715729 15,18.5 C15,19.3284271 14.3284271,20 13.5,20 L10.5,20 C9.67157288,20 9,19.3284271 9,18.5 C9,17.6715729 9.67157288,17 10.5,17 Z" fill="#000000" opacity="0.3"/>
+          </g>
+      </svg>
+    </Button>
+    <Button @click="downTop" class="border-btn">
+      <!-- <span v-html="btnIconType('downTop')" style="margin-left:15px"></span> -->
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="transform: rotate(180deg)" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <rect x="0" y="0" width="24" height="24"/>
+              <rect fill="#000000" x="4" y="5" width="16" height="3" rx="1.5"/>
+              <path d="M7.5,11 L16.5,11 C17.3284271,11 18,11.6715729 18,12.5 C18,13.3284271 17.3284271,14 16.5,14 L7.5,14 C6.67157288,14 6,13.3284271 6,12.5 C6,11.6715729 6.67157288,11 7.5,11 Z M10.5,17 L13.5,17 C14.3284271,17 15,17.6715729 15,18.5 C15,19.3284271 14.3284271,20 13.5,20 L10.5,20 C9.67157288,20 9,19.3284271 9,18.5 C9,17.6715729 9.67157288,17 10.5,17 Z" fill="#000000" opacity="0.3"/>
+          </g>
+      </svg>
+    </Button>
   </ButtonGroup>
 </template>
 

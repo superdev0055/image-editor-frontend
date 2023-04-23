@@ -13,11 +13,11 @@
           </div>
 
           <div class="col-md-4">
-            <Tooltip content="Click to unlock or lock" placement="top">
+            <Tooltip content="Click to unlock or lock" placement="top" class="hover_class">
               <Button v-if="element.lock" @click="doLock(element.id)" icon="md-lock" type="text"></Button>
               <Button v-else @click="doLock(element.id)" icon="md-unlock" type="text"></Button>
             </Tooltip>
-            <Tooltip content="Click to view or unview" placement="top">
+            <Tooltip content="Click to view or unview" placement="top" class="hover_class">
               <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(element.id)" type="text"></Button>
               <Button v-else @click="doView(element.id)" icon="ios-eye-outline" type="text"></Button>
             </Tooltip>
@@ -54,6 +54,13 @@
     padding-top: 10px;
     padding-bottom: 10px;
     cursor: pointer;
+  }
+  .hover_class {
+    visibility: hidden;
+  }
+  .layerBox:hover .hover_class { 
+    visibility: visible;
+    color: red;
   }
 </style>
 <script>

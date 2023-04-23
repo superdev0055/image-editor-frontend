@@ -1,48 +1,84 @@
 <template>
   <div class="home">
-    <header class="header text-center">
-      <Button icon="md-arrow-round-back" class="left-btn" @click="selectM()"></Button>
-      <img src="@/assets/img/person.png" class="img-person" />
-      <div style="">
-        <Button icon="ios-flash" size="small">Liver Preview</Button>
-        <Button icon="md-grid" size="small">Design Mode</Button>
+    <header class="header text-center row" style="width: 100%;">
+      <div class="col-3 row">
+        <div class="col-1" style="padding-top: 5px;">
+          <Button icon="md-arrow-round-back" class="left-btn" @click="selectM()"></Button>
+        </div>
+        <div class="col-11" style="text-align: left;">
+            <Icon type="ios-create-outline" style="font-weight: bolder;"/>
+            <span style="font-weight: bolder;">Custom image template</span>
+        </div>
       </div>
-    </header>    
-    <Content style="display: flex; height: calc(100vh - 64px)">
-    <Dropdown class="m-md-4 plus-btn" v-if="show" placement="bottom-start">
-        <Button type="primary" icon="md-add">
-        </Button>
-        <template #list>
-          <DropdownMenu>
-              <import-file></import-file>
-              <tools></tools>
-          </DropdownMenu>
-        </template>
-    </Dropdown>
-      <div id="workspace" style="width:70%; position: relative; background: #f1f1f1;">
-        <div class="canvas-box">
-          <div class="inside-shadow"></div>
-          <div v-if="ruler" class="coordinates-bar coordinates-bar-top" style="width: 100%"></div>
-          <div v-if="ruler" class="coordinates-bar coordinates-bar-left" style="height: 100%"></div>
-          <canvas id="canvas" :class="ruler ? 'design-stage-grid' : ''"></canvas>
-          <div class="bottomBar" v-if="show">
-            <zoom></zoom>
+      <div class="col-6">
+        <Button class="ivu-btn ivu-btn-text" icon="ios-flash" size="small">Liver Preview</Button>
+        <Button class="ivu-btn ivu-btn-text" icon="md-grid" size="small">Design Mode</Button>
+      </div>
+      <div class="col-3" style="text-align: right;">
+        <button class="ivu-btn ivu-btn-primary ivu-btn-circle ivu-btn-icon-only" type="button">
+            <Icon type="md-person" />
+        </button>
+      </div>
+    </header>
+    <div>
+      <Content style="display: flex; height: calc(100vh - 64px)">
+        <!-- --------------------------------- Import Button(+) ----------------------------------- -->
+        <Dropdown class="m-md-4 plus-btn" v-if="show" placement="bottom-start">
+            <Button type="primary" icon="md-add" />
+            <template #list>
+              <DropdownMenu>
+                  <import-file></import-file>
+                  <tools></tools>
+              </DropdownMenu>
+            </template>
+        </Dropdown>
+        <!-- --------------------------------- End Import Button(+) ----------------------------------- -->
+
+        <!-- --------------------------------- Left Side ----------------------------------- -->
+        <div id="workspace" style="width:90%; position: relative; background: #f1f1f1;">
+          <!-- <div class="canvas-box"> -->
+          <div>
+            <div class="inside-shadow">
+            
+            </div>
+            <div v-if="ruler" class="coordinates-bar coordinates-bar-top" style="width: 100%">
+            
+            </div>
+            <div v-if="ruler" class="coordinates-bar coordinates-bar-left" style="height: 100%">
+            
+            </div>
+
+            <!-- --------------------------------- Main Content ----------------------------------- -->
+            <canvas id="canvas" :class="ruler ? 'design-stage-grid' : ''"></canvas>
+            <!-- --------------------------------- End Main Content ----------------------------------- -->
+
+            <!-- --------------------------------- Footer ----------------------------------- -->
+            <footer class="bottomBar" v-if="show">
+              <zoom></zoom>
+            </footer>
+            <!-- --------------------------------- End Footer ----------------------------------- -->
           </div>
         </div>
-      </div>
-      <div class="right-box">
-        <div v-if="show">
-          <set-size></set-size>
+        <!-- --------------------------------- End Left Side ----------------------------------- -->
+
+        <!-- --------------------------------- Right Side ----------------------------------- -->
+        <div class="right-box">
+          <div v-if="show">
+            <set-size></set-size> 
+          </div>
+            <attribute v-if="show"></attribute>
         </div>
-          <attribute v-if="show"></attribute>
-      </div>
-    </Content>
+        <!-- --------------------------------- End Right Side ----------------------------------- -->
+      </Content>
+    </div>
   </div>
 </template>
 <script>
+
 // import element
 import importFile from '@/components/importFile.vue';
 import importTmpl from '@/components/importTmpl.vue';
+
 // top assembly
 import align from '@/components/align.vue';
 import centerAlign from '@/components/centerAlign.vue';
@@ -136,6 +172,7 @@ export default {
     canvas.c.renderAll();       
   },
 };
+
 </script>
 <style scoped lang="less">
 .bottomBar {
@@ -148,4 +185,5 @@ export default {
   padding: 10px;
   border-radius:10px
 }
+
 </style>

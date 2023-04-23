@@ -4,7 +4,8 @@
 
 
 import { fabric } from 'fabric';
-import {transParent} from '@/utils/imgConstant'
+import {transParent} from '@/utils/imgConstant';
+
 class EditorWorkspace {
   constructor(canvas, option) {
     this.canvas = canvas;
@@ -19,7 +20,7 @@ class EditorWorkspace {
 
   //Initialize the background
   _initBackground() {
-    this.canvas.setBackgroundColor('#F1F1F1', this.canvas.renderAll.bind(this.canvas));
+    this.canvas.setBackgroundColor('', this.canvas.renderAll.bind(this.canvas));
     this.canvas.backgroundImage = '';
     this.canvas.setWidth(this.workspaceEl.offsetWidth);
     this.canvas.setHeight(this.workspaceEl.offsetHeight);
@@ -28,15 +29,38 @@ class EditorWorkspace {
     this.height = this.workspaceEl.offsetHeight;
   }
 
+  setSize(width, height) {
+    console.log(width,height);
+    this._initBackground();
+    this.option.width = width;
+    this.option.height = height;
+    console.log(this.canvas.getObjects().find((item) => item.id === 'workspace'))
+    // //reset workspace
+    this.workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
+    // this.workspace.scaleToWidth(width)
+    // this.workspace.scaleToHeight(height)    
+    this.workspace.set('width', width);
+    this.workspace.set('height', height);
+
+    // get offset
+    const l1 = Number(this.workspace.left);
+    const t1 = Number(this.workspace.top);
+    this.canvas.centerObject(this.workspace);
+    this.moveEl(this.workspace.left - l1, this.workspace.top - t1);
+    this.auto();
+  }
   //Initialize the canvas
   _initWorkspace() {
     const { width, height } = this.option;
+    
+    console.log(width,height)
     const workspace = new fabric.Rect({
       fill: '#ffffff',
       width,
       height,
       id: 'workspace',
     });
+
     workspace.set('selectable', false);
     workspace.set('hasControls', false);
     workspace.hoverCursor = 'selection';
@@ -45,51 +69,80 @@ class EditorWorkspace {
     this.canvas.renderAll();
 
     this.workspace = workspace;
+    console.log(this.workspace.left);
     this.auto();
 
-    // const { width, height } = this.option;
-    // console.log("Ddddddd")
-    // console.log(width,height)
+
+    // fabric.Image.fromURL(transParent, (workspace) => {
+    //   console.log(workspace)
+    //   workspace.set({
+    //     id: 'workspace',
+    //     width:width,
+    //     height:height,
+    //     left:0,
+    //     top:0,
+    //   });
+    //   workspace.hoverCursor = 'selection';
+    //   this.canvas.centerObject(workspace);
+    //   this.canvas.add(workspace);
+    //   this.canvas.renderAll();
+    //   this.workspace = workspace;
+    //   this.auto();      
+    // });
+
+
+
     // const workspace = new fabric.Image();
+    // workspace.setSrc(transParent);    
     // workspace.set({
     //   width,
     //   height,
     //   id: 'workspace',      
-    // })
-    // workspace.scale(1.7);
-    // workspace.setSrc(transParent);    
+    // });
     // workspace.set('selectable', false);
     // workspace.set('hasControls', false);
     // workspace.hoverCursor = 'selection';
-    // this.canvas.add(workspace);
     // this.canvas.centerObject(workspace);
+    // this.canvas.add(workspace);
     // this.canvas.renderAll();
-
     // this.workspace = workspace;
-    // this.auto();
+    // this.auto();    
 
 
     
     // const { width, height } = this.option;
-    // var workspace = new fabric.Image();
-         
-    // workspace.setSrc(transParent);    
-    // workspace.set({
-    //   left: 0,
-    //   id: 'workspace',
-    //   top: 0,
+    // var shadow = new fabric.Shadow({
+    //   color: "gray",
+    //   blur: 50,
+    //   offsetX: 0,
+    //   offsetY: 0,
+    // });       
+    // var workspace = new fabric.Image({
+    //   // src:transParent,
+    //   // shadow:shadow,
     //   width,
     //   height,
+    //   id: 'workspace',
     //   selectable:false,
-    //   hasControls:false,
-    // });    
-    // workspace.scale(1.7);
+    //   hasControls:false,      
+    // });
+  
+    // // this.workspace.set('shadow', shadow);
+    // // this.workspace.shadow = shadow;
+    // workspace.setSrc(transParent);    
+    // workspace.set('selectable', false);
+    // workspace.set('hasControls', false);    
 
+
+
+    // workspace.scaleToWidth(width)
+    // workspace.scaleToHeight(height)
+    // workspace.scale(1.7);
+    // this.canvas.centerObject(workspace);
     // this.canvas.add(workspace);
     // this.canvas.renderAll();
     // this.workspace = workspace;
     // this.auto();         
-   
   }
 
   // Initialize the listener
@@ -119,31 +172,7 @@ class EditorWorkspace {
     resizeObserver.observe(this.workspaceEl);
   }
 
-  setSize(width, height) {
-    console.log("setsize");
-    this._initBackground();
-    this.option.width = width;
-    this.option.height = height;
-    //reset workspace
-    this.workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
-    var shadow = new fabric.Shadow({
-      color: "gray",
-      blur: 50,
-      offsetX: 0,
-      offsetY: 0,
-    });     
-    this.workspace.set('width', width);
-    this.workspace.set('height', height);
-    // this.workspace.set('shadow', shadow);
-    this.workspace.shadow = shadow;
-    console.log(this.workspace)
-    // get offset
-    const l1 = Number(this.workspace.left);
-    const t1 = Number(this.workspace.top);
-    this.canvas.centerObject(this.workspace);
-    this.moveEl(this.workspace.left - l1, this.workspace.top - t1);
-    this.auto();
-  }
+
 
   moveEl(diffWidth, diffHeight) {
     this.canvas.getObjects().forEach((obj) => {

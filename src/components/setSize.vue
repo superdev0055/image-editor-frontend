@@ -146,6 +146,8 @@ export default {
     setSize() {
       this.canvas.c.discardActiveObject();
       this.canvas.editor.editorWorkspace.setSize(this.width, this.height);
+      console.log(this.canvas.c.getObjects()) 
+
     },
   },
   watch:{
@@ -157,7 +159,8 @@ export default {
     },
     width(){
       this.width = Number(this.width)
-      this.setSize()
+      this.setSize();
+
     },
     height(){
       this.height = Number(this.height)
