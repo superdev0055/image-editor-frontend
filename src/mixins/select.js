@@ -19,8 +19,9 @@ export default {
     });
 
     this.event.on('selectMultiple', (e) => {
-      this.mSelectMode = 'one';
-      this.mSelectId = '';
+      this.mSelectMode = 'multiple';
+      this.mSelectId = e[0].id;
+      this.mSelectOneType = e[0].type;
       this.mSelectIds = e.map((item) => item.id);
     });
 

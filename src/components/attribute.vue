@@ -661,7 +661,7 @@ export default {
         if(this.emptyPatternState == "removeBg"){
           this.removeBgState = true; 
         }else if(this.emptyPatternState == "trimBg"){
-          this.trimBgState = true
+          this.trimBgState = true;
         }
 
         // base
@@ -701,6 +701,7 @@ export default {
   
   },
   mounted(){
+    console.log(this.mSelectMode)
   },
   computed:{
   },
@@ -729,13 +730,10 @@ export default {
     //emptyImage
     //layer restriction
     startDate(evt){
-      console.log(evt)
     },
     endDate(evt){
-      console.log(evt)
     },                
     selectMode(evt){
-      console.log(this.model1)
     },
     showRestriction(){
       this.restrictionState ? this.restrictionState = false : this.restrictionState = true
@@ -946,7 +944,6 @@ export default {
           var left = originLeft + (originWidth-imgEl.width)/2  ;
           var top = originTop + (originHeight-imgEl.height)/2;
         }else{
-          console.log(originLeft,originWidth+imgEl.width)
           var left = originLeft + (originWidth/2)-(imgEl.width/2);
           var top = originTop + (originHeight/2)-(imgEl.height/2);
         }
@@ -972,23 +969,18 @@ export default {
   watch:{
     emptyPatternState(){
       var id = this.canvas.c.getActiveObjects()[0].id;
-      console.log(id);
       if(id  == "removeBg" || id == "trimBg" || id=="showBg"){
         if(this.emptyPatternState == "removeBg"){
-          console.log("remove")
           this.insertEmpty(removeBg);
           return true;
         }else if(this.emptyPatternState == "trimBg"){
-          console.log("trim")
           this.insertEmpty(trimBg);
           return true;
         }else{
-          console.log("showBg");
           this.insertEmpty(emptyData);
           return true;
         }
       }
-
     }
   }
 };

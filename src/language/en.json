@@ -84,8 +84,8 @@
     "loading_data": "Loading data...",
     "select_image": "Please select a background image",
     "select_file": "Select a file",
-    "copied_sucessful": "复制成功",
-    "fail_copy": "复制失败"
+    "copied_sucessful": "Copy successfully",
+    "fail_copy": "Copy fail"
   },
   "fruits": "Fruits",
   "sports": "Sports",

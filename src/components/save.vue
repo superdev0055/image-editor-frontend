@@ -58,61 +58,8 @@ export default {
         // this.downFile(fileStr, 'json');        
       }
 
-    },
-    saveSvg() {
-      const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
-      const { left, top, width, height } = workspace;
-      const dataUrl = this.canvas.c.toSVG({
-        width,
-        height,
-        viewBox: {
-          x: left,
-          y: top,
-          width,
-          height,
-        },
-      });
-      const fileStr = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(dataUrl)}`;
-      this.downFile(fileStr, 'svg');
-    },
-    saveImg() {
-      const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
-      const { left, top, width, height } = workspace;
-      const option = {
-        name: 'New Image',
-        format: 'png',
-        quality: 1,
-        left,
-        top,
-        width,
-        height,
-      };
-      this.canvas.c.setViewportTransform([1, 0, 0, 1, 0, 0]);
-      const dataUrl = this.canvas.c.toDataURL(option);
-      this.downFile(dataUrl, 'png');
-    },
-    downFile(fileStr, fileType) {
-      const anchorEl = document.createElement('a');
-      anchorEl.href = fileStr;
-      anchorEl.download = `${uuid()}.${fileType}`;
-      document.body.appendChild(anchorEl); // required for firefox
-      anchorEl.click();
-      anchorEl.remove();
-    },
-    clipboard() {
-      const jsonStr = this.canvas.editor.getJson();
-      this._mixinClipboard(JSON.stringify(jsonStr, null, '\t'));
-    },
-    clear() {
-      this.canvas.c.getObjects().forEach((obj) => {
-        if (obj.id !== 'workspace') {
-          this.canvas.c.remove(obj);
-        }
-      });
-      this.canvas.c.discardActiveObject();
-      this.canvas.c.renderAll();
-    },
-  },
+    }
+    }
 };
 </script>
 

@@ -1,16 +1,10 @@
 /* eslint-disable func-names */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
-/*
- * @Author: 秦少卫
- * @Date: 2023-02-03 21:50:10
- * @LastEditors: 秦少卫
- * @LastEditTime: 2023-02-18 20:01:41
- * @Description: 工作区初始化
- */
+
 
 import { fabric } from 'fabric';
-import {bgImg} from '@/utils/imgConstant'
+import {transParent} from '@/utils/imgConstant'
 class EditorWorkspace {
   constructor(canvas, option) {
     this.canvas = canvas;
@@ -20,7 +14,7 @@ class EditorWorkspace {
     this._initBackground();
     this._initWorkspace();
     this._initResizeObserve();
-    this._initDring();
+    this._initDring();  
   }
 
   //Initialize the background
@@ -36,47 +30,13 @@ class EditorWorkspace {
 
   //Initialize the canvas
   _initWorkspace() {
-    // const { width, height } = this.option;
-    // var workspace = new fabric.Image();
-    // workspace.src = bgImg
-    //   var shadow = new fabric.Shadow({
-    //     color: "gray",
-    //     blur: 50,
-    //     offsetX: 0,
-    //     offsetY: 0,
-    //   });      
-    //   workspace.scale(0.6);
-    //   workspace.set({
-    //     left: 0,
-    //     id: 'workspace',
-    //     top: 0,
-    //     hoverCursor: 'selection',
-    //     shadow:shadow,
-    //   });
-    //   workspace.set('selectable', false);
-    //   workspace.set('hasControls', false);
-    //   workspace.hoverCursor = 'selection';
-
-    //   this.canvas.centerObject(workspace);
-    //   this.canvas.add(workspace);
-    //   this.canvas.renderAll();
-    //   this.workspace = workspace;
-    //   this.auto();
     const { width, height } = this.option;
-    var shadow = new fabric.Shadow({
-      color: "gray",
-      blur: 50,
-      offsetX: 0,
-      offsetY: 0,
-    });      
     const workspace = new fabric.Rect({
       fill: '#ffffff',
       width,
       height,
       id: 'workspace',
-      shadow:shadow
     });
-
     workspace.set('selectable', false);
     workspace.set('hasControls', false);
     workspace.hoverCursor = 'selection';
@@ -86,6 +46,50 @@ class EditorWorkspace {
 
     this.workspace = workspace;
     this.auto();
+
+    // const { width, height } = this.option;
+    // console.log("Ddddddd")
+    // console.log(width,height)
+    // const workspace = new fabric.Image();
+    // workspace.set({
+    //   width,
+    //   height,
+    //   id: 'workspace',      
+    // })
+    // workspace.scale(1.7);
+    // workspace.setSrc(transParent);    
+    // workspace.set('selectable', false);
+    // workspace.set('hasControls', false);
+    // workspace.hoverCursor = 'selection';
+    // this.canvas.add(workspace);
+    // this.canvas.centerObject(workspace);
+    // this.canvas.renderAll();
+
+    // this.workspace = workspace;
+    // this.auto();
+
+
+    
+    // const { width, height } = this.option;
+    // var workspace = new fabric.Image();
+         
+    // workspace.setSrc(transParent);    
+    // workspace.set({
+    //   left: 0,
+    //   id: 'workspace',
+    //   top: 0,
+    //   width,
+    //   height,
+    //   selectable:false,
+    //   hasControls:false,
+    // });    
+    // workspace.scale(1.7);
+
+    // this.canvas.add(workspace);
+    // this.canvas.renderAll();
+    // this.workspace = workspace;
+    // this.auto();         
+   
   }
 
   // Initialize the listener
@@ -116,13 +120,23 @@ class EditorWorkspace {
   }
 
   setSize(width, height) {
+    console.log("setsize");
     this._initBackground();
     this.option.width = width;
     this.option.height = height;
     //reset workspace
     this.workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
+    var shadow = new fabric.Shadow({
+      color: "gray",
+      blur: 50,
+      offsetX: 0,
+      offsetY: 0,
+    });     
     this.workspace.set('width', width);
     this.workspace.set('height', height);
+    // this.workspace.set('shadow', shadow);
+    this.workspace.shadow = shadow;
+    console.log(this.workspace)
     // get offset
     const l1 = Number(this.workspace.left);
     const t1 = Number(this.workspace.top);
@@ -263,8 +277,8 @@ class EditorWorkspace {
 
   _setDring() {
     this.canvas.selection = false;
-    this.canvas.defaultCursor = 'grab';
-    this.workspace.hoverCursor = 'grab';
+    // this.canvas.defaultCursor = 'grab';
+    // this.workspace.hoverCursor = 'grab';
     this.canvas.getObjects().forEach((obj) => {
       obj.selectable = false;
     });

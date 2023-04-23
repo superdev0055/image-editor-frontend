@@ -19,6 +19,7 @@
     "color-gradient-picker-vue3": "0.1.1",
     "events": "3.3.0",
     "fabric": "^5.3.0",
+    
     "fontfaceobserver": "^2.3.0",
     "hotkeys-js": "^3.10.2",
     "jquery": "^3.6.4",

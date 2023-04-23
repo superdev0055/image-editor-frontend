@@ -1,5 +1,5 @@
 <template>
-    <draggable class="dragArea list-group w-full" :list="list" @change="log" animation="100"  >
+    <draggable class="dragArea list-group w-full" :list="list" @change="log">
       <div
           class="list-styles"
           v-for="element in list"
@@ -92,6 +92,12 @@ export default defineComponent({
     // When selecting an object in the canvas, the object does not appear on top.
     this.canvas.c.preserveObjectStacking = true;
     this.canvas.c.on('after:render', this.getList);
+    this.event.on('selectMultiple', (e) => {
+      this.mSelectMode = 'multiple';
+      this.mSelectId = e[0].id;
+      this.mSelectOneType = e[0].type;
+      this.mSelectIds = e.map((item) => item.id);
+    });    
   },  
   mounted(){
     setTimeout(() => {
@@ -102,13 +108,33 @@ export default defineComponent({
   },
   methods: {
     changeSelect(item){
-      var selectElem = this.list.filter(item=>{
+      this.canvas.c.discardActiveObject();
+      var aaa = this.list.filter(item=>{
         if(item.select == true){
-          this.canvas.c.remove(item);
           return item;
         }
-      });
-      var group = new fabric.Group(selectElem);
+      });    
+    	var c = [];
+    	this.canvas.c.getObjects().forEach(arg=>{
+    		aaa.forEach(arg1=>{
+    			if(arg.id == arg1.id){
+    				c.push(arg)
+    			}
+    		})
+    	})
+
+      if(c.length == 1){
+        // c.push("dddd");
+        return true;         
+      }else{
+        var gfg = new fabric.ActiveSelection(c, {
+          canvas:this.canvas.c,
+        });        
+        this.canvas.c.setActiveObject(gfg);
+        this.canvas.c.requestRenderAll();          
+      }
+   
+
     },
     selectElem(item){
       this.canvas.c.setActiveObject(item);
@@ -219,43 +245,88 @@ export default defineComponent({
       }
     },
     getList() {
-      this.list = [...this.canvas.c.getObjects()]
-        .reverse()
-        .map((item) => {
-          item.select = false;
-          if(item.opacity == 0){
-            item.view = false;
-          }else{
-            item.view = true;
-          }
-          if(item.hasControls == false && item.selectable == false){
-            item.lock = true;
-          }else{
-            item.lock = false;
-          }
-          switch(item.type){
-            case "i-text":
-              item.name = item.text.slice(0,10)+"...";
-              break;
-            case "image":
-              item.name = "image"+item.id.slice(0,5)
-              break;
-            case "rect" :
-              item.name = "rect"+item.id.slice(0,5)
-              break;
-            case "circle" :
-              item.name = "circle"+item.id.slice(0,5)
-              break;
-          }      
-          return item;
-        })
-        .filter((item) => {
-            return item.id !== 'workspace'
-          });        
+
+      if(this.mSelectMode == "one"){
+        this.list = [...this.canvas.c.getObjects()]
+          .reverse()
+          .map((item) => {
+            item.select = false;
+            if(item.opacity == 0){
+              item.view = false;
+            }else{
+              item.view = true;
+            }
+            if(item.hasControls == false && item.selectable == false){
+              item.lock = true;
+            }else{
+              item.lock = false;
+            }
+            switch(item.type){
+              case "i-text":
+                item.name = item.text.slice(0,10)+"...";
+                break;
+              case "image":
+                item.name = "image"+item.id.slice(0,5)
+                break;
+              case "rect" :
+                item.name = "rect"+item.id.slice(0,5)
+                break;
+              case "circle" :
+                item.name = "circle"+item.id.slice(0,5)
+                break;
+            }      
+            return item;
+          })
+          .filter((item) => {
+              return item.id !== 'workspace'
+            });
+      }else{
+
+        //multiple mode
+        this.list = [...this.canvas.c.getObjects()]
+          .reverse()
+          .map((item) => {
+            console.log(this.canvas.c.getActiveObjects());
+            item.select = false;
+            this.canvas.c.getActiveObjects().forEach(arg=>{
+              if(arg.id == item.id){
+                item.select = true;
+              }
+            })            
+            if(item.opacity == 0){
+              item.view = false;
+            }else{
+              item.view = true;
+            }
+            if(item.hasControls == false && item.selectable == false){
+              item.lock = true;
+            }else{
+              item.lock = false;
+            }
+            switch(item.type){
+              case "i-text":
+                item.name = item.text.slice(0,10)+"...";
+                break;
+              case "image":
+                item.name = "image"+item.id.slice(0,5)
+                break;
+              case "rect" :
+                item.name = "rect"+item.id.slice(0,5)
+                break;
+              case "circle" :
+                item.name = "circle"+item.id.slice(0,5)
+                break;
+            }      
+            return item;
+          })
+          .filter((item) => {
+              return item.id !== 'workspace'
+            });        
+      }
+        
          
     },    
     //for drag and drop
-
   }
 })
 </script>

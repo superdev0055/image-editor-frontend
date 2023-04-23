@@ -18,8 +18,8 @@ function intervalControl() {
     const hsize = 25;
     ctx.save();
     ctx.translate(left, top);
-    ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
-    ctx.drawImage(verticalImgIcon, -wsize / 2, -hsize / 2, wsize, hsize);
+    // ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+    // ctx.drawImage(verticalImgIcon, -wsize / 2, -hsize / 2, wsize, hsize);
     ctx.restore();
   }
 
@@ -191,11 +191,12 @@ function initControls(canvas) {
   rotationControl(canvas);
 
   // selected style
+  console.log(fabric.Object.prototype)
   fabric.Object.prototype.set({
     transparentCorners: false,
-    borderColor: '#51B9F9',
+    padding:2,
+    borderColor: "rgb(222, 222, 222)",
     cornerColor: '#FFF',
-    borderScaleFactor: 2.5,
     cornerStyle: 'circle',
     cornerStrokeColor: '#0E98FC',
     borderOpacityWhenMoving: 1,

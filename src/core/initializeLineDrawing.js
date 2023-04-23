@@ -18,8 +18,7 @@ function initializeLineDrawing(canvas, defaultPosition) {
 
     const NodeHandler = isArrow ? Arrow : fabric.Line;
     lineToDraw = new NodeHandler(pointerPoints, {
-      strokeWidth: 2,
-      stroke: '#000000',
+      strokeWidth: 1,
       ...defaultPosition,
       id: uuid(),
     });

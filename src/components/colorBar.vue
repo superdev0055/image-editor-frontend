@@ -1,7 +1,7 @@
 <template>
   <div v-if="!mSelectMode" style="float:right;margin-top:22px">
     <Button @click="set_bg" size="small">{{bg_set_title}}</Button>
-    <ColorPicker v-if="!showColor" v-model="color" @on-change="setThisColor" alpha size="small" transfer />
+    <ColorPicker v-if="showColor" v-model="color" @on-change="setThisColor" alpha size="small" transfer />
   </div>
 </template>
 
