@@ -1,5 +1,5 @@
 <template>
-    <draggable class="dragArea list-group w-full" :list="list" @change="log">
+    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300">
       <div
           class="list-styles"
           v-for="element in list"
@@ -15,7 +15,7 @@
           <div class="col-md-4">
             <Tooltip content="Click to unlock or lock" placement="top" class="hover_class">
               <Button v-if="element.lock" @click="doLock(element.id)" icon="md-lock" type="text"></Button>
-              <Button v-else @click="doLock(element.id)" icon="md-unlock" type="text"></Button>
+              <Button v-else @click="doLock(element.id)" icon="ios-unlock-outline" type="text"></Button>
             </Tooltip>
             <Tooltip content="Click to view or unview" placement="top" class="hover_class">
               <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(element.id)" type="text"></Button>
@@ -293,7 +293,6 @@ export default defineComponent({
         this.list = [...this.canvas.c.getObjects()]
           .reverse()
           .map((item) => {
-            console.log(this.canvas.c.getActiveObjects());
             item.select = false;
             this.canvas.c.getActiveObjects().forEach(arg=>{
               if(arg.id == item.id){

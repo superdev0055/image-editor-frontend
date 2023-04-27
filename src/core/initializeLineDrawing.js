@@ -62,6 +62,7 @@ function initializeLineDrawing(canvas, defaultPosition) {
 
   canvas.on('mouse:up', () => {
     if (!isDrawingLine) return;
+    console.log("asdf")
     lineToDraw.setCoords();
     isDrawingLine = false;
   });

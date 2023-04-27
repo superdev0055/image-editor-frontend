@@ -1,7 +1,7 @@
 <template>
   <Tooltip :content="$t('quick.lock')" v-if="mSelectMode === 'one'">
     <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-    <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
+    <Button v-else @click="doLock(true)" icon="ios-unlock-outline" type="text"></Button>
   </Tooltip>
 </template>
 

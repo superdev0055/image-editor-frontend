@@ -49,6 +49,7 @@ export default {
     // insert empty file
     insertEmptyFile(file,type) {
        setTimeout(() => {
+        
           const imgEl = document.createElement('img');
           imgEl.src = file || this.imgFile;
           document.body.appendChild(imgEl);
@@ -57,19 +58,17 @@ export default {
             const imgInstance = new this.fabric.Image(imgEl, {
               id: "showBg",
               name: 'picture1',
-              left: -250,
-              top: -50,
             });
-            imgInstance.scale(0.7);
-
+            imgInstance.scale(0.4);
             // set zoom
             this.canvas.c.add(imgInstance);
+            this.canvas.c.centerObject(imgInstance);
             this.canvas.c.setActiveObject(imgInstance);
             this.canvas.c.renderAll();
-            // // Remove image elements from the page
+            // Remove image elements from the page
             imgEl.remove();
         };          
-      }, 5);
+      }, 100);
 
     },    
     
@@ -84,13 +83,12 @@ export default {
         const imgInstance = new this.fabric.Image(imgEl, {
           id: uuid(),
           name: 'picture1',
-          left: 100,
-          top: 100,
           selectable:false,
           hasControls:false
         });
         // set zoom
         this.canvas.c.add(imgInstance);
+        this.canvas.c.centerObject(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
         this.canvas.c.renderAll();
         // // Remove image elements from the page

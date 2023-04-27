@@ -24,13 +24,11 @@
               <div class="mt-2">
                 <div class="image-width mt-2 col-md-5" style="float:left">
                   <label class="font-s">Width</label>      
-                  <b-form-input  size="sm" type="number" :max="2000" :min="1" v-model="width" @on-change="setSize">
-
-                  </b-form-input>
+                  <input  size="sm" type="number" :max="2000" :min="1" v-model="width" @change="setSize"/>
                 </div>
                 <div class="image-height mt-2 col-md-5" style="float:right">
                   <label class="font-s">Height</label>                  
-                  <b-form-input size="sm" type="number" :max="2000" :min="1" v-model="height" @on-change="setSize"></b-form-input>
+                  <b-form-input size="sm" type="number" :max="2000" :min="1" v-model="height" @change="setSize"></b-form-input>
                 </div>                
               </div>  
 
@@ -144,10 +142,9 @@ export default {
       this.setSize();
     },
     setSize() {
+      console.log("asdf")
       this.canvas.c.discardActiveObject();
       this.canvas.editor.editorWorkspace.setSize(this.width, this.height);
-      console.log(this.canvas.c.getObjects()) 
-
     },
   },
   watch:{
@@ -157,15 +154,15 @@ export default {
       this.height = Number(resolution[1]);
       this.setSize();
     },
-    width(){
-      this.width = Number(this.width)
-      this.setSize();
+    // width(){
+    //   this.width = Number(this.width)
+    //   this.setSize();
 
-    },
-    height(){
-      this.height = Number(this.height)
-      this.setSize()
-    },
+    // },
+    // height(){
+    //   this.height = Number(this.height)
+    //   this.setSize()
+    // },
 
     selectMode(){
       if(this.selectMode === '1'){

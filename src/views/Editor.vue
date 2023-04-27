@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <header class="header text-center row" style="width: 100%;">
+    <header class="header text-center row" style="width: 100%;z-index:100000">
       <div class="col-3 row">
         <div class="col-1" style="padding-top: 5px;">
           <Button icon="md-arrow-round-back" class="left-btn" @click="selectM()"></Button>
@@ -121,7 +121,6 @@ export default {
       "param_id":this.$route.params.id
     }
   },    
-
   data() {
     return {
       show: false,
@@ -155,7 +154,6 @@ export default {
   },
   methods:{
     save(){
-      console.log("asdf")
     }
   },
   mounted() {
@@ -185,5 +183,4 @@ export default {
   padding: 10px;
   border-radius:10px
 }
-
 </style>

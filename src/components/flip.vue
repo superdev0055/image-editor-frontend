@@ -58,9 +58,8 @@
             </svg>
           </Button>
         </Tooltip>
-        <!-- </ButtonGroup> -->
-      </div>      
-    </div>
+      </div>   
+    </div>         
 </template>
 
 <script>

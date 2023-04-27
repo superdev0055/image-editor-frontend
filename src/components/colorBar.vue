@@ -7,7 +7,7 @@
 
 <script>
 import select from '@/mixins/select';
-
+import {transParent} from '@/utils/imgConstant';
 export default {
   name: 'bgBar',
   inject: ['canvas', 'fabric'],
@@ -52,12 +52,62 @@ export default {
       workspace.set('fill', '');
       this.canvas.c.renderAll();
     },    
+    getOriginSize(){
+        var oldWorkspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+        var size = {originW:oldWorkspace.originW,originH:oldWorkspace.originH,left:oldWorkspace.left,top:oldWorkspace.top};
+        return size;
+    },
+    oldBgRemove(){
+        var oldWorkspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+        this.canvas.c.remove(oldWorkspace);
+    },
     set_bg(){
       if(this.showColor == true){
+        var oldSize = this.getOriginSize();
+        this.oldBgRemove();
+        var workspace = new fabric.Image();
+        workspace.setSrc(transParent);    
+        workspace.set({
+          id: 'workspace',
+          left:oldSize.left,
+          top:oldSize.top,
+          originW:oldSize.originW,
+          originH:oldSize.originH,
+        });
+        workspace.set('selectable', false);
+        workspace.set('hasControls', false);        
+        workspace.set("scaleX",oldSize.originW/this.canvas.editor.editorWorkspace.imageW);
+        workspace.set("scaleY",oldSize.originH/this.canvas.editor.editorWorkspace.imageH);        
+        this.canvas.c.add(workspace);
+        setTimeout(() => {
+          this.canvas.c.renderAll();  
+          this.canvas.editor.editorWorkspace.workspace = workspace// this.auto();
+        }, 200);        
+        this.canvas.c.renderAll();  
+        workspace.sendToBack();                   
         this.showColor = false;
       }else{
+
+        var oldSize = this.getOriginSize();
+        this.oldBgRemove();
+        var workspace = new fabric.Rect({
+          fill: '#ffffff',
+          width:oldSize.originW,
+          height:oldSize.originH,
+          originW:oldSize.originW,
+          originH:oldSize.originH,
+          id: 'workspace',
+        });
+
+        workspace.set('selectable', false);
+        workspace.set('hasControls', false);
+        workspace.hoverCursor = 'selection';
+        this.canvas.c.add(workspace);
+        this.canvas.c.centerObject(workspace);
+        this.canvas.c.renderAll();
+        this.canvas.editor.editorWorkspace.workspace = workspace// this.auto();
+        workspace.sendToBack();                   
         this.showColor = true;
-        this.clearColor();
       }
       // this.showColor ?this.showColor = false:this.showColor = true;
     },

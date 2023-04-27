@@ -3,31 +3,8 @@
     <!-- general properties -->
     <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 45555555555;background-color:white">
       <!-- Right Head -->
-      <div style="margin-left:15px"> 
-        <div class="flex-item right-top mt-3" v-if="textType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn" @click="mainPanel()"></Button>
-          <h2 style="font-family: initial;margin-left:10px">T</h2>
-          <Input style="margin-left:20px;width:75%">
-          </Input>
-        </div>
-        <div class="flex-item right-top mt-3" v-if="imgType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-          <h2 style="margin-left:10px"><Icon type="ios-image" /></h2>
-          <Input style="margin-left:20px;width:75%" ></Input>
-        </div>
-        <div class="flex-item right-top mt-3" v-if="rectType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-          <h2 style="margin-left:10px"><Icon type="ios-square-outline" /></h2>
-          <Input style="margin-left:20px;width:75%" ></Input>
-        </div> 
-        <div class="flex-item right-top mt-3" v-if="circleType.includes(mSelectOneType)">
-          <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
-          <h2 style="margin-left:10px"><Icon type="ios-radio-button-off" /></h2>
-          <Input style="margin-left:20px;width:75%"></Input>
-        </div>
-      </div>
+      <right-header :mSelectOneTypeProps="mSelectOneType"></right-header>
       <!-- Right Head -->
-
       <!-- layer setting -->
       <div class="mt-2 customborder"></div>
       <div class="mt-2" style="height: 40px;margin-right:40px">
@@ -35,7 +12,7 @@
         <div style="float:right">
           <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
             <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-            <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
+            <Button v-else @click="doLock(true)" icon="ios-unlock-outline" type="text"></Button>
           </Tooltip>
           <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
             <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
@@ -54,9 +31,9 @@
         </div>
       </div>
       <!-- layer setting -->    
+      <div class="customborder"></div>
     </div>
     <div class="setBox">
-      <div class="customborder"></div>
       <div v-show="baseType.includes(mSelectOneType)">
         <!-- control part -->
         <div class="control" style="margin-left:15px">
@@ -72,9 +49,10 @@
                   <!-- W -->
                   </span>
                   <input
+                    style="width:100%"
                     autocomplete="off" 
                     type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                    class="ivu-input ivu-input-with-suffix" 
                     placeholder="Enter text"
                     v-model="baseAttr.width"
                     @change="(value) => changeCommon('width', value)"
@@ -150,7 +128,7 @@
         <!-- control part -->
       </div>
       <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
-        <div class="row mb-3" style="">
+        <div class="row mb-3">
           <flip></flip>
           <div class="col col-lg-2">
             <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
@@ -221,473 +199,14 @@
           </div>
         </div>      
       </div>
-      <div v-show="shapeType.includes(mSelectOneType)" style="margin-left:15px">
-        <div class="row mb-3" style="">
-          <div class="col col-lg-9">
-            Rotate
-          </div>                
-          <div class="col col-lg-2">
-            <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-              <span class="ivu-input-suffix">
-                <i style="font-style: normal; font-size: 11px;">&deg;</i>
-              <!-- Degree -->
-              </span>
-              <input
-                autocomplete="off" 
-                type="number" 
-                class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                placeholder="Enter text"
-                v-model="baseAttr.angle"
-                :max="360"
-                @change="(value)=>changeCommon('angle', value)"
-              />
-            </div>
-          </div>
-        </div>      
-        <div v-show="rectType.includes(mSelectOneType)" class="row mb-3" style="">
-          <div class="col col-lg-9">
-            Round
-          </div>                
-          <div class="col col-lg-2">
-            <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-              <span class="ivu-input-suffix">
-                <i style="font-style: normal; font-size: 11px;">&deg;</i>
-              <!-- Degree -->
-              </span>
-              <input
-                autocomplete="off" 
-                type="number" 
-                class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                placeholder="Enter text"
-                v-model="baseAttr.angle"
-                :max="360"
-                @change="(value)=>changeCommon('round', value)"
-              />
-            </div>
-          </div>
-        </div>
-        <!-- shape fill -->
-        <div>
-          <div class="customborder mt-2"></div>
-          <div class="row mt-3">
-            <div class="col-9">
-              Fill
-            </div>                
-            <div class="col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showFill" true-color="#13ce66"/>
-            </div>
-          </div>
-          <div v-if="fillState">
-            <div class="row mb-3">
-              <div class="col-5">
-                <Color :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)" style="width:100%"></Color>
-              </div>
-            </div>
-          </div>             
-        </div>
-          <!-- shape fill -->        
-          <!-- shape border -->
-        <div class="customborder mt-3"></div>
-        <div>
-          <div class="row mt-3" style="">
-            <div class="col-9">
-              Border
-            </div>                
-            <div class="col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showBorder" true-color="#13ce66"/>
-            </div>   
-          </div>
-          <div v-if="borderState">
-            <div class="row mb-3" style="">
-              <div class="col col-lg-6">
-                Color
-              </div>                
-              <div class="col col-lg-5">
-                <input
-                  type="color"
-                  v-model="baseAttr.stroke"
-                  @change="(value) => changeCommon('stroke', value)"
-                />
-              </div>
-            </div>
 
-            <div class="row mb-3" style="">
-              <div class="col col-lg-9">
-                Line thickness
-              </div>
-              <div class="col col-lg-2">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                  <span class="ivu-input-suffix">
-                    <i style="font-style: normal; font-size: 11px;">px</i>
-                  <!-- Pixel -->
-                  </span>
-                  <input
-                    type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                    v-model="baseAttr.strokeWidth"
-                    :max="360"
-                    @change="(value)=>changeCommon('strokeWidth', value)"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- shape border -->
-      </div>
+      <!----------------- shape and text ----------------------->
+
+      <shape-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></shape-type>
+      <text-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr,this.fontAttr]"></text-type>
+
+      <!----------------- shape and text ----------------------->
                   
-      <div v-show="textType.includes(mSelectOneType)" class="mt-3 mb-3">
-        <div class="customborder mt-3"></div>
-        <div class="mt-3" style="margin-left: 30px;"> 
-          <label>Text</label>
-          <Input v-model="fontAttr.string" @change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
-            <template #append>
-              <Select style="width: 70px" @on-change="changeAddTab" size="small">
-                  <Option value="[avability]">[avability]</Option>
-                  <Option value="[brand]">[brand]</Option>
-                  <Option value="[channel]">[channel]</Option>
-              </Select>
-            </template>
-          </Input>
-        </div>
-
-        <!-- -------------------  Text Setting  ---------------- -->
-        <div class="customborder mt-3"></div>
-        <div class="mt-3" style="margin-left:14px;">
-          <!-- -------------------  text handling  ---------------- -->
-          <div class="row" style="margin-left: 3px;">
-            <div class="col-8" >
-              <Select v-model="fontAttr.fontFamily" @change="changeFontFamily">
-                <Option v-for="item in fontFamilyList" :value="item" :key="'font-' + item">
-                  {{ item }}
-                </Option>
-              </Select>
-            </div>
-            <div class="col-3" style="">
-              <Button :size="buttonSize" type="button" class="ivu-btn ivu-btn-text">
-                Add custom font
-                <Icon type="ios-cloud-upload-outline" />
-              </Button>
-            </div>
-          </div>
-          <!-- -------------------  End text handling  ---------------- -->
-
-          <!-- -------------------  font setting  ---------------- -->
-          <div class="mt-3 row" style="margin-left: 1px;">
-            <!-- -------------------  font size & color  ---------------- -->
-            <div class="col-6 row">
-              <div class="col-6">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: auto;">
-                  <i class="ivu-icon ivu-icon-ios-loading ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
-                  <input 
-                    v-model="fontAttr.fontSize"
-                    type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-prefix" 
-                    @change="(value) => changeCommon('fontSize', value)"
-                  />
-                    <span class="ivu-input-prefix">
-                      <i class="ivu-icon ivu-icon-ios-appstore"></i>
-                    </span>
-                </div>
-              </div>
-              <div class="col-6">
-                <Color style="margin-top:-10px;margin-left:10px;width:100%" :color="baseAttr.fill" @change="(value) => changeCommon('fill', value)"></Color>
-              </div>
-            </div>
-            <!-- -------------------  End font size & color  ---------------- -->
-
-            <!-- -------------------  font style  ---------------- -->
-            <div class="col-5" style="text-align: right; margin-left: 20px;">
-              <ButtonGroup class="button-group">
-                <Button @click="changeFontWeight('fontWeight', fontAttr.fontWeight)" class="border-btn" style="margin-left:10px">
-                  <svg viewBox="0 0 1024 1024" width="14" height="14">
-                    <path
-                      d="M793.99865 476a244 244 0 0 0 54-130.42C862.75865 192.98 743.01865 64 593.85865 64H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h63.74v576H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h418.64c141.6 0 268.28-103.5 282-244.8 9.48-96.9-32.78-184.12-101.66-239.2zM418.33865 224h175.52a96 96 0 0 1 0 192h-175.52z m175.52 576h-175.52V576h175.52a112 112 0 0 1 0 224z"
-                      :fill="fontAttr.fontWeight === 'bold' ? '#305ef4' : '#666'"
-                    ></path>
-                  </svg>
-                </Button>
-                <Button @click="changeFontStyle('fontStyle', fontAttr.fontStyle)" class="border-btn" style="margin-left:10px">
-                  <svg viewBox="0 0 1024 1024" width="14" height="14">
-                    <path
-                      d="M832 96v64a32 32 0 0 1-32 32h-125.52l-160 640H608a32 32 0 0 1 32 32v64a32 32 0 0 1-32 32H224a32 32 0 0 1-32-32v-64a32 32 0 0 1 32-32h125.52l160-640H416a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32h384a32 32 0 0 1 32 32z"
-                      :fill="fontAttr.fontStyle === 'italic' ? '#305ef4' : '#666'"
-                    ></path>
-                  </svg>
-                </Button>
-                <Button @click="changeLineThrough('linethrough', fontAttr.linethrough)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <path d="M12.12,19.16 C8.78,19.16 6.4,16.98 6.4,13.48 L6.4,4.8 L8.72,4.8 L8.72,13.54 C8.72,15.74 10.1,16.96 12.12,16.96 C14.14,16.96 15.5,15.74 15.5,13.54 L15.5,4.8 L17.82,4.8 L17.82,13.48 C17.82,16.98 15.46,19.16 12.12,19.16 Z" fill="#000000"/>
-                          <rect fill="#000000" opacity="0.3" x="4" y="21" width="16" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', fontAttr.underline)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <rect fill="#000000" opacity="0.3" x="4" y="11" width="17" height="2" rx="1"/>
-                          <path d="M12.06,19.16 C10,19.16 8.28,18.16 7.44,16.96 L8.82,15.76 C9.5,16.64 10.66,17.42 12.04,17.42 C13.68,17.42 14.72,16.66 14.72,15.42 C14.72,14.12 13.92,13.44 12.4,12.78 L11.1,12.22 C8.94,11.3 8,9.98 8,8.2 C8,6.04 10.04,4.64 12.14,4.64 C13.8,4.64 15.16,5.3 16.12,6.46 L14.84,7.74 C14.1,6.86 13.32,6.38 12.08,6.38 C10.88,6.38 9.82,7.06 9.82,8.24 C9.82,9.28 10.42,9.98 11.92,10.64 L13.22,11.2 C15.14,12.04 16.56,13.22 16.56,15.22 C16.56,17.54 14.84,19.16 12.06,19.16 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-              </ButtonGroup>
-            </div>
-            <!-- -------------------  End font style  ---------------- -->
-
-          </div>
-          <!-- -------------------  End font setting  ---------------- -->
-          
-          <!-- -------------------  Long text handling  ---------------- -->
-          <div class="mt-3 row" style="margin-left: 1px;">
-            <div class="col-7 mt-1">
-              Long text handling
-            </div>  
-            <div class="col-4" style="margin: 0;">
-              <Select>
-                <Option value="automatic" selected>Automatic font size</Option>
-                <Option value="shorten">Shorten text</Option>
-              </Select>
-            </div>   
-          </div>
-          <!-- -------------------  End Long text handling  ---------------- --> 
-          
-          <!-- -------------------  Text alignment  ---------------- -->
-          <div class="row mt-3" style="margin-left: 1px;">
-            <div class="col-4 mt-1">
-              Text alignment
-            </div>
-            <div class="col col-7" style="text-align: right;">
-              <ButtonGroup class="button-group">
-                <Button @click="changeFontWeight('fontWeight', fontAttr.fontWeight)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <polygon points="0 0 24 0 24 24 0 24"/>
-                          <rect fill="#000000" opacity="0.3" x="11" y="7" width="2" height="14" rx="1"/>
-                          <path d="M6.70710678,14.7071068 C6.31658249,15.0976311 5.68341751,15.0976311 5.29289322,14.7071068 C4.90236893,14.3165825 4.90236893,13.6834175 5.29289322,13.2928932 L11.2928932,7.29289322 C11.6714722,6.91431428 12.2810586,6.90106866 12.6757246,7.26284586 L18.6757246,12.7628459 C19.0828436,13.1360383 19.1103465,13.7686056 18.7371541,14.1757246 C18.3639617,14.5828436 17.7313944,14.6103465 17.3242754,14.2371541 L12.0300757,9.38413782 L6.70710678,14.7071068 Z" fill="#000000" fill-rule="nonzero"/>
-                          <rect fill="#000000" opacity="0.3" x="3" y="3" width="18" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeFontStyle('fontStyle', fontAttr.fontStyle)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
-                          <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeLineThrough('linethrough', fontAttr.linethrough)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <polygon points="0 0 24 0 24 24 0 24"/>
-                          <rect fill="#000000" opacity="0.3" x="11" y="3" width="2" height="14" rx="1"/>
-                          <path d="M6.70710678,16.7071068 C6.31658249,17.0976311 5.68341751,17.0976311 5.29289322,16.7071068 C4.90236893,16.3165825 4.90236893,15.6834175 5.29289322,15.2928932 L11.2928932,9.29289322 C11.6714722,8.91431428 12.2810586,8.90106866 12.6757246,9.26284586 L18.6757246,14.7628459 C19.0828436,15.1360383 19.1103465,15.7686056 18.7371541,16.1757246 C18.3639617,16.5828436 17.7313944,16.6103465 17.3242754,16.2371541 L12.0300757,11.3841378 L6.70710678,16.7071068 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000003, 12.999999) scale(1, -1) translate(-12.000003, -12.999999) "/>
-                          <rect fill="#000000" opacity="0.3" x="3" y="19" width="18" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', fontAttr.underline)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="2" rx="1"/>
-                          <rect fill="#000000" opacity="0.3" x="4" y="13" width="16" height="2" rx="1"/>
-                          <path d="M5,9 L13,9 C13.5522847,9 14,9.44771525 14,10 C14,10.5522847 13.5522847,11 13,11 L5,11 C4.44771525,11 4,10.5522847 4,10 C4,9.44771525 4.44771525,9 5,9 Z M5,17 L13,17 C13.5522847,17 14,17.4477153 14,18 C14,18.5522847 13.5522847,19 13,19 L5,19 C4.44771525,19 4,18.5522847 4,18 C4,17.4477153 4.44771525,17 5,17 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', fontAttr.underline)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <path d="M5,5 L19,5 C19.5522847,5 20,5.44771525 20,6 C20,6.55228475 19.5522847,7 19,7 L5,7 C4.44771525,7 4,6.55228475 4,6 C4,5.44771525 4.44771525,5 5,5 Z M5,13 L19,13 C19.5522847,13 20,13.4477153 20,14 C20,14.5522847 19.5522847,15 19,15 L5,15 C4.44771525,15 4,14.5522847 4,14 C4,13.4477153 4.44771525,13 5,13 Z" fill="#000000" opacity="0.3"/>
-                          <path d="M8,9 L16,9 C16.5522847,9 17,9.44771525 17,10 C17,10.5522847 16.5522847,11 16,11 L8,11 C7.44771525,11 7,10.5522847 7,10 C7,9.44771525 7.44771525,9 8,9 Z M8,17 L16,17 C16.5522847,17 17,17.4477153 17,18 C17,18.5522847 16.5522847,19 16,19 L8,19 C7.44771525,19 7,18.5522847 7,18 C7,17.4477153 7.44771525,17 8,17 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', fontAttr.underline)" class="border-btn" style="margin-left:10px">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <path d="M5,5 L19,5 C19.5522847,5 20,5.44771525 20,6 C20,6.55228475 19.5522847,7 19,7 L5,7 C4.44771525,7 4,6.55228475 4,6 C4,5.44771525 4.44771525,5 5,5 Z M5,13 L19,13 C19.5522847,13 20,13.4477153 20,14 C20,14.5522847 19.5522847,15 19,15 L5,15 C4.44771525,15 4,14.5522847 4,14 C4,13.4477153 4.44771525,13 5,13 Z" fill="#000000" opacity="0.3"/>
-                          <path d="M11,9 L19,9 C19.5522847,9 20,9.44771525 20,10 C20,10.5522847 19.5522847,11 19,11 L11,11 C10.4477153,11 10,10.5522847 10,10 C10,9.44771525 10.4477153,9 11,9 Z M11,17 L19,17 C19.5522847,17 20,17.4477153 20,18 C20,18.5522847 19.5522847,19 19,19 L11,19 C10.4477153,19 10,18.5522847 10,18 C10,17.4477153 10.4477153,17 11,17 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-              </ButtonGroup>
-            </div>
-          </div>
-          <!-- -------------------  End Text alignment  ---------------- --> 
-          
-          <!-- -------------------  Text padding  ---------------- -->
-          <div class="row mt-3" style="margin-left: 1px;">
-            <div class="col-8 mt-1">
-              Text padding
-            </div>  
-            <div class="col-3">
-              <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                <span class="ivu-input-suffix">
-                  <i style="font-style: normal; font-size: 11px;">px</i>
-                <!-- Pixel -->
-                </span>
-                <input
-                  type="number" 
-                  class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                  v-model="baseAttr.angle"
-                  :max="80"
-                  @change="(value)=>changeCommon('angle', value)"
-                />
-              </div>
-            </div>   
-          </div>
-          <!-- -------------------  End Text padding  ---------------- -->
-        </div>
-        <!-- -------------------  End Text Setting  ---------------- -->
-
-        <!-- -------------------  Round Corners  ---------------- -->
-        <div class="customborder mt-3"></div>
-        <div class="mt-3 row" style="margin-left:15px;">
-          <div class="col-8 mt-1">
-            Round Corners
-          </div>  
-          <div class="col-3">
-            <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-              <span class="ivu-input-suffix">
-                <i style="font-style: normal; font-size: 11px;">px</i>
-              </span>
-              <input
-                autocomplete="off" 
-                type="number" 
-                class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                v-model="baseAttr.angle"
-                :max="80"
-                @change="(value)=>changeCommon('angle', value)"
-              />
-            </div>
-          </div>
-        </div>
-        <!-- -------------------  End Round Corners  ---------------- -->
-
-        <!-- -------------------  Border  ---------------- -->
-        <div class="customborder mt-3"></div>
-        <div class="row mt-3" style="margin-left:15px">
-          <div class="col-7 mt-1">
-            Border
-          </div>          
-          <div class="col col-lg-2">
-            <input
-              type="color"
-              v-model="baseAttr.stroke"
-              @change="(value) => changeCommon('stroke', value)"
-              alpha
-            />
-          </div>                
-          <div class="col col-lg-2">
-            <Input
-              type="number"
-              v-model="baseAttr.strokeWidth"
-              :max="360"
-              @change="(value) => changeCommon('strokeWidth', value)"
-              show-input
-            >
-              <template #append>
-                <span>&deg;</span>
-              </template>
-            </Input>
-          </div>
-        </div>
-        <!-- -------------------  End Border  ---------------- -->
-
-        <!-- -------------------  Fill  ---------------- -->
-        <div class="customborder mt-3"></div>
-        <div class="row">
-          <div class="row mt-3" style="margin-left:15px;">
-            <div class="col-9 mt-1">
-              Fill
-            </div>                
-            <div class="col col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showTextFill" true-color="#13ce66"/>
-            </div>
-          </div>
-          <div v-if="showState" class="row mt-4" style="margin-left:15px;">
-            <div class="col-5">
-              <input
-                type="color"
-                v-model="baseAttr.stroke"
-                @change="(value) => changeCommon('stroke', value)"
-                alpha
-              />
-            </div>
-            <div class="col-6">
-              <Select @change="changeSelectFillType" size="normal">
-                <Option  v-for="item in fillType" :value="item" :key="'fill-' + item">{{ item }}</Option>
-              </Select>
-            </div>
-          </div>
-        </div>
-        <!-- -------------------  End Fill  ---------------- -->
-
-        <!-- -------------------  Text Border  ---------------- -->
-        <div class="customborder mt-3"></div>
-        <div class="row mt-3">
-          <div class="row" style="margin-left:15px;">
-            <div class="col-9">
-              Border
-            </div>                
-            <div class="col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showTextBorder" true-color="#13ce66"/>
-            </div>
-          </div>
-          <div v-if="textBorderState" class="mt-3">
-            <div class="row" style="margin-left:15px;">
-              <div class="col-5">
-                <input
-                  type="color"
-                  v-model="baseAttr.stroke"
-                  @change="(value) => changeCommon('stroke', value)"
-                  alpha
-                />
-              </div>
-              <div class="col-6">
-                <Select @change="changeSelectBorderType" size="normal">
-                  <Option  v-for="item in textBorderType" :value="item" :key="'fill-' + item">{{ item }}</Option>
-                </Select>
-              </div>
-            </div>
-
-            <!-- -------------------  Line thickness  ---------------- -->
-            <div class="mt-3 row" style="margin-left:15px;">
-              <div class="col-8 mt-1">
-                Line thickness
-              </div>  
-              <div class="col-3">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                  <span class="ivu-input-suffix">
-                    <i style="font-style: normal; font-size: 11px;">px</i>
-                  </span>
-                  <input
-                    type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                    v-model="baseAttr.angle"
-                    :max="80"
-                    @change="(value)=>changeCommon('angle', value)"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- -------------------  End Line thickness  ---------------- -->
-          </div>
-
-        </div>
-        <!-- -------------------  End Text Border  ---------------- -->
-
-
-
-      </div>
-      
       <!-- Layer restriction -->
       <div class="customborder mt-3" ></div>
       <div class="row mt-3 mb-3" style="margin-left:15px;">
@@ -703,7 +222,7 @@
               Generate
             </div>
             <div class="col-3">
-              <Select v-model="model1" size="normal" @on-change="selectMode">
+              <Select v-model="model1" @on-change="selectMode">
                   <Option v-for="item in modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
               </Select>
             </div>
@@ -713,7 +232,7 @@
               From
             </div>                
             <div class="col-6">
-              <DatePicker size="normal" type="date" style="width:100%" placeholder="Start date" @on-change="startDate"/>
+              <DatePicker type="date" style="width:100%" placeholder="Start date" @on-change="startDate"/>
             </div>
           </div>
           <div class="row mt-3">
@@ -721,7 +240,7 @@
               Until
             </div>                
             <div class="col col-6">
-              <DatePicker size="normal" type="date" style="width:100%" placeholder="End date" @on-change="endDate"/>
+              <DatePicker type="date" style="width:100%" placeholder="End date" @on-change="endDate"/>
             </div>
           </div>
           <div class="col-11 mt-3">
@@ -742,17 +261,17 @@
 
 </style>
 <script>
-import fontList from '@/assets/fonts/font';
 import select from '@/mixins/select';
-import FontFaceObserver from 'fontfaceobserver';
 import layer1 from './layer1.vue'
 import Color from './color.vue';
 import dele from "./del.vue";
 import clone from "./clone.vue"
 import flip from "./flip.vue"
 import align from "./align.vue"
-import {removeBg,trimBg,emptyData} from '@/utils/imgConstant' 
-import $ from "jquery";
+import {removeBg,trimBg,emptyData} from '@/utils/imgConstant';
+import rightHeader from "./rightHeader.vue" 
+import shapeType from "./shapeType.vue" 
+import textType from "./textType.vue" 
 const lockAttrs = [
   'lockMovementX',
   'lockMovementY',
@@ -771,10 +290,12 @@ export default {
     clone,
     flip,
     align,
+    rightHeader,
+    shapeType,
+    textType
   },
   data() {
     return {
-      loading1: false,
       //layer restriction
       modes: [
           {
@@ -788,9 +309,6 @@ export default {
       ],
       model1: '',
       restrictionState:false,
-      borderState:false,
-      fillState:false,
-      showState:false,
       //layer restriction
       isLock: false,
       isView:true,
@@ -810,44 +328,8 @@ export default {
         "rect",
         "circle"
       ],
-      shapeType:["rect","circle"],
-      rectType:["rect"],
-      circleType:["circle"],
-      // text element
-      textType: ['i-text', 'textbox', 'text'],
-      // image element
+      // <!------------------------image element --->
       imgType: ['image'],
-      // FillType element
-      fillType: [
-        'normal',
-        'multiply',
-        'screen',
-        'overlay',
-        'darken',
-        'lighten',
-        'color-dodge',
-        'color-burn',
-        'hard-light',
-        'soft-light',
-        'different',
-        'exclusion',
-        'hue',
-        'saturation',
-        'color',
-        'luminosity'
-      ],
-      textBorderState: false,
-      textBorderType: [
-        'dotted',
-        'dashed',
-        'solid',
-        'double',
-        'groove',
-        'ridge',
-        'inset',
-        'outset',
-        'none'
-      ],
       // general properties
       baseAttr: {
         round:0,
@@ -872,8 +354,8 @@ export default {
       fontAttr: {
         string:"",
         fontSize: 0,
-        fontFamily: '',
-        lineHeight: 0,
+        fontFamily: "",    
+        lineHeight: 0, 
         charSpacing: 0,
         fontWeight: '',
         textBackgroundColor: '#fff',
@@ -882,13 +364,8 @@ export default {
         underline: false,
         linethrough: false,
         overline: false,
-      },
-      // image properties
-      imgAttr: {
-        blur: 0,
-      },
+      },      
       // Font drop-down list
-      fontFamilyList: fontList.map((item) => item.fontFamily),
       strokeDashList: [
         {
           value: {
@@ -1018,11 +495,6 @@ export default {
           this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
           this.fontAttr.fontWeight = activeObject.get('fontWeight');
         }
-
-        // picture filter
-        if (activeObject.type === 'image') {
-          this.imgAttr.blur = activeObject.filters[0] ? activeObject.filters[0].blur : 0;
-        }
       }
     });
   
@@ -1032,23 +504,6 @@ export default {
   computed:{
   },
   methods: {
-    remoteMethod1 (query) {
-        if (query !== '') {
-            this.loading1 = true;
-            setTimeout(() => {
-                this.loading1 = false;
-                const list = this.list.map(item => {
-                    return {
-                        value: item,
-                        label: item
-                    };
-                });
-                this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
-            }, 200);
-        } else {
-            this.options1 = [];
-        }
-    },
     //emptyImage
     nonShowBg(evt){
       this.removeBgState = evt
@@ -1070,7 +525,6 @@ export default {
       this.emptyPatternState = "showBg"
     },
     //emptyImage
-    //layer restriction
     startDate(evt){
     },
     endDate(evt){
@@ -1080,27 +534,7 @@ export default {
     showRestriction(){
       this.restrictionState ? this.restrictionState = false : this.restrictionState = true
     },
-    showBorder(){
-      this.borderState ? this.borderState = false : this.borderState = true
-    },
-    showFill(){
-      this.fillState ? this.fillState = false : this.fillState = true
-    },
-    showTextFill(){
-      this.showState ? this.showState = false : this.showState = true
-    },
-    showTextBorder() {
-      this.textBorderState ? this.textBorderState = false : this.textBorderState = true
-    },
-    //layer restriction
 
-    mainPanel(){
-      this.canvas.c.discardActiveObject();
-      this.canvas.c.requestRenderAll();
-    },
-    changeAddTab(value){
-      this.changeString(this.fontAttr.string+value);
-    },
     doView(isView){
       isView ? this.view() : this.unView();
     },
@@ -1142,55 +576,6 @@ export default {
       this.canvas.c.renderAll();
     },
 
-    //delete shortTag
-    textKeyPress(value){
-      var string = this.fontAttr.string
-      if(value.keyCode == 8){
-        string = string.slice(0,string.lastIndexOf('['));
-        this.changeString(string) 
-      }
-
-    },
-    changeString(value){
-      if(typeof(value)=="string"){
-        var string = value;
-      }else{
-        var string = value.target.value;
-      }
-      this.fontAttr.string = string;
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set('text',string);
-      this.canvas.c.renderAll();
-      return;
-    },
-    // modify font
-    changeFontFamily(fontName) {
-      if (!fontName) return;
-
-      // properties to skip loading
-      const skipFonts = ['arial', 'Microsoft YaHei'];
-      if (skipFonts.includes(fontName)) {
-        const activeObject = this.canvas.c.getActiveObjects()[0];
-        activeObject && activeObject.set('fontFamily', fontName);
-        this.canvas.c.renderAll();
-        return;
-      }
-      this.$Spin.show();
-      // font loading
-      const font = new FontFaceObserver(fontName);
-      font
-        .load(null, 15000)
-        .then(() => {
-          const activeObject = this.canvas.c.getActiveObjects()[0];
-          activeObject && activeObject.set('fontFamily', fontName);
-          this.canvas.c.renderAll();
-          this.$Spin.hide();
-        })
-        .catch((err) => {
-          console.log(err);
-          this.$Spin.hide();
-        }); 
-    },
     // Generic property changes
     changeCommon(key, evt) {
       const activeObject = this.canvas.c.getActiveObjects()[0];
@@ -1240,44 +625,7 @@ export default {
         this.canvas.c.renderAll();
       }
     },
-    // shadow settings
-    changeShadow() {
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set('shadow', new this.fabric.Shadow(this.baseAttr.shadow));
-      this.canvas.c.renderAll();
-    },
-    // bold
-    changeFontWeight(key, value) {
-      const nValue = value === 'normal' ? 'bold' : 'normal';
-      this.fontAttr.fontWeight = nValue;
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set(key, nValue);
-      this.canvas.c.renderAll();
-    },
-    // italics
-    changeFontStyle(key, value) {
-      const nValue = value === 'normal' ? 'italic' : 'normal';
-      this.fontAttr.fontStyle = nValue;
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set(key, nValue);
-      this.canvas.c.renderAll();
-    },
-    // middle stroke
-    changeLineThrough(key, value) {
-      const nValue = value === false;
-      this.fontAttr.linethrough = nValue;
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set(key, nValue);
-      this.canvas.c.renderAll();
-    },
-    // underline
-    changeUnderline(key, value) {
-      const nValue = value === false;
-      this.fontAttr.underline = nValue;
-      const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set(key, nValue);
-      this.canvas.c.renderAll();
-    },
+
     insertEmpty(file){
       var originLeft = this.canvas.c.getActiveObjects()[0].left;
       var originTop = this.canvas.c.getActiveObjects()[0].top;
@@ -1302,7 +650,7 @@ export default {
           left: left,
           top: top,
         });
-        imgInstance.scale(0.7);
+        imgInstance.scale(0.4);
 
         // set zoom
         this.canvas.c.remove(this.canvas.c.getActiveObjects()[0])

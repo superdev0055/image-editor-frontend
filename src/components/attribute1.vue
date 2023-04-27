@@ -36,7 +36,7 @@
         <div style="float:right">
           <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
             <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-            <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
+            <Button v-else @click="doLock(true)" icon="ios-unlock-outline" type="text"></Button>
           </Tooltip>
           <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
             <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
@@ -701,7 +701,6 @@ export default {
   
   },
   mounted(){
-    console.log(this.mSelectMode)
   },
   computed:{
   },

@@ -16,6 +16,9 @@ class EditorWorkspace {
     this._initWorkspace();
     this._initResizeObserve();
     this._initDring();  
+    this.imageW = 0;
+    this.imageH = 0;
+
   }
 
   //Initialize the background
@@ -30,17 +33,27 @@ class EditorWorkspace {
   }
 
   setSize(width, height) {
-    console.log(width,height);
     this._initBackground();
     this.option.width = width;
     this.option.height = height;
-    console.log(this.canvas.getObjects().find((item) => item.id === 'workspace'))
     // //reset workspace
     this.workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
-    // this.workspace.scaleToWidth(width)
-    // this.workspace.scaleToHeight(height)    
-    this.workspace.set('width', width);
-    this.workspace.set('height', height);
+    
+    if(this.workspace.name != "rectworks"){
+
+      this.workspace.set("scaleX",width/this.imageW);
+      this.workspace.set("scaleY",height/this.imageH);
+      this.workspace.set("originW",width);
+      this.workspace.set("originH",height);
+
+    }else{
+
+      this.workspace.set("width",width);
+      this.workspace.set("height",height);
+      this.workspace.set("originW",width);
+      this.workspace.set("originH",height);  
+
+    }
 
     // get offset
     const l1 = Number(this.workspace.left);
@@ -52,97 +65,57 @@ class EditorWorkspace {
   //Initialize the canvas
   _initWorkspace() {
     const { width, height } = this.option;
-    
-    console.log(width,height)
-    const workspace = new fabric.Rect({
-      fill: '#ffffff',
-      width,
-      height,
-      id: 'workspace',
-    });
-
-    workspace.set('selectable', false);
-    workspace.set('hasControls', false);
-    workspace.hoverCursor = 'selection';
-    this.canvas.add(workspace);
-    this.canvas.centerObject(workspace);
-    this.canvas.renderAll();
-
-    this.workspace = workspace;
-    console.log(this.workspace.left);
-    this.auto();
-
-
-    // fabric.Image.fromURL(transParent, (workspace) => {
-    //   console.log(workspace)
-    //   workspace.set({
-    //     id: 'workspace',
-    //     width:width,
-    //     height:height,
-    //     left:0,
-    //     top:0,
-    //   });
-    //   workspace.hoverCursor = 'selection';
-    //   this.canvas.centerObject(workspace);
-    //   this.canvas.add(workspace);
-    //   this.canvas.renderAll();
-    //   this.workspace = workspace;
-    //   this.auto();      
-    // });
-
-
-
-    // const workspace = new fabric.Image();
-    // workspace.setSrc(transParent);    
-    // workspace.set({
-    //   width,
-    //   height,
-    //   id: 'workspace',      
-    // });
-    // workspace.set('selectable', false);
-    // workspace.set('hasControls', false);
-    // workspace.hoverCursor = 'selection';
-    // this.canvas.centerObject(workspace);
-    // this.canvas.add(workspace);
-    // this.canvas.renderAll();
-    // this.workspace = workspace;
-    // this.auto();    
-
-
-    
-    // const { width, height } = this.option;
-    // var shadow = new fabric.Shadow({
-    //   color: "gray",
-    //   blur: 50,
-    //   offsetX: 0,
-    //   offsetY: 0,
-    // });       
-    // var workspace = new fabric.Image({
-    //   // src:transParent,
-    //   // shadow:shadow,
+    // <!-----------------backgroundColor-------------->
+    // const workspace = new fabric.Rect({
+    //   fill: '#ffffff',
     //   width,
     //   height,
     //   id: 'workspace',
-    //   selectable:false,
-    //   hasControls:false,      
     // });
-  
-    // // this.workspace.set('shadow', shadow);
-    // // this.workspace.shadow = shadow;
-    // workspace.setSrc(transParent);    
+
     // workspace.set('selectable', false);
-    // workspace.set('hasControls', false);    
-
-
-
-    // workspace.scaleToWidth(width)
-    // workspace.scaleToHeight(height)
-    // workspace.scale(1.7);
-    // this.canvas.centerObject(workspace);
+    // workspace.set('hasControls', false);
+    // workspace.hoverCursor = 'selection';
     // this.canvas.add(workspace);
+    // this.canvas.centerObject(workspace);
     // this.canvas.renderAll();
+    // console.log(this.canvas)
+
     // this.workspace = workspace;
-    // this.auto();         
+    // this.auto();    
+    // <!-----------------backgroundColor-------------->
+
+    // <!-----------------backgroundImage-------------->
+
+    fabric.Image.fromURL(transParent, (workspace) => {
+      this.imageW = workspace.width;
+      this.imageH = workspace.height;
+      var shadow = new fabric.Shadow({
+        color: "gray",
+        blur: 50,
+        offsetX: 0,
+        offsetY: 0,
+      })      
+      workspace.set({
+        id: 'workspace',
+        originW:width,       
+        originH:height,     
+        selectable:false,
+        hasControls:false,   
+        shadow:shadow,         
+        left:0,
+        top:0,
+      });
+      workspace.set("scaleX",width/this.imageW);
+      workspace.set("scaleY",height/this.imageH);
+      workspace.hoverCursor = 'selection';
+      this.canvas.centerObject(workspace);
+      this.canvas.add(workspace);
+      this.canvas.renderAll();
+      this.workspace = workspace;
+      this.auto();      
+    });
+    // <!-----------------backgroundImage-------------->
   }
 
   // Initialize the listener
@@ -292,6 +265,7 @@ class EditorWorkspace {
     });
 
     this.canvas.on('mouse:wheel', function (opt) {
+      console.log(opt)
       const delta = opt.e.deltaY;
       let zoom = this.getZoom();
       zoom *= 0.999 ** delta;
@@ -313,76 +287,6 @@ class EditorWorkspace {
     });
     this.canvas.renderAll();
     this.canvas.requestRenderAll();
-  }
-
-  scaleImageToSlot(image, slot) {
-    // Find smallest ratio of slot:width / image:width and slot:height / image: height
-    let ratio = Math.min(slot.width / image.width, slot.height / image.height);
-    console.log(`ratio width ${slot.width/image.width}, height ${slot.height/image.height}`);
-    console.log('=> ratio', ratio);
-    
-    if(ratio <= 1) {
-      image.scaleToWidth(slot.width);
-      let newHeight = image.height * image.scaleY;
-      if(newHeight < slot.height) {
-        image.scaleToHeight(slot.height);
-      }
-    }
-    else {
-      image.scaleToHeight(slot.height);
-      let newWidth = image.width * image.scaleX;
-      
-      if(newWidth < slot.width) {
-        image.scaleToWidth(slot.width);
-      }
-    }
-    
-    var shiftLeft = (slot.width - (image.width*image.scaleX)) / 2;
-    var shiftTop = (slot.height - (image.height*image.scaleY)) / 2;
-    
-    if(this.alignCenter) {
-      image.set("left",slot.left + shiftLeft);
-      image.set("top",slot.top + shiftTop);
-    }
-    else {
-      if(image.left < slot.left) {
-        // align image to center.
-        image.set("left",slot.left);
-      }
-      if(image.top < slot.top) {
-        image.set("top",slot.top);
-      }    
-    }
-    
-  }
-
-  clipBySlot(ctx, image, slot) {
-    var scaleXTo1 = (1 / image.scaleX);
-    var scaleYTo1 = (1 / image.scaleY);
-    
-    // Save context of the canvas so it can be restored after the clipping
-    ctx.save();
-    
-    ctx.translate(0, 0);
-    ctx.rotate(degToRad(image.angle * -1));
-    ctx.scale(scaleXTo1, scaleYTo1);
-    
-    ctx.beginPath();
-    
-    const boundingRect = image.getBoundingRect();
-    // console.log(`[left] ${image.left} - (${boundingRect.width} / 2)`);
-    
-    ctx.rect(
-      slot.left - image.left - Math.floor(boundingRect.width / 2),
-      slot.top - image.top - Math.floor(boundingRect.height / 2),
-      slot.width,
-      slot.height
-    );
-    ctx.stroke()
-    ctx.closePath();
-    
-    // Restore the original context.
-    ctx.restore();
   }
 
   // Since the `angle` property of the Image object is stored 

@@ -150,7 +150,7 @@ export default {
           if (canvas.width - pointX <= menuWidth) {
             pointX -= menuWidth;
           }
-// If the mouse is near the bottom of the canvas, the menu appears above the mouse pointer
+          // If the mouse is near the bottom of the canvas, the menu appears above the mouse pointer
           if (canvas.height - pointY <= menuHeight) {
             pointY -= menuHeight;
           }

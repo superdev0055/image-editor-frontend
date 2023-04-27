@@ -43,11 +43,7 @@ export default {
         axios.post("http://localhost:3000/feed-image/create",{data:dataUrl}).then((res)=>{
           alert(res.data)
         })
-        console.log(fileStr);
-        // this.downFile(fileStr, 'json');
       }else{
-        console.log("edit")
-
         const dataUrl = this.canvas.editor.getJson();
         const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
           JSON.stringify(dataUrl, null, '\t')

@@ -191,7 +191,6 @@ function initControls(canvas) {
   rotationControl(canvas);
 
   // selected style
-  console.log(fabric.Object.prototype)
   fabric.Object.prototype.set({
     transparentCorners: false,
     padding:2,
