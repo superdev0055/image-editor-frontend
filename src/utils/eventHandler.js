@@ -8,7 +8,6 @@ class EventHandle extends EventEmitter {
     })
     this.handler.on('selection:updated', (e) => this._selected(e));
     this.handler.on('selection:cleared', (e) =>{
-      console.log("ffffffff");
       this._selected(e);
     })
   }

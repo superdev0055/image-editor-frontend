@@ -253,13 +253,6 @@
   </div>
 </template>
 
-<style>
-/*   
-  .right_header {
-    position: fixed;
-  } */
-
-</style>
 <script>
 import select from '@/mixins/select';
 import layer1 from './layer1.vue'
@@ -460,10 +453,10 @@ export default {
     });
     this.event.on('selectOne', (items) => {
       if(items[0].type == "group"){
+
         this.isLock = !items[0].hasControls;
         this.mSelectActive = items[0];      
         var activeObject = this.canvas.c.getActiveObject()._objects[1]   
-        
         this.fontAttr.string = activeObject.get('text');
         this.fontAttr.fontSize = activeObject.get('fontSize');
         this.fontAttr.fontFamily = activeObject.get('fontFamily');
@@ -475,20 +468,28 @@ export default {
         this.fontAttr.overline = activeObject.get('overline');
         this.fontAttr.fontStyle = activeObject.get('fontStyle');
         this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
-        this.fontAttr.fontWeight = activeObject.get('fontWeight');        
+        this.fontAttr.fontWeight = activeObject.get('fontWeight');     
+
       }else{
+
         this.isLock = !items[0].hasControls;
         this.mSelectActive = items[0];      
-        var activeObject = this.canvas.c.getActiveObjects()[0];        
+        var activeObject = this.canvas.c.getActiveObjects()[0]; 
+
       }      
 
       if (activeObject) {
         this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
         if(this.emptyPatternState == "removeBg"){
+
           this.removeBgState = true; 
+
         }else if(this.emptyPatternState == "trimBg"){
-          this.trimBgState = true
+
+          this.trimBgState = true;
+
         }
+
         // base
         this.baseAttr.round = activeObject.get('rx');
         this.baseAttr.height = activeObject.get('height');
@@ -545,19 +546,23 @@ export default {
     doView(isView){
       isView ? this.view() : this.unView();
     },
+
     view(){
       this.isView = false;
       this.changeCommon("opacity",0);
       this.lock();
     },
+
     unView(){
       this.isView = true
       this.changeCommon("opacity",100);
       this.unLock();      
     },
+
     doLock(isLock) {
       isLock ? this.lock() : this.unLock();
     },
+
     lock() {
       // Modify custom properties
       this.mSelectActive.hasControls = false;
@@ -571,6 +576,7 @@ export default {
       this.isLock = true;
       this.canvas.c.renderAll();
     },
+    
     unLock() {
       // Modify custom properties
       this.mSelectActive.hasControls = true;

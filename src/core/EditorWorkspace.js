@@ -65,26 +65,6 @@ class EditorWorkspace {
   //Initialize the canvas
   _initWorkspace() {
     const { width, height } = this.option;
-    // <!-----------------backgroundColor-------------->
-    // const workspace = new fabric.Rect({
-    //   fill: '#ffffff',
-    //   width,
-    //   height,
-    //   id: 'workspace',
-    // });
-
-    // workspace.set('selectable', false);
-    // workspace.set('hasControls', false);
-    // workspace.hoverCursor = 'selection';
-    // this.canvas.add(workspace);
-    // this.canvas.centerObject(workspace);
-    // this.canvas.renderAll();
-    // console.log(this.canvas)
-
-    // this.workspace = workspace;
-    // this.auto();    
-    // <!-----------------backgroundColor-------------->
-
     // <!-----------------backgroundImage-------------->
 
     fabric.Image.fromURL(transParent, (workspace) => {

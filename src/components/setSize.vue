@@ -111,8 +111,6 @@ export default {
     },
     changeSize(key,evt) {
       var value = evt.target.value
-      console.log(key,value)
-      console.log("asdfasdfsadf")
       if(key == "width"){
         this.width = value
       }else{

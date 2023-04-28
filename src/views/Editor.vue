@@ -77,28 +77,16 @@
 
 // import element
 import importFile from '@/components/importFile.vue';
-import importTmpl from '@/components/importTmpl.vue';
 
 // top assembly
-import align from '@/components/align.vue';
-import centerAlign from '@/components/centerAlign.vue';
-import flip from '@/components/flip.vue';
 import save from '@/components/save.vue';
-import lang from '@/components/lang.vue';
-import clone from '@/components/clone.vue';
 import zoom from '@/components/zoom.vue';
-import lock from '@/components/lock.vue';
-import dele from '@/components/del.vue';
-
 // left component
 import tools from '@/components/tools.vue';
 import setSize from '@/components/setSize.vue';
 
 // right side component
-import history from '@/components/history.vue';
-import layer from '@/components/layer.vue';
 import attribute from '@/components/attribute.vue';
-import ColorPicker from '@/components/color.vue';
 
 // functional components
 import EventHandle from '@/utils/eventHandler';
@@ -129,35 +117,13 @@ export default {
     };
   },
   components: {
-    ColorPicker,
     setSize,
     tools,
-    lock,
-    layer,
-    align,
     attribute,
-    dele,
     importFile,
     save,
-    lang,
-    clone,
-    flip,
-    importTmpl,
-    centerAlign,
     zoom,
-    history,
   },
-  created() {
-
-  },
-  mounted(){
-    cosole.log
-  },
-  methods:{
-    save(){
-    }
-  },
-  
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
@@ -175,6 +141,7 @@ export default {
 
 </script>
 <style scoped lang="less">
+
 .bottomBar {
   margin: auto; 
   background-color: white;

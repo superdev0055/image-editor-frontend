@@ -11,8 +11,8 @@ import "./styles/main.css"
 import './styles/index.less';
 // custom font file
 import '@/assets/fonts/font.css';
-// import i18n from './language';
 const app = createApp(App);
+
 app
   .use(router)
   // .use(i18n)
