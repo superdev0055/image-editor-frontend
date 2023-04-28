@@ -18,7 +18,8 @@ function initializeLineDrawing(canvas, defaultPosition) {
 
     const NodeHandler = isArrow ? Arrow : fabric.Line;
     lineToDraw = new NodeHandler(pointerPoints, {
-      strokeWidth: 1,
+      strokeWidth: 2,
+      stroke: '#000000',
       ...defaultPosition,
       id: uuid(),
     });
@@ -31,6 +32,7 @@ function initializeLineDrawing(canvas, defaultPosition) {
 
   canvas.on('mouse:move', (o) => {
     if (!isDrawingLine) return;
+
     pointer = canvas.getPointer(o.e);
 
     if (o.e.shiftKey) {
@@ -62,7 +64,6 @@ function initializeLineDrawing(canvas, defaultPosition) {
 
   canvas.on('mouse:up', () => {
     if (!isDrawingLine) return;
-    console.log("asdf")
     lineToDraw.setCoords();
     isDrawingLine = false;
   });

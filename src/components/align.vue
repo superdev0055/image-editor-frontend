@@ -1,7 +1,7 @@
 <template>
   <div  class="box attr-item">
     <!-- Horizontal alignment -->
-    <Tooltip :content="$t('group_align.left')">
+    <Tooltip :content="'left'">
       <Button  @click="left" size="small" type="text">
         <svg
           t="1650442284704"
@@ -17,7 +17,7 @@
         </svg>
       </Button>
     </Tooltip>
-    <Tooltip :content="$t('group_align.centerX')">
+    <Tooltip :content="'centerX'">
       <Button  @click="xcenter" size="small" type="text">
         <svg
           t="1650442754876"
@@ -37,7 +37,7 @@
         </svg>
       </Button>
     </Tooltip>
-    <Tooltip :content="$t('group_align.right')">
+    <Tooltip :content="'right'">
       <Button  @click="right" size="small" type="text">
         <svg
           t="1650442299564"
@@ -57,7 +57,7 @@
       </Button>
     </Tooltip>
     <!-- vertical alignment -->
-    <Tooltip :content="$t('group_align.top')">
+    <Tooltip :content="'top'">
       <Button  @click="top" size="small" type="text">
         <svg
           t="1650442692910"
@@ -77,7 +77,7 @@
         </svg>
       </Button>
     </Tooltip>
-    <Tooltip :content="$t('group_align.centerY')">
+    <Tooltip :content="'centerY'">
       <Button  @click="ycenter" size="small" type="text">
         <svg
           t="1650442732396"
@@ -97,7 +97,7 @@
         </svg>
       </Button>
     </Tooltip>
-    <Tooltip :content="$t('group_align.bottom')">
+    <Tooltip :content="'bottom'">
       <Button  @click="bottom" size="small" type="text">
         <svg
           t="1650442674784"
@@ -140,37 +140,40 @@ export default {
     // align left
     left() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'activeSelection') {
-        const activeSelection = activeObject;
-        const activeObjectLeft = -(activeObject.width / 2);
-        activeSelection.forEachObject((item) => {
-          item.set({
-            left: activeObjectLeft,
-          });
-          item.setCoords();
-          this.canvas.c.renderAll();
+      if (activeObject && activeObject.type === 'group') {
+        activeObject.forEachObject((item) => {
+          if(item.id != "virtural"){
+            item.set({
+              left: -activeObject.width/2
+            });            
+            this.canvas.c.renderAll();
+          }
         });
       }
     },
     // right align
     right() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'activeSelection') {
-        const activeSelection = activeObject;
-        const activeObjectLeft = activeObject.width / 2;
-        activeSelection.forEachObject((item) => {
-          item.set({
-            left: activeObjectLeft - item.width * item.scaleX,
-          });
-          item.setCoords();
-          this.canvas.c.renderAll();
-        });
-      }
+      var activeObjectLeft = 0;
+      if (activeObject && activeObject.type === 'group') {
+        activeObject.forEachObject((item) => {
+          if(item.id == "virtural"){
+            activeObjectLeft = activeObject.width / 2;
+          }else{
+            item.set({
+              left: activeObjectLeft - item.width,
+            });    
+            item.setCoords();
+            this.canvas.c.renderAll();
+          }
+        });      
+      }      
+      
     },
     // horizontal center alignment
     xcenter() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'activeSelection') {
+      if (activeObject && activeObject.type === 'group') {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
           item.set({
@@ -184,7 +187,7 @@ export default {
     // vertical center alignment
     ycenter() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'activeSelection') {
+      if (activeObject && activeObject.type === 'group') {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
           item.set({
@@ -198,32 +201,36 @@ export default {
     // align top
     top() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'activeSelection') {
+      if (activeObject && activeObject.type === 'group') {
         const activeSelection = activeObject;
         const activeObjectTop = -(activeObject.height / 2);
         activeSelection.forEachObject((item) => {
-          item.set({
-            top: activeObjectTop,
-          });
-          item.setCoords();
-          this.canvas.c.renderAll();
+          if(item.id != "virtural"){
+            item.set({
+              top: activeObjectTop,
+            });
+            item.setCoords();
+            this.canvas.c.renderAll();
+          }
         });
-      }
+      }      
     },
     // Bottom alignment
     bottom() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'activeSelection') {
+      if (activeObject && activeObject.type === 'group') {
         const activeSelection = activeObject;
         const activeObjectTop = activeObject.height / 2;
         activeSelection.forEachObject((item) => {
-          item.set({
-            top: activeObjectTop - item.height * item.scaleY,
-          });
-          item.setCoords();
-          this.canvas.c.renderAll();
+          if(item.id != "virtural"){
+            item.set({
+              top: activeObjectTop - item.height * item.scaleY,
+            });
+            item.setCoords();
+            this.canvas.c.renderAll();
+          }
         });
-      }
+      }      
     },
     // horizontal average alignment
     xequation() {

@@ -1,6 +1,8 @@
 
 import EventEmitter from 'events';
+// import { fabric } from 'fabric';
 import { v4 as uuid } from 'uuid';
+
 // alignment guidelines
 import initAligningGuidelines from '@/core/initAligningGuidelines';
 import initControlsRotate from '@/core/initControlsRotate';
@@ -22,24 +24,9 @@ class Editor extends EventEmitter {
     initControlsRotate(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
   }
-  del(id){
-    var a = this.canvas.getObjects().forEach((item) => {
-              if(item.id == "empty"){
-                return false;
-              }else{
-                if(item.id == id){
-                  this.canvas.remove(item)
-                }
-              }
-            });
-    this.canvas.requestRenderAll();
-    this.canvas.discardActiveObject();            
-  }
+
   clone() {
     const activeObject = this.canvas.getActiveObject();
-    if(activeObject.id == "empty"){
-      return true;
-    }
     if (activeObject.length === 0) return;
     activeObject.clone((cloned) => {
       this.canvas.discardActiveObject();
@@ -85,19 +72,13 @@ class Editor extends EventEmitter {
     });
   }
 
-  up(list = '') {
-    if(list != ''){
-      list.bringForward();
+  up() {
+    const actives = this.canvas.getActiveObjects();
+    if (actives && actives.length === 1) {
+      const activeObject = this.canvas.getActiveObjects()[0];
+      activeObject && activeObject.bringForward();
       this.canvas.renderAll();
-      this._workspaceSendToBack();   
-    }else{
-      const actives = this.canvas.getActiveObjects();
-      if (actives && actives.length === 1) {
-        const activeObject = this.canvas.getActiveObjects()[0];
-        activeObject && activeObject.bringForward();
-        this.canvas.renderAll();
-        this._workspaceSendToBack();
-      }   
+      this._workspaceSendToBack();
     }
   }
 
@@ -111,18 +92,14 @@ class Editor extends EventEmitter {
     }
   }
 
-  down(list = '') {
-    if(list != ''){
-      list.sendBackwards();
-      this.canvas.renderAll();
-      this._workspaceSendToBack();
-    }else{
+  down() {
+    const actives = this.canvas.getActiveObjects();
+    if (actives && actives.length === 1) {
       const activeObject = this.canvas.getActiveObjects()[0];
       activeObject && activeObject.sendBackwards();
       this.canvas.renderAll();
-      this._workspaceSendToBack();      
+      this._workspaceSendToBack();
     }
- 
   }
 
   downTop() {
@@ -154,7 +131,6 @@ class Editor extends EventEmitter {
    * @param {Event} event
    * @param {Object} item
    */
-
   dragAddItem(event, item) {
     const { left, top } = this.canvas.getSelectionElement().getBoundingClientRect();
     if (event.x < left || event.y < top) return;

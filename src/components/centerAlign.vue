@@ -1,7 +1,7 @@
 <template>
   <div v-if="mSelectMode" class="box attr-item">
     <!-- horizontal concentration -->
-    <Tooltip :content="$t('center_align.centerX')">
+    <Tooltip :content="'centerX'">
       <Button :disabled="!mSelectMode" @click="position('centerH')" type="text">
         <svg
           t="1650442559691"
@@ -21,7 +21,7 @@
       </Button>
     </Tooltip>
     <!-- Centered horizontally and vertically -->
-    <Tooltip :content="$t('center_align.center')">
+    <Tooltip :content="'center_align.center'">
       <Button :disabled="!mSelectMode" @click="position('center')" type="text">
         <svg
           t="1650852784867"
@@ -47,7 +47,7 @@
       </Button>
     </Tooltip>
     <!-- vertical center -->
-    <Tooltip :content="$t('center_align.centerY')">
+    <Tooltip :content="'center_align.centerY'">
       <Button :disabled="!mSelectMode" @click="position('centerV')" type="text">
         <svg
           t="1650442510967"

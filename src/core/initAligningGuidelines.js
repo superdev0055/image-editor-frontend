@@ -222,14 +222,14 @@ function initAligningGuidelines(canvas) {
     }
   });
 
-  // canvas.on('before:render', () => {
-  //   // fix Error when saving pictures
-  //   try {
-  //     canvas.clearContext(canvas.contextTop);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
+  canvas.on('before:render', () => {
+    // fix Error when saving pictures
+    try {
+      canvas.clearContext(canvas.contextTop);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
   canvas.on('after:render', () => {
     for (let i = verticalLines.length; i--; ) {

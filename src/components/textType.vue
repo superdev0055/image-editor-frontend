@@ -1,11 +1,104 @@
 <template>
+    <div class="setBox">
+
       <div v-show="textType.includes(mSelectOneTypeProps[0])" class="mt-3 mb-3">
+        <!-- control part -->
+        <div class="control" style="margin-left:15px">
+          <div class="row mt-3 mb-3" style="align-items: center;">
+            <div class="col col-lg-7">
+              Size
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                  <span class="ivu-input-suffix">
+                    <i style="font-style: normal; font-size: 11px;">w</i>
+                  <!-- W -->
+                  </span>
+                  <input
+                    style="width:100%"
+                    autocomplete="off" 
+                    type="number" 
+                    class="ivu-input ivu-input-with-suffix" 
+                    placeholder="Enter text"
+                    v-model="baseAttr.width"
+                    @change="(value) => changeCommon('width', value)"
+                    number="true" />
+                </div>
+              </div>
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                  <span class="ivu-input-suffix">
+                    <i style="font-style: normal; font-size: 11px;">h</i>
+                  <!-- H -->
+                  </span>
+                  <input
+                    autocomplete="off" 
+                    type="number" 
+                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                    placeholder="Enter text"
+                    v-model="baseAttr.height"
+                    @change="(value) => changeCommon('height', value)"
+                    number="true" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- --------------------- Position ----------------------->
+          <div class="row mb-3" style="align-items: center;">
+            <div class="col col-lg-7">
+              Position
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                  <span class="ivu-input-suffix">
+                    <i style="font-style: normal; font-size: 11px;">x</i>
+                  <!-- X -->
+                  </span>
+                  <input
+                    autocomplete="off" 
+                    type="number" 
+                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                    placeholder="Enter text"
+                    v-model="baseAttr.left"
+                    @change="(value) => changeCommon('left', value)"
+                    number="true" />
+                </div>
+              </div>
+            </div>
+            <div class="col col-lg-2">
+              <div class="content">
+                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                  <span class="ivu-input-suffix">
+                    <i style="font-style: normal; font-size: 11px;">y</i>
+                  <!-- Y -->
+                  </span>
+                  <input
+                    autocomplete="off" 
+                    type="number" 
+                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                    placeholder="Enter text"
+                    v-model="baseAttr.top"
+                    @change="(value) => changeCommon('top', value)"
+                    number="true" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- --------------------- End Position ----------------------->
+
+        </div>
+        <!-- control part -->        
         <div class="customborder mt-3"></div>
         <div class="mt-3" style="margin-left: 30px;"> 
           <label>Text</label>
-          <Input v-model="this.fontAttr.string" @change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
+          <Input v-model="this.fontAttr.string" @on-change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
             <template #append>
-              <Select style="width: 70px" @on-change="changeAddTab" size="small">
+              <Select style="width: 70px" @on-change="changeAddTag" size="small">
                   <Option value="[avability]">[avability]</Option>
                   <Option value="[brand]">[brand]</Option>
                   <Option value="[channel]">[channel]</Option>
@@ -116,71 +209,14 @@
           <!-- -------------------  End Long text handling  ---------------- --> 
           
           <!-- -------------------  Text alignment  ---------------- -->
-          <div class="row mt-3" style="margin-left: 1px;">
-            <div class="col-4 mt-1">
-              Text alignment
-            </div>
-            <div class="col col-7" style="text-align: right;margin-left:20px">
-              <ButtonGroup class="button-group">
-                <Button @click="changeFontWeight('fontWeight', this.fontAttr.fontWeight)" class="border-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <polygon points="0 0 24 0 24 24 0 24"/>
-                          <rect fill="#000000" opacity="0.3" x="11" y="7" width="2" height="14" rx="1"/>
-                          <path d="M6.70710678,14.7071068 C6.31658249,15.0976311 5.68341751,15.0976311 5.29289322,14.7071068 C4.90236893,14.3165825 4.90236893,13.6834175 5.29289322,13.2928932 L11.2928932,7.29289322 C11.6714722,6.91431428 12.2810586,6.90106866 12.6757246,7.26284586 L18.6757246,12.7628459 C19.0828436,13.1360383 19.1103465,13.7686056 18.7371541,14.1757246 C18.3639617,14.5828436 17.7313944,14.6103465 17.3242754,14.2371541 L12.0300757,9.38413782 L6.70710678,14.7071068 Z" fill="#000000" fill-rule="nonzero"/>
-                          <rect fill="#000000" opacity="0.3" x="3" y="3" width="18" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeFontStyle('fontStyle', this.fontAttr.fontStyle)" class="border-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
-                          <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeLineThrough('linethrough', this.fontAttr.linethrough)" class="border-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <polygon points="0 0 24 0 24 24 0 24"/>
-                          <rect fill="#000000" opacity="0.3" x="11" y="3" width="2" height="14" rx="1"/>
-                          <path d="M6.70710678,16.7071068 C6.31658249,17.0976311 5.68341751,17.0976311 5.29289322,16.7071068 C4.90236893,16.3165825 4.90236893,15.6834175 5.29289322,15.2928932 L11.2928932,9.29289322 C11.6714722,8.91431428 12.2810586,8.90106866 12.6757246,9.26284586 L18.6757246,14.7628459 C19.0828436,15.1360383 19.1103465,15.7686056 18.7371541,16.1757246 C18.3639617,16.5828436 17.7313944,16.6103465 17.3242754,16.2371541 L12.0300757,11.3841378 L6.70710678,16.7071068 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000003, 12.999999) scale(1, -1) translate(-12.000003, -12.999999) "/>
-                          <rect fill="#000000" opacity="0.3" x="3" y="19" width="18" height="2" rx="1"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', this.fontAttr.underline)" class="border-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="2" rx="1"/>
-                          <rect fill="#000000" opacity="0.3" x="4" y="13" width="16" height="2" rx="1"/>
-                          <path d="M5,9 L13,9 C13.5522847,9 14,9.44771525 14,10 C14,10.5522847 13.5522847,11 13,11 L5,11 C4.44771525,11 4,10.5522847 4,10 C4,9.44771525 4.44771525,9 5,9 Z M5,17 L13,17 C13.5522847,17 14,17.4477153 14,18 C14,18.5522847 13.5522847,19 13,19 L5,19 C4.44771525,19 4,18.5522847 4,18 C4,17.4477153 4.44771525,17 5,17 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', this.fontAttr.underline)" class="border-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <path d="M5,5 L19,5 C19.5522847,5 20,5.44771525 20,6 C20,6.55228475 19.5522847,7 19,7 L5,7 C4.44771525,7 4,6.55228475 4,6 C4,5.44771525 4.44771525,5 5,5 Z M5,13 L19,13 C19.5522847,13 20,13.4477153 20,14 C20,14.5522847 19.5522847,15 19,15 L5,15 C4.44771525,15 4,14.5522847 4,14 C4,13.4477153 4.44771525,13 5,13 Z" fill="#000000" opacity="0.3"/>
-                          <path d="M8,9 L16,9 C16.5522847,9 17,9.44771525 17,10 C17,10.5522847 16.5522847,11 16,11 L8,11 C7.44771525,11 7,10.5522847 7,10 C7,9.44771525 7.44771525,9 8,9 Z M8,17 L16,17 C16.5522847,17 17,17.4477153 17,18 C17,18.5522847 16.5522847,19 16,19 L8,19 C7.44771525,19 7,18.5522847 7,18 C7,17.4477153 7.44771525,17 8,17 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-                <Button @click="changeUnderline('underline', this.fontAttr.underline)" class="border-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <path d="M5,5 L19,5 C19.5522847,5 20,5.44771525 20,6 C20,6.55228475 19.5522847,7 19,7 L5,7 C4.44771525,7 4,6.55228475 4,6 C4,5.44771525 4.44771525,5 5,5 Z M5,13 L19,13 C19.5522847,13 20,13.4477153 20,14 C20,14.5522847 19.5522847,15 19,15 L5,15 C4.44771525,15 4,14.5522847 4,14 C4,13.4477153 4.44771525,13 5,13 Z" fill="#000000" opacity="0.3"/>
-                          <path d="M11,9 L19,9 C19.5522847,9 20,9.44771525 20,10 C20,10.5522847 19.5522847,11 19,11 L11,11 C10.4477153,11 10,10.5522847 10,10 C10,9.44771525 10.4477153,9 11,9 Z M11,17 L19,17 C19.5522847,17 20,17.4477153 20,18 C20,18.5522847 19.5522847,19 19,19 L11,19 C10.4477153,19 10,18.5522847 10,18 C10,17.4477153 10.4477153,17 11,17 Z" fill="#000000"/>
-                      </g>
-                  </svg>
-                </Button>
-              </ButtonGroup>
-            </div>
+        <div class="row mb-3 mt-3" style="margin-left: 1px;">
+          <div class="col col-lg-6">
+            Alignment
+          </div>                
+          <div class="col col-lg-5">
+            <align></align>
           </div>
+        </div>
           <!-- -------------------  End Text alignment  ---------------- --> 
           
           <!-- -------------------  Text padding  ---------------- -->
@@ -305,20 +341,24 @@
         </div>        
         <!-- -------------------  End Text Border  ---------------- -->
 
-      </div>    
+      </div>  
+    </div>  
 </template>
 <script>
 import select from '@/mixins/select';
 import Color from './color.vue';
+import Align from './align.vue';
 
 export default {
     mixins: [select],
     props:['mSelectOneTypeProps'],
     components: {
         Color,
+        Align
     },  
     data(){
         return{
+            activeObject:'',
             borderState:false,
             textBorderState:false,
             fillState:false,
@@ -330,7 +370,6 @@ export default {
             textType: ['i-text', 'textbox', 'text'],
             baseAttr: this.mSelectOneTypeProps[1],
             // font properties
-            fontAttr: this.mSelectOneTypeProps[2],
             fontFamilyList: ["Arial","Helvetica","Myriad Pro","Delicious","Verdana","Georgia","Hoefler Text","Courier", "Comic Sans MS" ,"Impact" ,"Monaco" ,"Optima"],
             fillType: [
                 'normal',
@@ -350,13 +389,62 @@ export default {
                 'color',
                 'luminosity'
             ],
+            // font properties
+            fontAttr: this.mSelectOneTypeProps[2],              
         }        
+    },
+    created(){
+      // this.canvas.c.on('after:render', this.checkTextboxSize);
+      this.event.on('selectOne', (e) => {
+        if(e[0].type == "group"){
+          if(e[0]._objects[1].type == "i-text"){
+            const activeObject = e[0]._objects[1];
+            this.activeObject = activeObject;
+          }
+        }
+      });      
     },
     mounted(){
     },
+
     methods:{
-        changeSelectFillType(){
-            console.log("dkjsis")
+        // <!----------- control box size   -------->
+        checkTextboxSize(){
+          const activeObject = this.canvas.c.getActiveObject();
+          if(activeObject){
+            if(activeObject.type == "group"){
+              if(activeObject.width<activeObject._objects[1].width){
+                activeObject.set("width",activeObject._objects[1].width).setCoords();
+                activeObject.set("height",activeObject._objects[1].height).setCoords();
+                activeObject._objects[1].set("left",-activeObject._objects[1].width/2);
+                this.canvas.c.renderAll();
+              }
+              if(activeObject.height<activeObject._objects[1].height){
+                activeObject.set("height",activeObject._objects[1].height).setCoords();
+                activeObject._objects[1].set("top",-activeObject._objects[1].height/2);
+                this.canvas.c.renderAll();
+              }              
+            }
+          }
+        },      
+        // <!----------- control box size   -------->
+        changeSelectFillType(value){
+            // switch(value){
+            //     case "hue":
+            //             let filter = new fabric.Image.filters.HueRotation({
+            //                             rotation: value,
+            //                             });
+            //         console.log(this.canvas.c.getActiveObject())
+            //             this.canvas.c.getActiveObject()[0].filters = [];
+            //             this.canvas.c.getActiveObject()[0].filters.push(filter);
+            //             this.canvas.c.getActiveObject()[0].applyFilters();                                        
+            //         // console.log(this.canvas.c.getActiveObject().filters)
+            //         // console.log(this.canvas.c.getActiveObject())
+            //         // this.canvas.c.getActiveObject()[0].applyFilterValue(21, this.checked && new f.HueRotation({
+            //         //     rotation: value,
+            //         // }));
+            // }
+            // console.log(value)
         },        
         showBorder(){
             this.borderState ? this.borderState = false : this.borderState = true
@@ -368,49 +456,43 @@ export default {
             this.textBorderState ? this.textBorderState = false : this.textBorderState = true
         },        
         handleLongText(evt){
-            const activeObject = this.canvas.c.getActiveObject();
             if(evt == 'shorten'){
-                activeObject.set("fontSize",21);
+                this.activeObject.set("fontSize",21);
             }else{
-                console.log(activeObject);
                 // activeObject
-                activeObject.set("fontSize",16);
+                this.activeObject.set("fontSize",16);
             }
             this.canvas.c.renderAll();
         },
-        changeAddTab(value){
+        changeAddTag(value){
             this.changeString(this.fontAttr.string+value);
         },        
         // bold
         changeFontWeight(key, value) {
             const nValue = value === 'normal' ? 'bold' : 'normal';
             this.fontAttr.fontWeight = nValue;
-            const activeObject = this.canvas.c.getActiveObjects()[0];
-            activeObject && activeObject.set(key, nValue);
+            this.activeObject && this.activeObject.set(key, nValue);
             this.canvas.c.renderAll();
         },
         // italics
         changeFontStyle(key, value) {
             const nValue = value === 'normal' ? 'italic' : 'normal';
             this.fontAttr.fontStyle = nValue;
-            const activeObject = this.canvas.c.getActiveObjects()[0];
-            activeObject && activeObject.set(key, nValue);
+            this.activeObject && this.activeObject.set(key, nValue);
             this.canvas.c.renderAll();
         },
         // middle stroke
         changeLineThrough(key, value) {
             const nValue = value === false;
             this.fontAttr.linethrough = nValue;
-            const activeObject = this.canvas.c.getActiveObjects()[0];
-            activeObject && activeObject.set(key, nValue);
+            this.activeObject && this.activeObject.set(key, nValue);
             this.canvas.c.renderAll();
         },
         // underline
         changeUnderline(key, value) {
             const nValue = value === false;
             this.fontAttr.underline = nValue;
-            const activeObject = this.canvas.c.getActiveObjects()[0];
-            activeObject && activeObject.set(key, nValue);
+            this.activeObject && this.activeObject.set(key, nValue);
             this.canvas.c.renderAll();
         },        
         //delete shortTag
@@ -422,37 +504,45 @@ export default {
             }
 
         },
+
+        //change string
         changeString(value){
-        if(typeof(value)=="string"){
-            var string = value;
-        }else{
-            var string = value.target.value;
-        }
-        this.fontAttr.string = string;
-        const activeObject = this.canvas.c.getActiveObjects()[0];
-        activeObject && activeObject.set('text',string);
-        this.canvas.c.renderAll();
-        return;
+            if(typeof(value)=="string"){
+                var string = value;
+            }else{
+                var string = value.target.value;
+            }
+            this.fontAttr.string = string;
+            this.changeCommon('text',string);
         },
         // modify font
         changeFontFamily(fontName) {
             if (!fontName) return;
-            console.log("asdfasdf")
-            console.log(fontName);
-            const activeObject = this.canvas.c.getActiveObject();
-            console.log(activeObject)
-            activeObject.set("fontFamily",fontName);
+            this.activeObject.set("fontFamily",fontName);
             this.canvas.c.renderAll();
-        },        
-        changeCommon(key, evt) {
-            const activeObject = this.canvas.c.getActiveObjects()[0];
+        },   
+
+        //change activeObject
+        changeCommon(key,evt){
+          if(key=="width" ||key=="height" ||key=="top" ||key=="left"|| key=="padding"){
+            this.activeObject = this.canvas.c.getActiveObject();
+            this.changeProperty(key,evt);
+            return;
+          }else{
+            this.activeObject = this.canvas.c.getActiveObject()._objects[1]
+            this.changeProperty(key,evt);
+            return;
+          }
+        },     
+        //change property
+        changeProperty(key, evt) {
             if (key === 'fill') {
-                activeObject.set(key, evt);
+                this.activeObject.set(key, evt);
                 this.canvas.c.renderAll();
                 return;
             }
             if (key === 'stroke') {
-                activeObject.set(key, evt);
+                this.activeObject.set(key, evt);
                 this.canvas.c.renderAll();
                 return;
             }      
@@ -464,23 +554,31 @@ export default {
                 }else{
                 evt = Number(evt.target.value)
                 }
-                activeObject && activeObject.set(key, evt / 100);
+                this.activeObject && this.activeObject.set(key, evt / 100);
                 this.canvas.c.renderAll();
                 return;
             }
+            if(key == "text"){
+              this.activeObject.set("text",evt);
+              this.canvas.c.renderAll();
+              this.checkTextboxSize();
+              return;
+            }
             // Rotation Angle Adaptation
             if (key === 'angle') {
-                activeObject.rotate(Number(evt.target.value));
+                this.activeObject.rotate(Number(evt.target.value));
                 this.canvas.c.renderAll();
                 return;
             }
             if(key == "round"){
-                activeObject.set("ry", Number(evt.target.value))
-                activeObject.set("rx", Number(evt.target.value))
+                this.activeObject.set("ry", Number(evt.target.value))
+                this.activeObject.set("rx", Number(evt.target.value))
                 this.canvas.c.renderAll();
                 return;
             }
-            activeObject && activeObject.set(key, Number(evt.target.value));
+            
+            this.activeObject && this.activeObject.set(key, Number(evt.target.value));
+            this.checkTextboxSize();
             this.canvas.c.renderAll();
         },    
   }    

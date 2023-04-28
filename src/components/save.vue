@@ -34,6 +34,7 @@ export default {
     saveWith(type) {
       this[type]();
     },
+    
     saveJson() {
       if(this.saveType == "Save Image"){
         const dataUrl = this.canvas.editor.getJson();

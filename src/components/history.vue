@@ -1,14 +1,14 @@
 <template>
   <div style="display: inline-block">
     <!-- step back -->
-    <Tooltip :content="$t('history.revocation') + `(${list.length})`">
+    <Tooltip :content="'revocation' + `(${list.length})`">
       <Button @click="undo" type="text" size="small" :disabled="!list.length">
         <Icon type="ios-undo" size="20" />
       </Button>
     </Tooltip>
 
     <!-- redo -->
-    <Tooltip :content="$t('history.redo') + `(${redoList.length})`">
+    <Tooltip :content="'redo' + `(${redoList.length})`">
       <Button @click="redo" type="text" size="small" :disabled="!redoList.length">
         <Icon type="ios-redo" size="20" />
       </Button>

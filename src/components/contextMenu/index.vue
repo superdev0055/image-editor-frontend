@@ -85,6 +85,7 @@ export default {
             },
           ],
         },
+        
         // delete
         {
           type: 'delete',
@@ -99,6 +100,14 @@ export default {
     menuItem,
   },
   computed: {
+    textGroup(){
+      return this.mSelectMode === 'textGroup';
+
+    },
+    imageGroup(){
+      return this.mSelectMode === 'imageGroup';
+
+    },
     // Single select and equal to group element
     isGroup() {
       return this.mSelectMode === 'one' && this.mSelectOneType === 'group';

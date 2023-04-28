@@ -20,27 +20,27 @@ export default {
       imgFile: '',
       colorList: [
         {
-          label: this.$t('scenary_x', { number: 1 }),
+          label: ('scenary_x', { number: 1 }),
           color: ['#5F2B63', '#B23554', '#F27E56', '#FCE766'],
         },
         {
-          label: this.$t('scenary_x', { number: 2 }),
+          label: ('scenary_x', { number: 2 }),
           color: ['#86DCCD', '#E7FDCB', '#FFDC84', '#F57677'],
         },
         {
-          label: this.$t('scenary_x', { number: 3 }),
+          label: ('scenary_x', { number: 3 }),
           color: ['#5FC2C7', '#98DFE5', '#C2EFF3', '#DDFDFD'],
         },
         {
-          label: this.$t('scenary_x', { number: 4 }),
+          label: ('scenary_x', { number: 4 }),
           color: ['#9EE9D3', '#2FC6C8', '#2D7A9D', '#48466d'],
         },
         {
-          label: this.$t('scenary_x', { number: 5 }),
+          label: ('scenary_x', { number: 5 }),
           color: ['#61c0bf', '#bbded6', '#fae3d9', '#ffb6b9'],
         },
         {
-          label: this.$t('scenary_x', { number: 6 }),
+          label: ('scenary_x', { number: 6 }),
           color: ['#ffaaa5', '#ffd3b6', '#dcedc1', '#a8e6cf'],
         },
       ],
@@ -62,6 +62,12 @@ export default {
         this.canvas.c.remove(oldWorkspace);
     },
     set_bg(){
+      var shadow = new fabric.Shadow({
+        color: "#d1d1d1",
+        blur: 30,
+        offsetX: 0,
+        offsetY: 0,
+      })               
       if(this.showColor == true){
         var oldSize = this.getOriginSize();
         this.oldBgRemove();
@@ -73,6 +79,7 @@ export default {
           top:oldSize.top,
           originW:oldSize.originW,
           originH:oldSize.originH,
+          shadow:shadow
         });
         workspace.set('selectable', false);
         workspace.set('hasControls', false);        
@@ -96,6 +103,7 @@ export default {
           height:oldSize.originH,
           originW:oldSize.originW,
           originH:oldSize.originH,
+          shadow:shadow,
           id: 'workspace',
         });
 

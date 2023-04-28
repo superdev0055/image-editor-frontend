@@ -1,4 +1,4 @@
-import { createApp} from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import VueLazyLoad from 'vue3-lazyload';
 import ViewUiPlus from 'view-ui-plus';
@@ -11,12 +11,11 @@ import "./styles/main.css"
 import './styles/index.less';
 // custom font file
 import '@/assets/fonts/font.css';
-import i18n from './language';
-// createApp.config.productionTip = false;
+// import i18n from './language';
 const app = createApp(App);
 app
   .use(router)
-  .use(i18n)
+  // .use(i18n)
   .use(VueLazyLoad, {})
   .use(ViewUiPlus)
   .use(VueClipboard, {

@@ -126,7 +126,6 @@ export default {
   methods: {
     // echo color
     checkColor(val) {
-      console.log(val)
       if (typeof val === 'string') {
         this.isGradient = false;
         this.fill = val;

@@ -91,8 +91,8 @@ class EditorWorkspace {
       this.imageW = workspace.width;
       this.imageH = workspace.height;
       var shadow = new fabric.Shadow({
-        color: "gray",
-        blur: 50,
+        color: "#d1d1d1",
+        blur: 30,
         offsetX: 0,
         offsetY: 0,
       })      
@@ -172,14 +172,17 @@ class EditorWorkspace {
     const center = this.canvas.getCenter();
     this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
     this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), scale);
-    this.canvas.centerObject(this.workspace);
+    // this.canvas.centerObject(this.workspace);
     this.canvas.renderAll();
 
     //Do not display beyond the canvas
-    this.workspace.clone((cloned) => {
-      this.canvas.clipPath = cloned;
-      this.canvas.requestRenderAll();
-    });
+    setTimeout(() => {
+      this.workspace.clone((cloned) => {
+        this.canvas.clipPath = cloned;
+        this.canvas.requestRenderAll();
+      });      
+    }, 100);
+
     if (cb) cb(this.workspace.left, this.workspace.top);
   }
 
@@ -233,7 +236,7 @@ class EditorWorkspace {
         this.isDragging = true;
         this.lastPosX = evt.clientX;
         this.lastPosY = evt.clientY;
-        this.requestRenderAll();
+        this.renderAll();
       }
     });
 
@@ -246,7 +249,7 @@ class EditorWorkspace {
         vpt[5] += e.clientY - this.lastPosY;
         this.lastPosX = e.clientX;
         this.lastPosY = e.clientY;
-        this.requestRenderAll();
+        this.renderAll();
       }
     });
 
@@ -261,11 +264,10 @@ class EditorWorkspace {
           obj.selectable = true;
         }
       });
-      this.requestRenderAll();
+      this.renderAll();
     });
 
     this.canvas.on('mouse:wheel', function (opt) {
-      console.log(opt)
       const delta = opt.e.deltaY;
       let zoom = this.getZoom();
       zoom *= 0.999 ** delta;
@@ -275,13 +277,14 @@ class EditorWorkspace {
       this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
       opt.e.preventDefault();
       opt.e.stopPropagation();
+      this.renderAll();
     });
   }
 
   _setDring() {
     this.canvas.selection = false;
-    // this.canvas.defaultCursor = 'grab';
-    // this.workspace.hoverCursor = 'grab';
+    this.canvas.defaultCursor = 'grab';
+    this.workspace.hoverCursor = 'grab';
     this.canvas.getObjects().forEach((obj) => {
       obj.selectable = false;
     });

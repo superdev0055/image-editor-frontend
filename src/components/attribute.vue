@@ -34,7 +34,7 @@
       <div class="customborder"></div>
     </div>
     <div class="setBox">
-      <div v-show="baseType.includes(mSelectOneType)">
+      <div v-show="imgType.includes(mSelectOneType)">
         <!-- control part -->
         <div class="control" style="margin-left:15px">
           <div class="row mt-3 mb-3" style="align-items: center;">
@@ -203,7 +203,7 @@
       <!----------------- shape and text ----------------------->
 
       <shape-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></shape-type>
-      <text-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr,this.fontAttr]"></text-type>
+      <text-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr,this.fontAttr]" @textGroupSet = textGroupSet($event)></text-type>
 
       <!----------------- shape and text ----------------------->
                   
@@ -332,6 +332,8 @@ export default {
       imgType: ['image'],
       // general properties
       baseAttr: {
+        width:0,
+        height:0,
         round:0,
         sizeX: 0,
         sizeY: 0,
@@ -457,9 +459,29 @@ export default {
       this.$forceUpdate();
     });
     this.event.on('selectOne', (items) => {
-      this.isLock = !items[0].hasControls;
-      this.mSelectActive = items[0];      
-      const activeObject = this.canvas.c.getActiveObjects()[0];
+      if(items[0].type == "group"){
+        this.isLock = !items[0].hasControls;
+        this.mSelectActive = items[0];      
+        var activeObject = this.canvas.c.getActiveObject()._objects[1]   
+        
+        this.fontAttr.string = activeObject.get('text');
+        this.fontAttr.fontSize = activeObject.get('fontSize');
+        this.fontAttr.fontFamily = activeObject.get('fontFamily');
+        this.fontAttr.lineHeight = activeObject.get('lineHeight');
+        this.fontAttr.textAlign = activeObject.get('textAlign');
+        this.fontAttr.underline = activeObject.get('underline');
+        this.fontAttr.linethrough = activeObject.get('linethrough');
+        this.fontAttr.charSpacing = activeObject.get('charSpacing');
+        this.fontAttr.overline = activeObject.get('overline');
+        this.fontAttr.fontStyle = activeObject.get('fontStyle');
+        this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
+        this.fontAttr.fontWeight = activeObject.get('fontWeight');        
+      }else{
+        this.isLock = !items[0].hasControls;
+        this.mSelectActive = items[0];      
+        var activeObject = this.canvas.c.getActiveObjects()[0];        
+      }      
+
       if (activeObject) {
         this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
         if(this.emptyPatternState == "removeBg"){
@@ -467,7 +489,6 @@ export default {
         }else if(this.emptyPatternState == "trimBg"){
           this.trimBgState = true
         }
-
         // base
         this.baseAttr.round = activeObject.get('rx');
         this.baseAttr.height = activeObject.get('height');
@@ -480,24 +501,10 @@ export default {
         this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
         this.baseAttr.shadow = activeObject.get('shadow') || {};
         this.baseAttr.angle = activeObject.get('angle') || 0;
-        const textTypes = ['i-text', 'text', 'textbox'];
-        if (textTypes.includes(activeObject.type)) {
-          this.fontAttr.string = activeObject.get('text');
-          this.fontAttr.fontSize = activeObject.get('fontSize');
-          this.fontAttr.fontFamily = activeObject.get('fontFamily');
-          this.fontAttr.lineHeight = activeObject.get('lineHeight');
-          this.fontAttr.textAlign = activeObject.get('textAlign');
-          this.fontAttr.underline = activeObject.get('underline');
-          this.fontAttr.linethrough = activeObject.get('linethrough');
-          this.fontAttr.charSpacing = activeObject.get('charSpacing');
-          this.fontAttr.overline = activeObject.get('overline');
-          this.fontAttr.fontStyle = activeObject.get('fontStyle');
-          this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
-          this.fontAttr.fontWeight = activeObject.get('fontWeight');
-        }
+
       }
     });
-  
+
   },
   mounted(){
   },
@@ -656,8 +663,6 @@ export default {
         this.canvas.c.remove(this.canvas.c.getActiveObjects()[0])
         this.canvas.c.add(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
-        // this.canvas.c.renderAll();
-        // // Remove image elements from the page
         imgEl.remove();
       }      
     }

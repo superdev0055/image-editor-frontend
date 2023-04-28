@@ -35,7 +35,7 @@
         <!-- --------------------------------- End Import Button(+) ----------------------------------- -->
 
         <!-- --------------------------------- Left Side ----------------------------------- -->
-        <div id="workspace" style="width:90%; position: relative; background: #f1f1f1;">
+        <div id="workspace" style="width:90%; position: relative; background: #f8f8f5;">
           <!-- <div class="canvas-box"> -->
           <div>
             <div class="inside-shadow">
@@ -86,7 +86,6 @@ import flip from '@/components/flip.vue';
 import save from '@/components/save.vue';
 import lang from '@/components/lang.vue';
 import clone from '@/components/clone.vue';
-import group from '@/components/group.vue';
 import zoom from '@/components/zoom.vue';
 import lock from '@/components/lock.vue';
 import dele from '@/components/del.vue';
@@ -145,17 +144,20 @@ export default {
     flip,
     importTmpl,
     centerAlign,
-    group,
     zoom,
     history,
   },
   created() {
 
   },
+  mounted(){
+    cosole.log
+  },
   methods:{
     save(){
     }
   },
+  
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
@@ -167,7 +169,7 @@ export default {
     canvas.editor = new Editor(canvas.c);
     this.show = true;
     this.$Spin.hide();      
-    canvas.c.renderAll();       
+    canvas.c.renderAll();
   },
 };
 

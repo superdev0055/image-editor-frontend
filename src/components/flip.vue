@@ -4,7 +4,7 @@
     </div>                
     <div class="col col-lg-3">
       <div class="box attr-item">
-        <Tooltip :content="$t('flip.x')">
+        <Tooltip :content="'flip.x'">
           <Button  @click="flip('X')" type="text">
             <svg
               t="1650443094178"
@@ -31,7 +31,7 @@
             </svg>
           </Button>
         </Tooltip>
-        <Tooltip :content="$t('flip.y')">
+        <Tooltip :content="'flip.y'">
           <Button :disabled="notSelectOneMode()" @click="flip('Y')" type="text">
             <svg
               t="1650443104385"

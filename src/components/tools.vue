@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DropdownItem @click="() => addText()" :draggable="true" @dragend="onDragend('text')"><Icon type="logo-tumblr" /><span style="margin-left:10px">Text</span></DropdownItem>
+    <DropdownItem @click="() => addText()" :draggable="true" @dragend="onDragend('text')"><Icon type="logo-tumblr"/><span style="margin-left:10px">Text</span></DropdownItem>
     <DropdownItem @click="() => addRect()" :draggable="true" @dragend="onDragend('rect')"><Icon type="ios-square-outline" /><span style="margin-left:10px">Rectangle</span></DropdownItem>
     <DropdownItem @click="() => addCircle()" :draggable="true" @dragend="onDragend('circle')"><Icon type="ios-radio-button-off" /><span style="margin-left:10px">Circle</span></DropdownItem>
   </div>
@@ -72,18 +72,33 @@ export default {
         default:
       }
     },
+
     addText(option) {
-      const text = new this.fabric.IText(this.$t('everything_is_fine'), {
+      const text = new this.fabric.IText("everything is fine", {
         ...defaultPosition,
         ...option,
-        fontSize: 20,
+	      fontFamily: 'Courier New',
+
+        fontSize: 80,
         id: uuid(),
       });
-      this.canvas.c.add(text);
+      text.set("width",text.width);
+      var rect = new fabric.Rect({
+          height: 0,
+          width: 0,
+          fill: '',
+          opacity: 0,
+          id:"virtural"
+      });      
+      var group = new fabric.Group([rect, text]);
+	    group.setCoords();	
+      group.id = "i-text";
+      group.name = 'everything_is_fine'
+      this.canvas.c.add(group);
       if (!option) {
-        text.center();
+        group.center();
       }
-      this.canvas.c.setActiveObject(text);
+      this.canvas.c.setActiveObject(group);
     },
     addImg(e) {
       const imgEl = e.target.cloneNode(true);
@@ -96,7 +111,7 @@ export default {
       this.canvas.c.renderAll();
     },
     addTextBox(option) {
-      const text = new this.fabric.Textbox(this.$t('everything_goes_well'), {
+      const text = new this.fabric.Textbox('everything_goes_well', {
         ...defaultPosition,
         ...option,
         splitByGrapheme: true,

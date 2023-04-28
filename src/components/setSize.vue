@@ -1,52 +1,6 @@
 <template>
   <div>
-    <div v-if="!mSelectMode=='one'" class="row">
-      <Tabs value="name1" size="default" type="line" style="width:100%" class="mt-3">
-        <TabPane label="Setup" name="name1" class="col-md-4" icon="md-apps">
-          <div class="row d-flex justify-content-center">
-            <div class="col-md-11">
-              <div class="image-name mt-2">
-                <label class="font-s">Image name</label>         
-                <b-form-input size="sm"></b-form-input>
-              </div>
-              <div class="image-size mt-2" style="">
-                <label class="font-s">Image size</label>  
-                  <b-form-select v-model="selected" class="mb-3" size="sm">
-                    <b-form-select-option :value="'900x900'" :selected="true">900x900</b-form-select-option>
-                    <b-form-select-option :value="'1200x628'">Facebook - single image(1200x628)</b-form-select-option>
-                    <b-form-select-option :value="'1920x1080'">1920x1080(16:9)</b-form-select-option>
-                    <b-form-select-option :value="'1024x1280'">1080x1080</b-form-select-option>
-                    <b-form-select-option :value="'1024x1280'">1024x1280(4:5)</b-form-select-option>
-                    <b-form-select-option :value="'1024x1536'">1024x1536(2:3)</b-form-select-option>
-                    <b-form-select-option :value="'1080x1920'">1080x1920(9:6)</b-form-select-option>
-                  </b-form-select>
-              </div>
-              <div class="mt-2">
-                <div class="image-width mt-2 col-md-5" style="float:left">
-                  <label class="font-s">Width</label>      
-                  <input  size="sm" type="number" :max="2000" :min="1" v-model="width" @change="setSize"/>
-                </div>
-                <div class="image-height mt-2 col-md-5" style="float:right">
-                  <label class="font-s">Height</label>                  
-                  <b-form-input size="sm" type="number" :max="2000" :min="1" v-model="height" @change="setSize"></b-form-input>
-                </div>                
-              </div>  
-
-            </div>              
-            <div class="mt-4"  style="border-top: solid 1px #d7d2d2;padding-left:35px;padding-right:35px">
-              <div style="" class="">
-                <label class="mt-4 font-s" style="float:left;">Background Color</label>
-                <colorBar></colorBar>
-              </div>
-            </div>       
-          </div>      
-        </TabPane>
-        <TabPane label="Layer" icon="md-reorder" name="name2" class="col-md-4"><layer></layer></TabPane>
-        <TabPane label="Preview" icon="md-fastforward" name="name3" class="col-md-4"><preview/></TabPane>
-      </Tabs> 
-
-    </div>
-    <div v-if="mSelectMode =='multiple' || mSelectMode ==''" class="row">
+    <div v-if="mSelectMode =='multiple'||!mSelectMode=='one' || mSelectMode ==''" class="row">
       <Tabs value="name1" size="default" type="line" style="width:100%" class="mt-3"  model-value="name2" :animated=false> 
         <TabPane label="Setup" name="name1" class="col-md-4" icon="md-apps">
           <div class="row d-flex justify-content-center">
@@ -70,13 +24,27 @@
               <div class="mt-2">
                 <div class="image-width mt-2 col-md-5" style="float:left">
                   <label class="font-s">Width</label>      
-                  <b-form-input  size="sm" type="number" :max="2000" :min="1" v-model="width" @on-change="setSize">
-
-                  </b-form-input>
+                  <input
+                    autocomplete="off" 
+                    type="number" 
+                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                    placeholder="Enter text"
+                    v-model="width"
+                    @change="(value) => changeSize('width', value)"
+                    number="true" />                  
+                  <!-- <input  size="sm" type="number" :max="2000" :min="1" v-model="width" @change="(value) => setSize('width', value)"/> -->
                 </div>
                 <div class="image-height mt-2 col-md-5" style="float:right">
-                  <label class="font-s">Height</label>                  
-                  <b-form-input size="sm" type="number" :max="2000" :min="1" v-model="height" @on-change="setSize"></b-form-input>
+                  <label class="font-s">Height</label>    
+                  <input
+                    autocomplete="off" 
+                    type="number" 
+                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                    placeholder="Enter text"
+                    v-model="height"
+                    @change="(value) => changeSize('height', value)"
+                    number="true" />                                                  
+                  <!-- <input size="sm" type="number" :max="2000" :min="1" v-model="height" @change="(value) => setSize('height', value)"/> -->
                 </div>                
               </div>  
 
@@ -141,10 +109,21 @@ export default {
       this.height = height;
       this.setSize();
     },
-    setSize() {
-      console.log("asdf")
+    changeSize(key,evt) {
+      var value = evt.target.value
+      console.log(key,value)
+      console.log("asdfasdfsadf")
+      if(key == "width"){
+        this.width = value
+      }else{
+        this.height = value
+      }
       this.canvas.c.discardActiveObject();
-      this.canvas.editor.editorWorkspace.setSize(this.width, this.height);
+      this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
+    },
+    setSize() {
+      this.canvas.c.discardActiveObject();
+      this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
     },
   },
   watch:{

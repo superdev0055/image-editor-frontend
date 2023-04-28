@@ -73,7 +73,7 @@ export default {
     },    
     
     // insert image file
-    insertImgFile(file,type) {
+    insertImgFile(file) {
       const imgEl = document.createElement('img');
       imgEl.src = file || this.imgFile;
       // insert page
@@ -84,8 +84,9 @@ export default {
           id: uuid(),
           name: 'picture1',
           selectable:false,
-          hasControls:false
-        });
+          hasControls:false,
+          left:100
+        }).setCoords();
         // set zoom
         this.canvas.c.add(imgInstance);
         this.canvas.c.centerObject(imgInstance);
