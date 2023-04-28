@@ -16,8 +16,15 @@ export default {
           this.mSelectId = e[0].id;
           this.mSelectOneType = "i-text";
           this.mSelectIds = e.map((item) => item.id);          
+          return;
         }
-        return;
+        if(e[0]._objects[1].type == "image"){
+          this.mSelectMode = 'one';
+          this.mSelectId = e[0].id;
+          this.mSelectOneType = "image";
+          this.mSelectIds = e.map((item) => item.id);          
+          return;
+        }        
         // if(e[0]._objects == "text");
       }
       this.mSelectMode = 'one';

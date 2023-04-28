@@ -98,7 +98,7 @@
           <label>Text</label>
           <Input v-model="this.fontAttr.string" @on-change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:91%">
             <template #append>
-              <Select style="width: 70px" @on-change="changeAddTag" size="small">
+              <Select style="width:70px" @on-change="changeAddTag" v-model="shortTag" size="small">
                   <Option value="[avability]">[avability]</Option>
                   <Option value="[brand]">[brand]</Option>
                   <Option value="[channel]">[channel]</Option>
@@ -113,7 +113,7 @@
           <!-- -------------------  text handling  ---------------- -->
           <div class="row" style="margin-left: 3px;">
             <div class="col-8" >
-            <Select v-model="this.fontAttr.fontFamily" @on-change="changeFontFamily">
+            <Select @on-change="changeFontFamily">
                 <Option v-for="item in fontFamilyList" :value="item"  :key="'font-' + item">{{ item }}</Option>
             </Select>              
             </div>
@@ -233,8 +233,9 @@
                 <input
                   type="number" 
                   class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                  :max="360"
+                  :min="0"
                   v-model="baseAttr.padding"
-                  :max="80"
                   @change="(value)=>changeCommon('padding', value)"
                 />
               </div>
@@ -261,7 +262,7 @@
                 class="ivu-input ivu-input-default ivu-input-with-suffix" 
                 v-model="baseAttr.angle"
                 :max="80"
-                @change="(value)=>changeCommon('angle', value)"
+                @change="(value)=>changeCommon('round', value)"
               />
             </div>
           </div>
@@ -276,10 +277,10 @@
               Fill
             </div>                
             <div class="col col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showTextFill" true-color="#13ce66"/>
+              <Switch size="small" v-model="fillState" true-color="#13ce66"/>
             </div>
           </div>
-          <div v-if="showState" class="row mt-4" style="margin-left:10px;">
+          <div v-if="fillState" class="row mt-4" style="margin-left:10px;">
             <div class="col-5">
               <Color style="margin-top:-10px;margin-left:10px;width:100%"  @change="(value) => changeSelectFillType('colorFilter', value)"></Color>
             </div>
@@ -300,20 +301,28 @@
               Border
             </div>                
             <div class="col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showTextBorder" true-color="#13ce66"/>
+              <Switch size="small" v-model="borderState" @on-change="changeBorderState" true-color="#13ce66"/>
             </div>   
           </div>
-          <div v-if="textBorderState">
+          <div v-if="borderState">
             <div class="row mb-3 mt-4" style="">
-              <div class="col col-lg-9">
-                Color
-              </div>                
-              <div class="col col-lg-2">
+              <div class="col col-lg-5">
                 <ColorPicker
                   v-model="baseAttr.stroke"
                   @on-change="(value) => changeCommon('stroke', value)"
                   alpha
-                />                   
+                />                 
+              </div>                
+              <div class="col col-lg-6">
+                <Select v-model="baseAttr.strokeDashArray" @on-change="borderSet">
+                  <Option
+                    v-for="item in strokeDashList"
+                    :value="item.label"
+                    :key="'stroke-' + item.label"
+                  >
+                    {{ item.label }}
+                  </Option>
+                </Select>
               </div>
             </div>
 
@@ -331,7 +340,7 @@
                     type="number" 
                     class="ivu-input ivu-input-default ivu-input-with-suffix" 
                     v-model="baseAttr.strokeWidth"
-                    :max="360"
+                    :max="40"
                     @change="(value)=>changeCommon('strokeWidth', value)"
                   />
                 </div>
@@ -358,43 +367,120 @@ export default {
     },  
     data(){
         return{
-            activeObject:'',
-            borderState:false,
-            textBorderState:false,
-            fillState:false,
-            showState:false,            
-            rectType:["rect"],
-            shapeType:["rect","circle"],
-            circleType:["circle"],            
-            imgType: ['image'],
-            textType: ['i-text', 'textbox', 'text'],
-            baseAttr: this.mSelectOneTypeProps[1],
-            // font properties
-            fontFamilyList: ["Arial","Helvetica","Myriad Pro","Delicious","Verdana","Georgia","Hoefler Text","Courier", "Comic Sans MS" ,"Impact" ,"Monaco" ,"Optima"],
-            fillType: [
-                'normal',
-                'multiply',
-                'screen',
-                'overlay',
-                'darken',
-                'lighten',
-                'color-dodge',
-                'color-burn',
-                'hard-light',
-                'soft-light',
-                'different',
-                'exclusion',
-                'hue',
-                'saturation',
-                'color',
-                'luminosity'
-            ],
-            // font properties
-            fontAttr: this.mSelectOneTypeProps[2],              
+          showModeText:'',
+          shortTag:"ppppppp",
+          activeObject:'',
+          borderState:false,
+          fillState:false,
+          showState:false,            
+          rectType:["rect"],
+          shapeType:["rect","circle"],
+          circleType:["circle"],            
+          imgType: ['image'],
+          textType: ['i-text', 'textbox', 'text'],
+          baseAttr: this.mSelectOneTypeProps[1],
+          strokeDashArray: [],
+          
+          // font properties
+          fontFamilyList: ["Arial","Helvetica","Myriad Pro","Delicious","Verdana","Georgia","Hoefler Text","Courier", "Comic Sans MS" ,"Impact" ,"Monaco" ,"Optima"],
+          fillType: [
+              'normal',
+              'multiply',
+              'screen',
+              'overlay',
+              'darken',
+              'lighten',
+              'color-dodge',
+              'color-burn',
+              'hard-light',
+              'soft-light',
+              'different',
+              'exclusion',
+              'hue',
+              'saturation',
+              'color',
+              'luminosity'
+          ],
+          // font properties
+          fontAttr: this.mSelectOneTypeProps[2],   
+          // Font drop-down list
+          strokeDashList: [
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [1, 10],
+                strokeLineCap: 'round',
+              },
+              label: 'dotted',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [15, 15],
+                strokeLineCap: 'square',
+              },
+              label: 'dashed',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [0, 0],
+                strokeLineCap: 'square',
+
+              },
+              label: 'solid',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [],
+                strokeLineCap: 'square',
+              },
+              label: 'double',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [],
+                strokeLineCap: 'round',
+              },
+              label: 'groove',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [],
+                strokeLineCap: 'square',
+              },
+              label: 'ridge',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [],
+                strokeLineCap: 'round',
+              },
+              label: 'inset',
+            },
+            {
+              value: {
+                strokeUniform: true,
+                strokeDashArray: [],
+                strokeLineCap: 'round',
+              },
+              label: 'outset',
+            },
+            {
+              label: 'none',
+            },                        
+          ],                     
         }        
     },
     created(){
-      // this.canvas.c.on('after:render', this.checkTextboxSize);
+      this.canvas.c.on("object:moving",(e)=>{
+        this.baseAttr.top = this.canvas.c.getActiveObject().top;
+        this.baseAttr.left =this.canvas.c.getActiveObject().left;
+      })       
       this.event.on('selectOne', (e) => {
         if(e[0].type == "group"){
           if(e[0]._objects[1].type == "i-text"){
@@ -402,33 +488,104 @@ export default {
             this.activeObject = activeObject;
           }
         }
-      });      
+      });
+
+
+
     },
     mounted(){
+      this.initSet();
     },
 
     methods:{
+        //stroke boder set
+        borderSet(key) {
+          const activeObject = this.canvas.c.getActiveObject()._objects[0];
+          console.log(key, activeObject);
+          if (activeObject) {
+            const stroke = this.strokeDashList.find((item) => item.label === key);
+            if(stroke.label){
+              activeObject.set('strokeWidth',0);
+            }
+            activeObject.set(stroke.value);
+            this.canvas.c.renderAll();
+          }
+        },      
+        changeBorderState(value){
+          if(value == false){
+            const activeObject = this.canvas.c.getActiveObject()._objects[0];
+            activeObject.set('stroke','');
+            activeObject.set('strokeWidth',0);
+            this.baseAttr.strokeWidth = 0;
+            this.baseAttr.stroke = '';
+            this.canvas.c.renderAll();
+          }
+        },
+        initSet(){
+          var activeObject = this.canvas.c.getActiveObject();
+          if(activeObject != null){
+            if(activeObject._objects){
+
+              //<---------------fill of rect setting ------------->
+              if(activeObject._objects[0].fill != ''){
+                this.fillState = true;
+                this.baseAttr.fill = activeObject._objects[0].fill;
+              }
+              //<---------------fill of rect setting ------------->
+
+              // if(activeObject.)  filter portion
+
+              // <---------border of rect setting ---------->
+              if(activeObject._objects[0].stroke != ''){
+                this.borderState = true;
+                this.baseAttr.stroke = activeObject._objects[0].stroke;
+              }
+
+              if(activeObject._objects[0].strokeWidth != 0){
+                this.borderState = true;
+                this.baseAttr.strokeWidth = activeObject._objects[0].strokeWidth;
+              }            
+              // <---------border of rect setting ---------->
+            }
+          }
+          
+        },
+        reSetObj(){
+          const activeObject = this.canvas.c.getActiveObject();
+          this.baseAttr.width = activeObject.width;
+          this.baseAttr.height = activeObject.height;
+          this.baseAttr.left = activeObject.left;
+          this.baseAttr.top = activeObject.top;
+        },
         // <!----------- control box size   -------->
         checkTextboxSize(){
           const activeObject = this.canvas.c.getActiveObject();
           if(activeObject){
             if(activeObject.type == "group"){
               if(activeObject.width<activeObject._objects[1].width){
-                activeObject.set("width",activeObject._objects[1].width).setCoords();
-                activeObject.set("height",activeObject._objects[1].height).setCoords();
+                activeObject.set("width",activeObject._objects[1].width);
+                activeObject._objects[0].set("width",activeObject._objects[1].width);
+                activeObject._objects[0].set("left",-(activeObject._objects[1].width/2));
+                activeObject.set("width",activeObject._objects[1].width);
                 activeObject._objects[1].set("left",-activeObject._objects[1].width/2);
                 this.canvas.c.renderAll();
+                this.reSetObj();
+                return;
               }
               if(activeObject.height<activeObject._objects[1].height){
                 activeObject.set("height",activeObject._objects[1].height).setCoords();
                 activeObject._objects[1].set("top",-activeObject._objects[1].height/2);
                 this.canvas.c.renderAll();
+                return;
               }              
             }
           }
+
+
         },      
         // <!----------- control box size   -------->
         changeSelectFillType(value){
+          
             // switch(value){
             //     case "hue":
             //             let filter = new fabric.Image.filters.HueRotation({
@@ -456,43 +613,69 @@ export default {
             this.textBorderState ? this.textBorderState = false : this.textBorderState = true
         },        
         handleLongText(evt){
+          console.log(this.fontAttr.string);
+          var activeObject = this.canvas.c.getActiveObject()._objects[1];
+          var string = this.fontAttr.string;
             if(evt == 'shorten'){
-                this.activeObject.set("fontSize",21);
+              this.showModeText = "shorten"
+              if(150 >=string.length && string.length >= 50){
+                console.log("150")
+                activeObject.set("fontSize",21);
+                this.canvas.c.renderAll();
+                return;
+              }
+              if(250>=string.length&&string.length >= 150){
+                console.log("250")
+                activeObject.set("fontSize",18);
+                this.canvas.c.renderAll();
+                return;
+              }
+              if(350>=string.length&&string.length >= 250){
+                console.log("350")
+                activeObject.set("fontSize",16);
+                this.canvas.c.renderAll();
+                return;
+              }
             }else{
-                // activeObject
-                this.activeObject.set("fontSize",16);
+              this.showModeText = "automatic"
+                // // activeObject
+                // if(string.length >20){
+                  
+                // }
+                activeObject.set("fontSize",activeObject.fontSize);
             }
             this.canvas.c.renderAll();
         },
         changeAddTag(value){
             this.changeString(this.fontAttr.string+value);
+            this.handleLongText(this.showModeText)
         },        
         // bold
         changeFontWeight(key, value) {
             const nValue = value === 'normal' ? 'bold' : 'normal';
             this.fontAttr.fontWeight = nValue;
-            this.activeObject && this.activeObject.set(key, nValue);
+            this.canvas.c.getActiveObject()._objects[1].set(key, nValue);
             this.canvas.c.renderAll();
         },
         // italics
         changeFontStyle(key, value) {
             const nValue = value === 'normal' ? 'italic' : 'normal';
             this.fontAttr.fontStyle = nValue;
-            this.activeObject && this.activeObject.set(key, nValue);
+            this.canvas.c.getActiveObject()._objects[1].set(key, nValue);
             this.canvas.c.renderAll();
         },
         // middle stroke
         changeLineThrough(key, value) {
             const nValue = value === false;
             this.fontAttr.linethrough = nValue;
-            this.activeObject && this.activeObject.set(key, nValue);
+            this.canvas.c.getActiveObject()._objects[1].set(key, nValue);
             this.canvas.c.renderAll();
         },
         // underline
         changeUnderline(key, value) {
             const nValue = value === false;
             this.fontAttr.underline = nValue;
-            this.activeObject && this.activeObject.set(key, nValue);
+            this.canvas.c.getActiveObject()._objects[1].set(key, nValue);
             this.canvas.c.renderAll();
         },        
         //delete shortTag
@@ -513,55 +696,108 @@ export default {
                 var string = value.target.value;
             }
             this.fontAttr.string = string;
+            
             this.changeCommon('text',string);
+            // this.handleLongText(this.showModeText)
+
         },
         // modify font
         changeFontFamily(fontName) {
             if (!fontName) return;
-            this.activeObject.set("fontFamily",fontName);
+
+            this.canvas.c.getActiveObject()._objects[1].set("fontFamily",fontName);
             this.canvas.c.renderAll();
         },   
 
         //change activeObject
         changeCommon(key,evt){
-          if(key=="width" ||key=="height" ||key=="top" ||key=="left"|| key=="padding"){
+          if(key=="width" ||key=="height" ||key=="top" ||key=="left"||key=="padding"){
             this.activeObject = this.canvas.c.getActiveObject();
+            this.changeProperty(key,evt);
+            return;
+          }else if(key=="stroke" || key=="strokeWidth"){
+            this.activeObject = this.canvas.c.getActiveObject()._objects[0]
             this.changeProperty(key,evt);
             return;
           }else{
             this.activeObject = this.canvas.c.getActiveObject()._objects[1]
             this.changeProperty(key,evt);
-            return;
+            return;            
           }
         },     
         //change property
         changeProperty(key, evt) {
-            if (key === 'fill') {
-                this.activeObject.set(key, evt);
-                this.canvas.c.renderAll();
-                return;
+            if (key === 'width'|| key === 'height') {
+              this.activeObject.set(key, Number(evt.target.value));
+              this.activeObject._objects[0].set("width",this.activeObject.width);
+              this.activeObject._objects[0].set("left",-(this.activeObject.width/2));    
+              this.activeObject._objects[0].set("height",this.activeObject.height);              
+              this.activeObject._objects[0].set("top",-(this.activeObject.height / 2));                         
+              this.canvas.c.requestRenderAll();
+              this.reSetObj();
+              return;
             }
+            // if (key === 'height') {
+            //   this.activeObject.set(key, Number(evt.target.value));
+            //   this.activeObject._objects[0].set("height",this.activeObject.height);              
+            //   this.activeObject._objects[0].set("top",this.activeObject._objects[0].top + evt.target.value);                 
+            //   this.canvas.c.renderAll();
+            //   return;
+            // }            
+            
             if (key === 'stroke') {
-                this.activeObject.set(key, evt);
-                this.canvas.c.renderAll();
-                return;
+              this.activeObject.set(key, evt);
+              this.canvas.c.renderAll();
+              return;
             }      
-            // Transparency special conversion
-            if (key === 'opacity') {
-                
-                if(typeof(evt) == "number"){
-                evt = Number(evt)
-                }else{
-                evt = Number(evt.target.value)
-                }
-                this.activeObject && this.activeObject.set(key, evt / 100);
-                this.canvas.c.renderAll();
-                return;
+            if (key === 'strokeWidth') {
+              this.activeObject.set(key, evt.target.value);
+              this.canvas.c.renderAll();
+              return;
+            }                  
+            // control rect's size and group's size depending on padding value
+            if (key === 'padding') {
+              var rect = this.canvas.c.getActiveObject()._objects[0];
+              //
+              if(!this.activeObject.tempValue){
+                this.activeObject.tempValue = evt.target.value;
+              }
+              if(this.activeObject.tempValue<evt.target.value){
+
+                rect.set("width",Number(this.activeObject.width)+ Number(evt.target.value)*2);
+                rect.set("height",Number(this.activeObject.height) + Number(evt.target.value)*2);
+                this.activeObject.set("width",Number(this.activeObject.width) + Number(evt.target.value)*2);
+                this.activeObject.set("height",Number(this.activeObject.height) + Number(evt.target.value)*2);
+                rect.set("left",rect.left+evt.target.value);
+                rect.set("top",rect.top+evt.target.value);
+
+              }else{
+
+                rect.set("width",Number(this.activeObject.width)- Number(this.activeObject.tempValue)*2);
+                rect.set("height",Number(this.activeObject.height) - Number(this.activeObject.tempValue)*2);
+                this.activeObject.set("width",Number(this.activeObject.width) - Number(this.activeObject.tempValue)*2);
+                this.activeObject.set("height",Number(this.activeObject.height) - Number(this.activeObject.tempValue)*2);
+                rect.set("left",rect.left+this.activeObject.tempValue);
+                rect.set("top",rect.top+this.activeObject.tempValue);     
+
+              }
+
+              this.activeObject.tempValue = evt.target.value;
+              this.canvas.c.requestRenderAll();
+              this.reSetObj();
+
+              return;                
             }
             if(key == "text"){
               this.activeObject.set("text",evt);
-              this.canvas.c.renderAll();
-              this.checkTextboxSize();
+              const activeObject = this.canvas.c.getActiveObject();
+              if(activeObject.width<activeObject._objects[1].width){
+                activeObject._objects[1].set("scaleX",activeObject.width/activeObject._objects[1].width);
+                activeObject._objects[1].set("scaleY",activeObject.width/activeObject._objects[1].width);
+                activeObject._objects[0].set("width",activeObject.width);
+                activeObject._objects[1].set("width",activeObject.width);
+                this.canvas.c.renderAll();
+              }
               return;
             }
             // Rotation Angle Adaptation
@@ -571,10 +807,11 @@ export default {
                 return;
             }
             if(key == "round"){
-                this.activeObject.set("ry", Number(evt.target.value))
-                this.activeObject.set("rx", Number(evt.target.value))
-                this.canvas.c.renderAll();
-                return;
+              this.activeObject = this.canvas.c.getActiveObject()._objects[0];
+              this.activeObject.set("ry", Number(evt.target.value))
+              this.activeObject.set("rx", Number(evt.target.value))
+              this.canvas.c.renderAll();
+              return;
             }
             
             this.activeObject && this.activeObject.set(key, Number(evt.target.value));
@@ -584,3 +821,6 @@ export default {
   }    
 }
 </script>
+<style scoped>
+
+</style>

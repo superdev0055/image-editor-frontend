@@ -154,21 +154,20 @@ export default {
     // right align
     right() {
       const activeObject = this.canvas.c.getActiveObject();
-      var activeObjectLeft = 0;
       if (activeObject && activeObject.type === 'group') {
-        activeObject.forEachObject((item) => {
-          if(item.id == "virtural"){
-            activeObjectLeft = activeObject.width / 2;
-          }else{
+        const activeSelection = activeObject;
+        const activeObjectLeft = activeObject.width / 2;
+        console.log(activeObject)
+        activeSelection.forEachObject((item) => {
+          if(item.id != "virtural"){
             item.set({
-              left: activeObjectLeft - item.width,
+              left: activeObjectLeft - item.width * item.scaleX,
             });    
             item.setCoords();
             this.canvas.c.renderAll();
-          }
-        });      
+          }          
+        });
       }      
-      
     },
     // horizontal center alignment
     xcenter() {
@@ -176,11 +175,14 @@ export default {
       if (activeObject && activeObject.type === 'group') {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
-          item.set({
-            left: 0 - (item.width * item.scaleX) / 2,
-          });
-          item.setCoords();
-          this.canvas.c.renderAll();
+          if(item.id != "virtural"){
+            item.set({
+              left: 0 - (item.width * item.scaleX) / 2,
+            });
+            item.setCoords();
+            this.canvas.c.renderAll();
+          }          
+
         });
       }
     },

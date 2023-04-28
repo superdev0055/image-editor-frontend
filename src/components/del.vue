@@ -16,7 +16,17 @@ export default {
     return {};
   },
   methods: {
+    warning (nodesc) {
+        this.$Notice.warning({
+            title: 'warning',
+            desc: nodesc ? '' : 'Here is the notification description. Here is the notification description. '
+        });
+    },     
     del() {
+      // if(this.mSelectMode == "multiple"){
+      //   this.warning("In this state, you can't this element");
+      //   return;
+      // }
       const activeObject = this.canvas.c.getActiveObjects();
       if (activeObject) {
         activeObject.map((item) => {

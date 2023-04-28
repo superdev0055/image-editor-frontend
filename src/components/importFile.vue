@@ -85,11 +85,10 @@ export default {
           name: 'picture1',
           selectable:false,
           hasControls:false,
-          left:100
+          left:-100
         }).setCoords();
         // set zoom
         this.canvas.c.add(imgInstance);
-        this.canvas.c.centerObject(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
         this.canvas.c.renderAll();
         // // Remove image elements from the page

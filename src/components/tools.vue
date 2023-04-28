@@ -78,7 +78,6 @@ export default {
         ...defaultPosition,
         ...option,
 	      fontFamily: 'Courier New',
-
         fontSize: 80,
         id: uuid(),
       });
@@ -87,17 +86,19 @@ export default {
           height: 0,
           width: 0,
           fill: '',
-          opacity: 0,
+          strokeWidth:0,
+          opacity: 100,
           id:"virtural"
       });      
       var group = new fabric.Group([rect, text]);
 	    group.setCoords();	
-      group.id = "i-text";
+      group.id = uuid();
       group.name = 'everything_is_fine'
+      group.set("left",0-group.width)
+      group.set("padding",10);      
       this.canvas.c.add(group);
-      if (!option) {
-        group.center();
-      }
+      rect.set("width",group.width*group.scaleX+5);
+      rect.set("height",group.height*group.scaleY+5);
       this.canvas.c.setActiveObject(group);
     },
     addImg(e) {
@@ -140,23 +141,18 @@ export default {
     },
     addCircle(option) {
       const circle = new this.fabric.Circle({
-        ...defaultPosition,
-        ...option,
+        left:-200,
         radius: 150,
         fill: 'yellow',
         id: uuid(),
         name: 'circle',
       });
       this.canvas.c.add(circle);
-      if (!option) {
-        circle.center();
-      }
       this.canvas.c.setActiveObject(circle);
     },
     addRect(option) {
       const rect = new this.fabric.Rect({
-        ...defaultPosition,
-        ...option,
+        left:-200,
         fill: 'blue',
         width: 400,
         height: 400,
@@ -164,9 +160,6 @@ export default {
         name: 'rect',
       });
       this.canvas.c.add(rect);
-      if (!option) {
-        rect.center();
-      }
       this.canvas.c.setActiveObject(rect);
     },
     drawingLineModeSwitch(isArrow) {

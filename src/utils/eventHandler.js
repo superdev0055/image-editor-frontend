@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-
 class EventHandle extends EventEmitter {
   init(handler) {
     this.handler = handler;

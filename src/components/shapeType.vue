@@ -130,7 +130,7 @@
                 type="number" 
                 class="ivu-input ivu-input-default ivu-input-with-suffix" 
                 placeholder="Enter text"
-                v-model="baseAttr.angle"
+                v-model="baseAttr.round"
                 :max="360"
                 @change="(value)=>changeCommon('round', value)"
               />
@@ -145,7 +145,7 @@
               Fill
             </div>                
             <div class="col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showFill" true-color="#13ce66"/>
+              <Switch size="small" v-model="fillState" @on-change="showFill" true-color="#13ce66"/>
             </div>
           </div>
           <div v-if="fillState">
@@ -165,7 +165,7 @@
               Border
             </div>                
             <div class="col-2" style="text-align: right;">
-              <Switch size="small" @on-change="showBorder" true-color="#13ce66"/>
+              <Switch size="small" v-model="borderState" @on-change="changeBorderState" true-color="#13ce66"/>
             </div>   
           </div>
           <div v-if="borderState">
@@ -227,7 +227,6 @@ export default {
       fillState:false,
       showState:false,       
       borderState:false,
-      fillState:false,
       // common element
       baseType: [
         'text',
@@ -249,25 +248,64 @@ export default {
       baseAttr: this.mSelectOneTypeProps[1],
     };
   },
-    created(){
-      // this.canvas.c.on('after:render', this.checkTextboxSize);
-      this.event.on('selectOne', (items) => {
-            // base
-            var activeObject = this.canvas.c.getActiveObjects()[0];        
-            this.baseAttr.round = activeObject.get('rx');
-            this.baseAttr.height =activeObject.get('height');
-            this.baseAttr.width = activeObject.get('width');
-            this.baseAttr.opacity =activeObject.get('opacity') * 100;
-            this.baseAttr.fill = activeObject.get('fill');
-            this.baseAttr.left = activeObject.get('left');
-            this.baseAttr.top = activeObject.get('top');
-            this.baseAttr.stroke = activeObject.get('stroke');
-            this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
-            this.baseAttr.shadow = activeObject.get('shadow') || {};
-            this.baseAttr.angle = activeObject.get('angle') || 0;            
-      });      
-    },  
+  mounted(){
+    this.initSet();
+  },
+  created(){
+    this.event.on('selectOne', (items) => {
+          // base
+          var activeObject = this.canvas.c.getActiveObjects()[0];        
+          this.baseAttr.round = activeObject.get('rx');
+          this.baseAttr.height =activeObject.get('height');
+          this.baseAttr.width = activeObject.get('width');
+          this.baseAttr.opacity =activeObject.get('opacity') * 100;
+          this.baseAttr.fill = activeObject.get('fill');
+          this.baseAttr.left = activeObject.get('left');
+          this.baseAttr.top = activeObject.get('top');
+          this.baseAttr.stroke = activeObject.get('stroke');
+          this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
+          this.baseAttr.shadow = activeObject.get('shadow') || {};
+          this.baseAttr.angle = activeObject.get('angle') || 0;   
+          this.initSet()         
+    });      
+  },  
   methods:{
+    initSet(){
+      var activeObject = this.canvas.c.getActiveObject();
+      if(activeObject != null){
+
+          //<---------------fill of rect setting ------------->
+          if(activeObject.fill != ''){
+            this.fillState = true;
+            this.baseAttr.fill = activeObject.fill;
+          }
+          //<---------------fill of rect setting ------------->
+
+          // if(activeObject.)  filter portion
+
+          // <---------border of rect setting ---------->
+          if(activeObject.stroke != ''){
+            this.borderState = true;
+            this.baseAttr.stroke = activeObject.stroke;
+          }
+          if(activeObject.strokeWidth != 0){
+            this.borderState = true;
+            this.baseAttr.strokeWidth = activeObject.strokeWidth;
+          }            
+          // <---------border of rect setting ---------->
+      }      
+    },
+    changeBorderState(value){
+      console.log(value);
+      if(value == false){
+        const activeObject = this.canvas.c.getActiveObject();
+        activeObject.set('stroke','');
+        activeObject.set('strokeWidth',0);
+        this.baseAttr.strokeWidth = 0;
+        this.baseAttr.stroke = '';
+        this.canvas.c.renderAll();
+      }
+    },    
     showBorder(){
         this.borderState ? this.borderState = false : this.borderState = true
     },

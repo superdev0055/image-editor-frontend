@@ -204,10 +204,9 @@ export default defineComponent({
       item[0].clone((cloned) => {
         this.canvas.c.discardActiveObject();
         // Spacing settings
-        const grid = 10;
         cloned.set({
-          left: cloned.left + grid,
-          top: cloned.top + grid,
+          left: item[0].left,
+          top: item[0].top,
           id: uuid(),
         });
         this.canvas.c.add(cloned);
@@ -216,7 +215,20 @@ export default defineComponent({
       })
     },
     del(id) {
-      this.canvas.editor.del(id);
+      console.log(id);
+      this.canvas.c.getObjects().forEach((arg)=>{
+
+        if(arg.id == "empty"){
+          return true;
+        }
+
+        if(arg.id == id){
+          this.canvas.c.remove(arg);
+        }
+
+      });
+      this.canvas.c.requestRenderAll();
+      this.canvas.c.discardActiveObject();      
     },    
     //for drag and drop
     onMoveCallback(evt, originalEvent) {

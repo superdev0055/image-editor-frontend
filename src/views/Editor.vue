@@ -60,8 +60,7 @@
           </div>
         </div>
         <!-- --------------------------------- End Left Side ----------------------------------- -->
-
-        <!-- --------------------------------- Right Side ----------------------------------- -->
+         <!-- --------------------------------- Right Side ----------------------------------- -->
         <div class="right-box">
           <div v-if="show">
             <set-size></set-size> 
@@ -95,7 +94,7 @@ import { fabric } from 'fabric';
 import Editor from '@/core';
 
 const event = new EventHandle();
-event.setMaxListeners(100)
+event.setMaxListeners(0)
 const canvas = {};
 export default {
   name: 'Editor',

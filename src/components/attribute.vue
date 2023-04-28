@@ -1,7 +1,7 @@
 <template>
   <div v-if="mSelectMode === 'one'" style="font-size:12px" id="attribute">
     <!-- general properties -->
-    <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 45555555555;background-color:white">
+    <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 4;background-color:white">
       <!-- Right Head -->
       <right-header :mSelectOneTypeProps="mSelectOneType"></right-header>
       <!-- Right Head -->
@@ -149,22 +149,24 @@
           </div>
         </div>
         <!-- emptypattern part -->
-        <div class="row mb-3" style="">
-          <div class="col col-lg-10">
-            Remove white background
-          </div>                
-          <div class="col col-lg-2">
-            <Switch size="small" v-model="removeBgState" @on-change="nonShowBg"/>
-          </div>
-        </div>          
-        <div class="row mb-3" style="">
-          <div class="col col-lg-10">
-            Trim image
-          </div>                
-          <div class="col col-lg-2">
-            <Switch size="small" v-model="trimBgState" @on-change="trimBg"/>
-          </div>
-        </div>          
+        <div v-if="showProduct">
+          <div class="row mb-3" style="">
+            <div class="col col-lg-10">
+              Remove white background
+            </div>                
+            <div class="col col-lg-2">
+              <Switch size="small" v-model="removeBgState" @on-change="nonShowBg"/>
+            </div>
+          </div>          
+          <div class="row mb-3" style="">
+            <div class="col col-lg-10">
+              Trim image
+            </div>                
+            <div class="col col-lg-2">
+              <Switch size="small" v-model="trimBgState" @on-change="trimBg"/>
+            </div>
+          </div>          
+        </div>
 
         <div class="row mb-3" style="">
           <div class="col col-lg-8">
@@ -305,9 +307,13 @@ export default {
       //layer restriction
       isLock: false,
       isView:true,
+
+
       emptyPatternState:"showBg", //emptyPatternState includes 'showBg' ,'trimBg',"nonShowBg" 
       removeBgState:false,
       trimBgState:false,  
+      showProduct:false,
+      
       // common element
       baseType: [
         'text',
@@ -336,7 +342,6 @@ export default {
         left: 0,
         top: 0,
         strokeWidth: 0,
-        strokeDashArray: [],
         stroke: '#fff',
         shadow: {
           color: '#fff',
@@ -360,81 +365,7 @@ export default {
         linethrough: false,
         overline: false,
       },      
-      // Font drop-down list
-      strokeDashList: [
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [],
-            strokeLineCap: 'butt',
-          },
-          label: 'Stroke',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [1, 10],
-            strokeLineCap: 'butt',
-          },
-          label: 'Dash-1',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [1, 10],
-            strokeLineCap: 'round',
-          },
-          label: 'Dash-2',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [15, 15],
-            strokeLineCap: 'square',
-          },
-          label: 'Dash-3',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [15, 15],
-            strokeLineCap: 'round',
-          },
-          label: 'Dash-4',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [25, 25],
-            strokeLineCap: 'square',
-          },
-          label: 'Dash-5',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [25, 25],
-            strokeLineCap: 'round',
-          },
-          label: 'Dash-6',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [1, 8, 16, 8, 1, 20],
-            strokeLineCap: 'square',
-          },
-          label: 'Dash-7',
-        },
-        {
-          value: {
-            strokeUniform: true,
-            strokeDashArray: [1, 8, 16, 8, 1, 20],
-            strokeLineCap: 'round',
-          },
-          label: 'Dash-8',
-        },
-      ],
+
       // font alignment
       textAlignList: ['left', 'center', 'right'],
       // Align icon
@@ -447,36 +378,24 @@ export default {
   },
 
   created() {
+ 
     this.event.on('selectCancel', () => {
       this.baseAttr.fill = '';
       this.$forceUpdate();
     });
     this.event.on('selectOne', (items) => {
-      if(items[0].type == "group"){
 
-        this.isLock = !items[0].hasControls;
-        this.mSelectActive = items[0];      
-        var activeObject = this.canvas.c.getActiveObject()._objects[1]   
-        this.fontAttr.string = activeObject.get('text');
-        this.fontAttr.fontSize = activeObject.get('fontSize');
-        this.fontAttr.fontFamily = activeObject.get('fontFamily');
-        this.fontAttr.lineHeight = activeObject.get('lineHeight');
-        this.fontAttr.textAlign = activeObject.get('textAlign');
-        this.fontAttr.underline = activeObject.get('underline');
-        this.fontAttr.linethrough = activeObject.get('linethrough');
-        this.fontAttr.charSpacing = activeObject.get('charSpacing');
-        this.fontAttr.overline = activeObject.get('overline');
-        this.fontAttr.fontStyle = activeObject.get('fontStyle');
-        this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
-        this.fontAttr.fontWeight = activeObject.get('fontWeight');     
+      this.isLock = !items[0].hasControls;
+      this.mSelectActive = items[0];      
+      var activeObject = this.canvas.c.getActiveObjects()[0]; 
+      if(activeObject.id == "showBg" || activeObject.id =='removeBg' || activeObject.id == 'trunBg'){
 
+        this.showProduct = true;
       }else{
 
-        this.isLock = !items[0].hasControls;
-        this.mSelectActive = items[0];      
-        var activeObject = this.canvas.c.getActiveObjects()[0]; 
-
-      }      
+        this.showProduct = false;
+      } 
+      
 
       if (activeObject) {
         this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
@@ -502,6 +421,8 @@ export default {
         this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
         this.baseAttr.shadow = activeObject.get('shadow') || {};
         this.baseAttr.angle = activeObject.get('angle') || 0;
+        this.baseAttr.padding = activeObject.get('padding') || 0;
+        
 
       }
     });
