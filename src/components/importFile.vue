@@ -87,10 +87,27 @@ export default {
           hasControls:false,
           left:-100
         }).setCoords();
-        // set zoom
-        this.canvas.c.add(imgInstance);
-        this.canvas.c.setActiveObject(imgInstance);
+
+
+        var rect = new fabric.Rect({
+            height: 0,
+            width: 0,
+            fill: '',
+            strokeWidth:0,
+            opacity: 100,
+            id:"virtural"
+        });      
+
+        var group = new fabric.Group([rect, imgInstance]);
+        group.id = uuid();
+        group.name = 'picture';
+        group.set("left",0-group.width)
+        this.canvas.c.add(group);
+        rect.set("width",group.width*group.scaleX);
+        rect.set("height",group.height*group.scaleY);
+        this.canvas.c.setActiveObject(group);
         this.canvas.c.renderAll();
+
         // // Remove image elements from the page
         imgEl.remove();
       };

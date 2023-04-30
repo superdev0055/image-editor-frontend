@@ -1,5 +1,5 @@
 <template>
-    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300">
+    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300" style="margin-bottom: 200px">
       <div
           class="list-styles"
           v-for="element in list"
@@ -21,11 +21,11 @@
               <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(element.id)" type="text"></Button>
               <Button v-else @click="doView(element.id)" icon="ios-eye-outline" type="text"></Button>
             </Tooltip>
-            <Dropdown>
+            <Dropdown style="z-index:10000">
               <Button icon="ios-more" type="text">
               </Button>
-              <template #list>
-                  <DropdownMenu>
+              <template #list >
+                  <DropdownMenu >
                     <DropdownItem  size="small">
                       <Button @click="clone(element.id)" icon="ios-copy" type="text" size="small"></Button>
                       <span style="font-size:10px">Duplicate layer1</span>

@@ -234,7 +234,7 @@
                   type="number" 
                   class="ivu-input ivu-input-default ivu-input-with-suffix" 
                   :max="360"
-                  :min="0"
+                  :min="10"
                   v-model="baseAttr.padding"
                   @change="(value)=>changeCommon('padding', value)"
                 />
@@ -486,6 +486,18 @@ export default {
           if(e[0]._objects[1].type == "i-text"){
             const activeObject = e[0]._objects[1];
             this.activeObject = activeObject;
+            this.fontAttr.string = activeObject.get('text');
+            this.fontAttr.fontSize = activeObject.get('fontSize');
+            this.fontAttr.fontFamily = activeObject.get('fontFamily');
+            this.fontAttr.lineHeight = activeObject.get('lineHeight');
+            this.fontAttr.textAlign = activeObject.get('textAlign');
+            this.fontAttr.underline = activeObject.get('underline');
+            this.fontAttr.linethrough = activeObject.get('linethrough');
+            this.fontAttr.charSpacing = activeObject.get('charSpacing');
+            this.fontAttr.overline = activeObject.get('overline');
+            this.fontAttr.fontStyle = activeObject.get('fontStyle');
+            this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
+            this.fontAttr.fontWeight = activeObject.get('fontWeight');            
           }
         }
       });
@@ -501,7 +513,6 @@ export default {
         //stroke boder set
         borderSet(key) {
           const activeObject = this.canvas.c.getActiveObject()._objects[0];
-          console.log(key, activeObject);
           if (activeObject) {
             const stroke = this.strokeDashList.find((item) => item.label === key);
             if(stroke.label){
@@ -613,7 +624,6 @@ export default {
             this.textBorderState ? this.textBorderState = false : this.textBorderState = true
         },        
         handleLongText(evt){
-          console.log(this.fontAttr.string);
           var activeObject = this.canvas.c.getActiveObject()._objects[1];
           var string = this.fontAttr.string;
             if(evt == 'shorten'){
@@ -648,7 +658,7 @@ export default {
         },
         changeAddTag(value){
             this.changeString(this.fontAttr.string+value);
-            this.handleLongText(this.showModeText)
+            // this.handleLongText(this.showModeText)
         },        
         // bold
         changeFontWeight(key, value) {
@@ -698,15 +708,15 @@ export default {
             this.fontAttr.string = string;
             
             this.changeCommon('text',string);
-            // this.handleLongText(this.showModeText)
+            this.handleLongText(this.showModeText)
 
         },
         // modify font
         changeFontFamily(fontName) {
-            if (!fontName) return;
+          if (!fontName) return;
+          this.canvas.c.getActiveObject()._objects[1].set("fontFamily",fontName);
+          this.canvas.c.renderAll();
 
-            this.canvas.c.getActiveObject()._objects[1].set("fontFamily",fontName);
-            this.canvas.c.renderAll();
         },   
 
         //change activeObject
@@ -732,18 +742,13 @@ export default {
               this.activeObject._objects[0].set("width",this.activeObject.width);
               this.activeObject._objects[0].set("left",-(this.activeObject.width/2));    
               this.activeObject._objects[0].set("height",this.activeObject.height);              
-              this.activeObject._objects[0].set("top",-(this.activeObject.height / 2));                         
+              this.activeObject._objects[0].set("top",-(this.activeObject.height / 2));
+              console.log(this.fontAttr);
+              console.log(this.activeObject._objects[0])
               this.canvas.c.requestRenderAll();
               this.reSetObj();
               return;
-            }
-            // if (key === 'height') {
-            //   this.activeObject.set(key, Number(evt.target.value));
-            //   this.activeObject._objects[0].set("height",this.activeObject.height);              
-            //   this.activeObject._objects[0].set("top",this.activeObject._objects[0].top + evt.target.value);                 
-            //   this.canvas.c.renderAll();
-            //   return;
-            // }            
+            }       
             
             if (key === 'stroke') {
               this.activeObject.set(key, evt);
@@ -751,7 +756,7 @@ export default {
               return;
             }      
             if (key === 'strokeWidth') {
-              this.activeObject.set(key, evt.target.value);
+              this.activeObject.set(key, Number(evt.target.value));
               this.canvas.c.renderAll();
               return;
             }                  
@@ -763,13 +768,14 @@ export default {
                 this.activeObject.tempValue = evt.target.value;
               }
               if(this.activeObject.tempValue<evt.target.value){
-
+                
                 rect.set("width",Number(this.activeObject.width)+ Number(evt.target.value)*2);
                 rect.set("height",Number(this.activeObject.height) + Number(evt.target.value)*2);
                 this.activeObject.set("width",Number(this.activeObject.width) + Number(evt.target.value)*2);
                 this.activeObject.set("height",Number(this.activeObject.height) + Number(evt.target.value)*2);
                 rect.set("left",rect.left+evt.target.value);
                 rect.set("top",rect.top+evt.target.value);
+
 
               }else{
 
@@ -806,6 +812,13 @@ export default {
                 this.canvas.c.renderAll();
                 return;
             }
+            if(key == "fill"){
+              console.log("asdfsdaf")
+              this.activeObject = this.canvas.c.getActiveObject()._objects[1];
+              this.activeObject.set("fill", evt)
+              this.canvas.c.renderAll();
+              return;              
+            }
             if(key == "round"){
               this.activeObject = this.canvas.c.getActiveObject()._objects[0];
               this.activeObject.set("ry", Number(evt.target.value))
@@ -815,7 +828,7 @@ export default {
             }
             
             this.activeObject && this.activeObject.set(key, Number(evt.target.value));
-            this.checkTextboxSize();
+            // this.checkTextboxSize();
             this.canvas.c.renderAll();
         },    
   }    

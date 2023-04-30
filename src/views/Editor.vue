@@ -22,6 +22,7 @@
     </header>
     <div>
       <Content style="display: flex; height: calc(100vh - 64px)">
+        
         <!-- --------------------------------- Import Button(+) ----------------------------------- -->
         <Dropdown class="m-md-4 plus-btn" v-if="show" placement="bottom-start">
             <Button type="primary" icon="md-add" />
@@ -137,10 +138,11 @@ export default {
     canvas.c.renderAll();
   },
 };
-
 </script>
 <style scoped lang="less">
-
+#canvas {
+  filter: drop-shadow(0px 5px 10px #d1d1d1);
+}
 .bottomBar {
   margin: auto; 
   background-color: white;

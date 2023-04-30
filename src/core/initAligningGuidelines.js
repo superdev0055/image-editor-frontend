@@ -69,7 +69,7 @@ function initAligningGuidelines(canvas) {
     let horizontalInTheRange = false;
     let verticalInTheRange = false;
     const transform = canvas._currentTransform;
-
+    
     if (!transform) return;
 
     // It should be trivial to DRY this up by encapsulating (repeating) creation of x1, x2, y1, and y2 into functions,

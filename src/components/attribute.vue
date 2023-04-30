@@ -173,16 +173,16 @@
             Fit mode
           </div>                
           <div class="col-lg-3" style="text-align: right; maring-right: 5px;">
-            <Button type="text">
+            <Button type="text" @click="()=>fitImage('clip')">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <rect id="bound" x="0" y="0" width="24" height="24"/>
-                      <rect id="Rectangle-151" fill="#000000" opacity="0.3" x="4" y="4" width="8" height="16"/>
-                      <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
-                  </g>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <rect id="bound" x="0" y="0" width="24" height="24"/>
+                    <rect id="Rectangle-151" fill="#000000" opacity="0.3" x="4" y="4" width="8" height="16"/>
+                    <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
+                </g>
               </svg>
             </Button>
-            <Button type="text">
+            <Button type="text" @click="()=>fitImage('fit')">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
                   <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                       <polygon id="Bound" points="0 0 24 0 24 24 0 24"/>
@@ -374,6 +374,8 @@ export default {
         '<svg t="1650441512015" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3704" width="18" height="18"><path d="M313.6 198.4h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533333z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z m115.2 170.666666h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533334z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z" p-id="3705"></path></svg>',
         '<svg t="1650441519862" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3854" width="18" height="18"><path d="M454.4 283.733333v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h341.333334c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-341.333334c-8.533333 0-14.933333-2.133333-19.2-8.533334-4.266667-4.266667-8.533333-10.666667-8.533333-19.2z m-226.133333 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h569.6c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333H256c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533333-19.2z m113.066666 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533334-19.2 6.4-6.4 12.8-8.533333 19.2-8.533334h454.4c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-454.4c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533334-19.2z m-170.666666 170.666666v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-4.266667-8.533333-10.666667-8.533333-19.2z" p-id="3855"></path></svg>',
       ],
+
+      imageShowMode:""
     };
   },
 
@@ -383,14 +385,20 @@ export default {
       this.baseAttr.fill = '';
       this.$forceUpdate();
     });
+    this.canvas.c.on('mouse:wheel',(e)=>{
+      if(this.imageShowMode == "clip"){
+        this.fitImage("clip")
+      }
+    })
     this.event.on('selectOne', (items) => {
 
       this.isLock = !items[0].hasControls;
       this.mSelectActive = items[0];      
       var activeObject = this.canvas.c.getActiveObjects()[0]; 
-      if(activeObject.id == "showBg" || activeObject.id =='removeBg' || activeObject.id == 'trunBg'){
+      if(activeObject.id == "showBg" || activeObject.id =='removeBg' || activeObject.id == 'trimBg'){
 
         this.showProduct = true;
+
       }else{
 
         this.showProduct = false;
@@ -422,8 +430,6 @@ export default {
         this.baseAttr.shadow = activeObject.get('shadow') || {};
         this.baseAttr.angle = activeObject.get('angle') || 0;
         this.baseAttr.padding = activeObject.get('padding') || 0;
-        
-
       }
     });
 
@@ -433,6 +439,41 @@ export default {
   computed:{
   },
   methods: {
+    fitImage(value){
+      var activeObject = this.canvas.c.getActiveObject();
+      activeObject.set("width",this.baseAttr.width);
+      activeObject.set("height",this.baseAttr.height);
+      this.canvas.c.renderAll();
+      if(value == "clip"){
+        if(this.imageShowMode == "clip"){
+          return;
+        }else{
+          this.imageShowMode = "clip";
+          if(activeObject.width<activeObject.height){
+            this.imgHeightClip(activeObject.height);
+          }else{
+            this.imgWidthClip(activeObject.width);
+          }
+        }
+
+      }else{
+        this.imageShowMode = "fit";
+        
+        var activeObject = this.canvas.c.getActiveObject();
+        activeObject._objects[1].set({
+          left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
+          top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
+          scaleX:1,
+          scaleY:1,
+        });        
+
+        this.canvas.c.renderAll();
+      }
+
+        
+      // }
+
+    },
     //emptyImage
     nonShowBg(evt){
       this.removeBgState = evt
@@ -456,10 +497,13 @@ export default {
     //emptyImage
     startDate(evt){
     },
+
     endDate(evt){
-    },                
+    },               
+
     selectMode(evt){
     },
+
     showRestriction(){
       this.restrictionState ? this.restrictionState = false : this.restrictionState = true
     },
@@ -509,7 +553,82 @@ export default {
       this.isLock = false;
       this.canvas.c.renderAll();
     },
+    imgWidthClip(width){
+      var imgW = this.canvas.c.getActiveObject()._objects[1].getElement().width;
+      var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;
+      const activeObject = this.canvas.c.getActiveObjects()[0];
+      var scale = activeObject._objects[1].scaleX;
+      activeObject.set("width", width);
+      activeObject._objects[1].set("scaleX",scale)
+      activeObject._objects[1].set("scaleY",scale)      
+      if(scale <= width/imgW){
+        scale = width/imgW;
+        activeObject._objects[1].set("scaleX",scale)
+        activeObject._objects[1].set("scaleY",scale)        
+        var top = 0 - (imgH*scale) / 2;
+        var left = -(activeObject.width/2);  
+        activeObject._objects[1].set("left",left);
+        activeObject._objects[1].set("top", top);                  
+      }
+      var clipRect = new fabric.Rect({
+        originX: 'left',
+        originY: 'top',
+        left: activeObject.left,
+        top: activeObject.top,
+        width: activeObject.width,
+        height: activeObject.height,
+        angle:activeObject.angle,
+        absolutePositioned: true,
+      });     
+      activeObject.clipPath = clipRect;
+      this.canvas.c.renderAll();
+      activeObject.clipPath = '';
+      return;
+      
+    },
 
+    imgHeightClip(height){
+      const activeObject = this.canvas.c.getActiveObjects()[0];
+      var imgW = this.canvas.c.getActiveObject()._objects[1].getElement().width;
+      var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;      
+      
+      var scale = this.baseAttr.width/imgW;
+      var top = 0 - (imgH*scale) / 2;
+      var left = -(activeObject.width/2);
+      var diff = left+(activeObject.width/2*scale);
+
+      if(scale <= height/imgH){
+        console.log("cale")
+        scale = height/imgH; 
+        top = 0 - (imgH*scale) / 2;
+        console.log(diff,-(activeObject.width/2*scale))
+        left =   -(activeObject._objects.width*activeObject.scaleX/2)
+        console.log(-(activeObject.width/2*scale)+diff )
+      }
+
+      activeObject.set("height", height);
+      activeObject._objects[1].set("scaleX",scale)
+      activeObject._objects[1].set("scaleY",scale)
+      activeObject._objects[1].set("left",left);
+      activeObject._objects[1].set("top", top);
+
+      var clipRect = new fabric.Rect({
+        originX: 'left',
+        originY: 'top',
+        left: activeObject.left,
+        top: activeObject.top,
+        width: activeObject.width,
+        height: activeObject.height,
+        angle:activeObject.angle,
+        absolutePositioned: true,
+      });     
+      
+      activeObject.clipPath = clipRect;
+      this.canvas.c.renderAll();
+      activeObject.clipPath = '';
+      this.canvas.c.renderAll();      
+      return;
+    },
     // Generic property changes
     changeCommon(key, evt) {
       const activeObject = this.canvas.c.getActiveObjects()[0];
@@ -523,6 +642,20 @@ export default {
         this.canvas.c.renderAll();
         return;
       }      
+
+      if(key == "width"){
+        if(this.imageShowMode == "clip"){
+          this.imgWidthClip(Number(evt.target.value))
+          return;
+        }
+      }
+      if(key == "height"){
+        if(this.imageShowMode == "clip"){
+          this.imgHeightClip(Number(evt.target.value));
+          return;
+        }
+        // this.imgWidthClip(this.baseAttr.width);
+      }
       // Transparency special conversion
       if (key === 'opacity') {
         
@@ -577,12 +710,15 @@ export default {
           var left = originLeft + (originWidth/2)-(imgEl.width/2);
           var top = originTop + (originHeight/2)-(imgEl.height/2);
         }
+        var activeObject = this.canvas.c.getActiveObject();
         // Create a picture object
         const imgInstance = new this.fabric.Image(imgEl, {
           id: this.emptyPatternState,
           name: 'picture1',
           left: left,
           top: top,
+          angle:activeObject.angle,
+
         });
         imgInstance.scale(0.4);
 

@@ -70,19 +70,12 @@ class EditorWorkspace {
     fabric.Image.fromURL(transParent, (workspace) => {
       this.imageW = workspace.width;
       this.imageH = workspace.height;
-      var shadow = new fabric.Shadow({
-        color: "#d1d1d1",
-        blur: 30,
-        offsetX: 0,
-        offsetY: 0,
-      })      
       workspace.set({
         id: 'workspace',
         originW:width,       
         originH:height,     
         selectable:false,
-        hasControls:false,   
-        shadow:shadow,         
+        hasControls:false,
         left:0,
         top:0,
       });
@@ -159,11 +152,10 @@ class EditorWorkspace {
     setTimeout(() => {
       this.workspace.clone((cloned) => {
         this.canvas.clipPath = cloned;
-        this.canvas.requestRenderAll();
+        this.canvas.renderAll();
       });      
     }, 100);
-
-    if (cb) cb(this.workspace.left, this.workspace.top);
+    // if (cb) cb(this.workspace.left, this.workspace.top);
   }
 
   _getScale() {
@@ -248,16 +240,16 @@ class EditorWorkspace {
     });
 
     this.canvas.on('mouse:wheel', function (opt) {
-      const delta = opt.e.deltaY;
-      let zoom = this.getZoom();
-      zoom *= 0.999 ** delta;
-      if (zoom > 20) zoom = 20;
-      if (zoom < 0.01) zoom = 0.01;
-      const center = this.getCenter();
-      this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
-      opt.e.preventDefault();
-      opt.e.stopPropagation();
-      this.renderAll();
+      // const delta = opt.e.deltaY;
+      // let zoom = this.getZoom();
+      // zoom *= 0.999 ** delta;
+      // if (zoom > 20) zoom = 20;
+      // if (zoom < 0.01) zoom = 0.01;
+      // const center = this.getCenter();
+      // this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
+      // opt.e.preventDefault();
+      // opt.e.stopPropagation();
+      // this.renderAll();
     });
   }
 
