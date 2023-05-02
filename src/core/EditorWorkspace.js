@@ -164,7 +164,7 @@ class EditorWorkspace {
     // by width
     if (viewPortWidth / viewPortHeight < this.option.width / this.option.height) {
       return viewPortWidth / this.option.width;
-    } // 按照宽度缩放
+    } // 
     return viewPortHeight / this.option.height;
   }
 
@@ -211,7 +211,7 @@ class EditorWorkspace {
         this.renderAll();
       }
     });
-
+    
     this.canvas.on('mouse:move', function (opt) {
       if (this.isDragging) {
         this.defaultCursor = 'grabbing';
@@ -240,16 +240,17 @@ class EditorWorkspace {
     });
 
     this.canvas.on('mouse:wheel', function (opt) {
-      // const delta = opt.e.deltaY;
-      // let zoom = this.getZoom();
-      // zoom *= 0.999 ** delta;
-      // if (zoom > 20) zoom = 20;
-      // if (zoom < 0.01) zoom = 0.01;
-      // const center = this.getCenter();
-      // this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
-      // opt.e.preventDefault();
-      // opt.e.stopPropagation();
-      // this.renderAll();
+      const delta = opt.e.deltaY;
+      let zoom = this.getZoom();
+      zoom *= 0.999 ** delta;
+      if (zoom > 20) zoom = 20;
+      if (zoom < 0.01) zoom = 0.01;
+      const center = this.getCenter();
+      this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+      this.renderAll();
+
     });
   }
 

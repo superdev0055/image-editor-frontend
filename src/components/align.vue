@@ -157,7 +157,6 @@ export default {
       if (activeObject && activeObject.type === 'group') {
         const activeSelection = activeObject;
         const activeObjectLeft = activeObject.width / 2;
-        console.log(activeObject)
         activeSelection.forEachObject((item) => {
           if(item.id != "virtural"){
             item.set({
@@ -208,6 +207,7 @@ export default {
         const activeObjectTop = -(activeObject.height / 2);
         activeSelection.forEachObject((item) => {
           if(item.id != "virtural"){
+            console.log(item.id)
             item.set({
               top: activeObjectTop,
             });

@@ -58,7 +58,7 @@
           </div>      
         </TabPane>
         <TabPane label="Layer" icon="md-reorder" name="name2" class="col-md-4"><layer></layer></TabPane>
-        <TabPane label="Preview" icon="md-fastforward" name="name3" class="col-md-4"><preview/></TabPane>
+        <TabPane label="Preview" icon="md-fastforward" name="name3" id="preview" class="col-md-4"><preview :list="list"/></TabPane>
       </Tabs> 
 
     </div>
@@ -67,15 +67,23 @@
 <script>
 import select from '@/mixins/select';
 import EditorWorkspace from '@/core/EditorWorkspace';
-import layer from "./layer.vue"
-import colorBar from "./colorBar.vue"
-import preview from "./preview.vue"
+import layer from "./layer.vue";
+import colorBar from "./colorBar.vue";
+import preview from "./preview.vue";
+import { keyNames, hotkeys } from '@/core/initHotKeys';
+import $ from "jquery";
+const maxStep = 10;
+
 export default {
   name: 'canvasSize',
   mixins: [select],
   inject: ['canvas', 'fabric'],
   data() {
     return {
+      index: 0,
+      redoList: [],
+      list: [],
+      time: '',      
       selected: "900x900",
       width: 900,
       height: 900,
@@ -92,18 +100,37 @@ export default {
       this.mSelectMode = 'multiple';
       this.$forceUpdate();
     });    
-    this.event.on('selectOne', (e) => {
-      this.mSelectMode = 'one';
-      this.$forceUpdate();
-    });    
+    this.canvas.c.on({
+      'object:modified': this.save,
+      'selection:updated': this.save,
+    });   
+    hotkeys(keyNames.ctrlz, this.undo);        
   },    
   mounted() {
     this.canvas.editor.editorWorkspace = new EditorWorkspace(this.canvas.c, {
       width: this.width,
       height: this.height,
     });
+    
   },
   methods: {
+    save(event) {
+      // Filter select element events
+      const isSelect = event.action === undefined && event.e;
+      if (isSelect) return;
+      const data = this.canvas.editor.getJson();
+      if (this.list.length > maxStep) {
+        this.list.shift();
+      }
+      this.list.push(data);
+      this.getTime();
+    },    
+    getTime() {
+      const myDate = new Date();
+      const str = myDate.toTimeString();
+      const timeStr = str.substring(0, 8);
+      this.time = timeStr;
+    },    
     setSizeBy(width, height) {
       this.width = width;
       this.height = height;

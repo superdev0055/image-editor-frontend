@@ -23,19 +23,17 @@ export default {
         });
     },     
     del() {
-      // if(this.mSelectMode == "multiple"){
-      //   this.warning("In this state, you can't this element");
-      //   return;
-      // }
       const activeObject = this.canvas.c.getActiveObjects();
       if (activeObject) {
+
         activeObject.map((item) => {
-          if(item.id == "empty"){
+          if(item.id == "showBg" || item.id == "trimBg" || item.id == "removeBg"){
             return false;
           }else{
             this.canvas.c.remove(item)
           }
         });
+        
       }
       
       this.canvas.c.requestRenderAll();

@@ -27,6 +27,9 @@ class Editor extends EventEmitter {
 
   clone() {
     const activeObject = this.canvas.getActiveObject();
+    if(activeObject.id == "showBg"){
+      return true;
+    }
     if (activeObject.length === 0) return;
     activeObject.clone((cloned) => {
       this.canvas.discardActiveObject();
@@ -72,13 +75,19 @@ class Editor extends EventEmitter {
     });
   }
 
-  up() {
-    const actives = this.canvas.getActiveObjects();
-    if (actives && actives.length === 1) {
-      const activeObject = this.canvas.getActiveObjects()[0];
-      activeObject && activeObject.bringForward();
+  up(list = '') {
+    if(list != ''){
+      list.bringForward();
       this.canvas.renderAll();
-      this._workspaceSendToBack();
+      this._workspaceSendToBack();   
+    }else{
+      const actives = this.canvas.getActiveObjects();
+      if (actives && actives.length === 1) {
+        const activeObject = this.canvas.getActiveObjects()[0];
+        activeObject && activeObject.bringForward();
+        this.canvas.renderAll();
+        this._workspaceSendToBack();
+      }   
     }
   }
 
@@ -92,14 +101,18 @@ class Editor extends EventEmitter {
     }
   }
 
-  down() {
-    const actives = this.canvas.getActiveObjects();
-    if (actives && actives.length === 1) {
+  down(list = '') {
+    if(list != ''){
+      list.sendBackwards();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();
+    }else{
       const activeObject = this.canvas.getActiveObjects()[0];
       activeObject && activeObject.sendBackwards();
       this.canvas.renderAll();
-      this._workspaceSendToBack();
+      this._workspaceSendToBack();      
     }
+ 
   }
 
   downTop() {

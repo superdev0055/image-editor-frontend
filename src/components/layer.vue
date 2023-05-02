@@ -1,5 +1,5 @@
 <template>
-    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300" style="margin-bottom: 200px">
+    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300">
       <div
           class="list-styles"
           v-for="element in list"
@@ -21,11 +21,11 @@
               <Button v-if="element.view" icon="ios-eye-off-outline" @click="doView(element.id)" type="text"></Button>
               <Button v-else @click="doView(element.id)" icon="ios-eye-outline" type="text"></Button>
             </Tooltip>
-            <Dropdown style="z-index:10000">
+            <Dropdown>
               <Button icon="ios-more" type="text">
               </Button>
-              <template #list >
-                  <DropdownMenu >
+              <template #list>
+                  <DropdownMenu>
                     <DropdownItem  size="small">
                       <Button @click="clone(element.id)" icon="ios-copy" type="text" size="small"></Button>
                       <span style="font-size:10px">Duplicate layer1</span>
@@ -204,9 +204,10 @@ export default defineComponent({
       item[0].clone((cloned) => {
         this.canvas.c.discardActiveObject();
         // Spacing settings
+        const grid = 10;
         cloned.set({
-          left: item[0].left,
-          top: item[0].top,
+          left: cloned.left + grid,
+          top: cloned.top + grid,
           id: uuid(),
         });
         this.canvas.c.add(cloned);
@@ -215,20 +216,7 @@ export default defineComponent({
       })
     },
     del(id) {
-      console.log(id);
-      this.canvas.c.getObjects().forEach((arg)=>{
-
-        if(arg.id == "empty"){
-          return true;
-        }
-
-        if(arg.id == id){
-          this.canvas.c.remove(arg);
-        }
-
-      });
-      this.canvas.c.requestRenderAll();
-      this.canvas.c.discardActiveObject();      
+      this.canvas.editor.del(id);
     },    
     //for drag and drop
     onMoveCallback(evt, originalEvent) {
