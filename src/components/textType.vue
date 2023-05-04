@@ -118,9 +118,10 @@
             </Select>              
             </div>
             <div class="col-3" style="">
-              <Button class="ivu-btn ivu-btn-text">
+              <Button class="ivu-btn ivu-btn-text" @click="uploadFontClick">
                 Add custom font
                 <Icon type="ios-cloud-upload-outline" />
+                <input type="file" id="uploadFont" @change="uploadFont" style="display:none" accept=".woff,.ttf"/>
               </Button>
             </div>
           </div>
@@ -285,7 +286,7 @@
               <Color style="margin-top:-10px;margin-left:10px;width:100%"  @change="(value) => changeSelectFillType('colorFilter', value)"></Color>
             </div>
             <div class="col-6">
-              <Select @on-change="changeSelectFillType">
+              <Select @on-change="(value) => changeSelectFillType('textFilter', value)">
                 <Option  v-for="item in fillType" :value="item" :key="'fill-' + item">{{ item }}</Option>
               </Select>
             </div>
@@ -357,7 +358,9 @@
 import select from '@/mixins/select';
 import Color from './color.vue';
 import Align from './align.vue';
-
+import $ from "jquery";
+import FontFaceObserver from 'fontfaceobserver';
+import fontList from '@/assets/fonts/font';
 export default {
     mixins: [select],
     props:['mSelectOneTypeProps'],
@@ -383,6 +386,7 @@ export default {
           
           // font properties
           fontFamilyList: ["Arial","Helvetica","Myriad Pro","Delicious","Verdana","Georgia","Hoefler Text","Courier", "Comic Sans MS" ,"Impact" ,"Monaco" ,"Optima"],
+          // fontFamilyList: fontList.map((item) => item.fontFamily),
           fillType: [
               'normal',
               'multiply',
@@ -482,8 +486,7 @@ export default {
         this.baseAttr.left =this.canvas.c.getActiveObject().left;
       })       
       this.event.on('selectOne', (e) => {
-        if(e[0].type == "group"){
-          if(e[0]._objects[1].type == "i-text"){
+        if(e[0].type == "text"){
             const activeObject = e[0]._objects[1];
             this.activeObject = activeObject;
             this.fontAttr.string = activeObject.get('text');
@@ -499,8 +502,7 @@ export default {
             this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
             this.fontAttr.fontWeight = activeObject.get('fontWeight');            
           }
-        }
-      });
+        });
 
 
 
@@ -515,9 +517,6 @@ export default {
           const activeObject = this.canvas.c.getActiveObject()._objects[0];
           if (activeObject) {
             const stroke = this.strokeDashList.find((item) => item.label === key);
-            if(stroke.label){
-              activeObject.set('strokeWidth',0);
-            }
             activeObject.set(stroke.value);
             this.canvas.c.renderAll();
           }
@@ -591,12 +590,67 @@ export default {
               }              
             }
           }
-
-
         },      
+
+        uploadFontClick(){
+          $("#uploadFont").click();
+        },
+
+        uploadFont(e){
+          var files = e.target.files[0];
+          console.log(files.name);
+          var fontName = files.name.split('.')[0]
+          // this.$Spin.show();
+
+          const font = new FontFaceObserver(fontName);
+          console.log(fontName);
+          const activeObject = this.canvas.c.getActiveObject()._objects[1];
+
+          if (this.fontFamilyList.includes(fontName)) {
+            activeObject && activeObject.set('fontFamily', fontName);
+            setTimeout(()=>{
+              this.canvas.c.renderAll();
+            },300);
+            return;
+
+          }else{
+            this.fontFamilyList.push(fontName);
+            activeObject && activeObject.set('fontFamily', fontName);
+            setTimeout(()=>{
+              this.canvas.c.renderAll();
+            },300);
+            return;    
+
+          }
+          // this.$Spin.show();
+          // font
+          //   .load(null, 150000)
+          //   .then(() => {
+          //   console.log("asdf")
+
+          //     const activeObject = this.canvas.c.getActiveObjects()[0];
+          //     activeObject && activeObject.set('fontFamily', fontName);
+          //     this.canvas.c.renderAll();
+          //     this.$Spin.hide();
+          //   })
+          //   .catch((err) => {
+          //     console.log(err);
+          //     this.$Spin.hide();
+          //   });
+
+        },
         // <!----------- control box size   -------->
-        changeSelectFillType(value){
-          
+        changeSelectFillType(key,value){
+          const activeObject = this.canvas.c.getActiveObject()._objects[0];
+          if(key == "colorFilter"){
+            activeObject.set("fill",value);
+            this.canvas.c.renderAll();
+          }
+          if(key == "textFilter"){
+            console.log("asdfasdf")
+
+            // canvas.renderAll();            
+          }
             // switch(value){
             //     case "hue":
             //             let filter = new fabric.Image.filters.HueRotation({
@@ -713,6 +767,8 @@ export default {
         },
         // modify font
         changeFontFamily(fontName) {
+          // if (!fontName) return;
+
           if (!fontName) return;
           this.canvas.c.getActiveObject()._objects[1].set("fontFamily",fontName);
           this.canvas.c.renderAll();
@@ -722,22 +778,30 @@ export default {
         //change activeObject
         changeCommon(key,evt){
           if(key=="width" ||key=="height" ||key=="top" ||key=="left"||key=="padding"){
+
             this.activeObject = this.canvas.c.getActiveObject();
             this.changeProperty(key,evt);
             return;
+
           }else if(key=="stroke" || key=="strokeWidth"){
+
             this.activeObject = this.canvas.c.getActiveObject()._objects[0]
             this.changeProperty(key,evt);
             return;
+
           }else{
+
             this.activeObject = this.canvas.c.getActiveObject()._objects[1]
             this.changeProperty(key,evt);
-            return;            
+            return;   
+
           }
         },     
         //change property
         changeProperty(key, evt) {
+
             if (key === 'width'|| key === 'height') {
+
               this.activeObject.set(key, Number(evt.target.value));
               this.activeObject._objects[0].set("width",this.activeObject.width);
               this.activeObject._objects[0].set("left",-(this.activeObject.width/2));    
@@ -748,6 +812,7 @@ export default {
               this.canvas.c.requestRenderAll();
               this.reSetObj();
               return;
+
             }       
             
             if (key === 'stroke') {

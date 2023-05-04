@@ -57,19 +57,24 @@ export default {
             // Create a picture object
             const imgInstance = new this.fabric.Image(imgEl, {
               id: "showBg",
-              name: 'picture1',
+              name: 'image1',
             });
+
             imgInstance.scale(0.4);
             // set zoom
             this.canvas.c.add(imgInstance);
             this.canvas.c.centerObject(imgInstance);
+            
+
+
             this.canvas.c.setActiveObject(imgInstance);
             this.canvas.c.renderAll();
             // Remove image elements from the page
             imgEl.remove();
+
+             
         };          
       }, 100);
-
     },    
     
     // insert image file
@@ -82,7 +87,7 @@ export default {
         // Create a picture object
         const imgInstance = new this.fabric.Image(imgEl, {
           id: uuid(),
-          name: 'picture1',
+          name: 'image1',
           selectable:false,
           hasControls:false,
           left:-100
@@ -99,11 +104,14 @@ export default {
 
         var group = new fabric.Group([rect, imgInstance]);
         group.id = uuid();
-        group.name = 'picture';
+        group.type = "image";
+        var name = this.getName('image');
+        group.name = name;
         group.set("left",0-group.width);
         this.canvas.c.add(group);
         rect.set("width",group.width*group.scaleX);
         rect.set("height",group.height*group.scaleY);
+        this.canvas.c.centerObject(group);
         this.canvas.c.setActiveObject(group);
         this.canvas.c.renderAll();
 
@@ -111,6 +119,16 @@ export default {
         imgEl.remove();
       };
     },
+    getName(type){
+      var objects = this.canvas.c.getObjects();
+      var count = 1;
+      objects.forEach(arg=>{
+        if(arg.type == type){
+          count++;
+        }
+      })
+      return type+"#"+count;
+    },    
     insertFileFromJSON(id){
       axios.get('http://localhost:3000/feed-image/'+id)
         .then(resp => {

@@ -140,7 +140,7 @@ export default {
     // align left
     left() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'group') {
+      if (activeObject) {
         activeObject.forEachObject((item) => {
           if(item.id != "virtural"){
             item.set({
@@ -154,7 +154,7 @@ export default {
     // right align
     right() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'group') {
+      if (activeObject) {
         const activeSelection = activeObject;
         const activeObjectLeft = activeObject.width / 2;
         activeSelection.forEachObject((item) => {
@@ -171,7 +171,7 @@ export default {
     // horizontal center alignment
     xcenter() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'group') {
+      if (activeObject) {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
           if(item.id != "virtural"){
@@ -188,7 +188,7 @@ export default {
     // vertical center alignment
     ycenter() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'group') {
+      if (activeObject) {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
           item.set({
@@ -202,7 +202,7 @@ export default {
     // align top
     top() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'group') {
+      if (activeObject) {
         const activeSelection = activeObject;
         const activeObjectTop = -(activeObject.height / 2);
         activeSelection.forEachObject((item) => {
@@ -220,7 +220,7 @@ export default {
     // Bottom alignment
     bottom() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject && activeObject.type === 'group') {
+      if (activeObject) {
         const activeSelection = activeObject;
         const activeObjectTop = activeObject.height / 2;
         activeSelection.forEachObject((item) => {

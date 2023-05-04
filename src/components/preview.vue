@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="image-size mt-2">
-                <img class="ivu-image-img" alt="" id="preview1" src="@/assets/img/preview.png" loading="eager" >
+                <img class="ivu-image-img" alt="" id="preview1" src="@/assets/img/preview.png" loading="eager" style="width: 500px; height:500px ">
             </div>
             <hr style="margin: 10px 0px;"/>
             <div class="row">
@@ -78,6 +78,7 @@ export default {
     console.log(this.list);
 
   },
+  
   methods: {
     showPreview(){
         const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
@@ -88,8 +89,8 @@ export default {
             quality: 1,
             left,
             top,
-            width,
-            height,
+            width:300,
+            height:300,
         };
         this.canvas.c.setViewportTransform([1, 0, 0, 1, 0, 0]);
         const dataUrl = this.canvas.c.toDataURL(option);
@@ -101,6 +102,7 @@ export default {
     // render from data
     renderCanvas(data) {
         // console.log("asdf")
+
     //   this.previewCanvas.clear();
     //     // console.log("dddd")
     //   this.previewCanvas.loadFromJSON(data, this.canvas.c.renderAll.bind(this.canvas.c));

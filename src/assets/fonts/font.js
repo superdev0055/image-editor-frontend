@@ -1,14 +1,14 @@
-
 const cnList = [
   {
     name: 'Arial',
     fontFamily: 'Arial',
   },
   {
-    name: 'SIMSUN',
-    fontFamily: 'SIMSUN',
+    name: 'Microsoft YaHei',
+    fontFamily: 'Microsoft YaHei',
   },
 ];
+
 
 const enList = [];
 

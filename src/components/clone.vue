@@ -17,6 +17,10 @@ export default {
   methods: {
     
     clone() {
+      var activeObject = this.canvas.c.getActiveObject();
+      if(activeObject.id == "showBg" || activeObject.id == "trimBg" || activeObject.id == "removeBg"){
+        return false; 
+      }
       this.canvas.editor.clone();
     },
   },

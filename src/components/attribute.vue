@@ -3,7 +3,7 @@
     <!-- general properties -->
     <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 4;background-color:white">
       <!-- Right Head -->
-      <right-header :mSelectOneTypeProps="mSelectOneType"></right-header>
+      <right-header :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></right-header>
       <!-- Right Head -->
       <!-- layer setting -->
       <div class="mt-2 customborder"></div>
@@ -331,6 +331,7 @@ export default {
       imgType: ['image'],
       // general properties
       baseAttr: {
+        name:'',
         width:0,
         height:0,
         round:0,
@@ -374,7 +375,6 @@ export default {
         '<svg t="1650441512015" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3704" width="18" height="18"><path d="M313.6 198.4h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533333z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z m115.2 170.666666h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533334z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z" p-id="3705"></path></svg>',
         '<svg t="1650441519862" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3854" width="18" height="18"><path d="M454.4 283.733333v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h341.333334c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-341.333334c-8.533333 0-14.933333-2.133333-19.2-8.533334-4.266667-4.266667-8.533333-10.666667-8.533333-19.2z m-226.133333 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h569.6c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333H256c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533333-19.2z m113.066666 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533334-19.2 6.4-6.4 12.8-8.533333 19.2-8.533334h454.4c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-454.4c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533334-19.2z m-170.666666 170.666666v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-4.266667-8.533333-10.666667-8.533333-19.2z" p-id="3855"></path></svg>',
       ],
-
       imageShowMode:""
     };
   },
@@ -383,7 +383,6 @@ export default {
  
     this.event.on('selectUpdate', () => {
       if(this.canvas.c.getActiveObject().name == "picture"){
-        console.log("asdfasdf")
         this.canvas.c.getActiveObject().clipState = this.imageShowMode;
       }
     });
@@ -406,27 +405,29 @@ export default {
       } 
       
 
-      // if (activeObject) {
-      //   this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
-      //   if(this.emptyPatternState == "removeBg"){
-      //     this.removeBgState = true; 
-      //   }else if(this.emptyPatternState == "trimBg"){
-      //     this.trimBgState = true;
-      //   }
-      //   // base
-      //   this.baseAttr.round = activeObject.get('rx');
-      //   this.baseAttr.height = activeObject.get('height');
-      //   this.baseAttr.width = activeObject.get('width');
-      //   this.baseAttr.opacity = activeObject.get('opacity') * 100;
-      //   this.baseAttr.fill = activeObject.get('fill');
-      //   this.baseAttr.left = activeObject.get('left');
-      //   this.baseAttr.top = activeObject.get('top');
-      //   this.baseAttr.stroke = activeObject.get('stroke');
-      //   this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
-      //   this.baseAttr.shadow = activeObject.get('shadow') || {};
-      //   this.baseAttr.angle = activeObject.get('angle') || 0;
-      //   this.baseAttr.padding = activeObject.get('padding') || 0;
-      // }
+      if (activeObject) {
+        // this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
+        // if(this.emptyPatternState == "removeBg"){
+        //   this.removeBgState = true; 
+        // }else if(this.emptyPatternState == "trimBg"){
+        //   this.trimBgState = true;
+        // }
+        // base
+        this.baseAttr.name = activeObject.name;
+        console.log(this.baseAttr.name);
+        this.baseAttr.round = activeObject.get('rx');
+        this.baseAttr.height = activeObject.get('height');
+        this.baseAttr.width = activeObject.get('width');
+        this.baseAttr.opacity = activeObject.get('opacity') * 100;
+        this.baseAttr.fill = activeObject.get('fill');
+        this.baseAttr.left = activeObject.get('left');
+        this.baseAttr.top = activeObject.get('top');
+        this.baseAttr.stroke = activeObject.get('stroke');
+        this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
+        this.baseAttr.shadow = activeObject.get('shadow') || {};
+        this.baseAttr.angle = activeObject.get('angle') || 0;
+        this.baseAttr.padding = activeObject.get('padding') || 0;
+      }
     });
 
   },
@@ -464,9 +465,10 @@ export default {
       
       activeObject.set("width",this.baseAttr.width);
       activeObject.set("height",this.baseAttr.height);
+      
       this.canvas.c.renderAll();
+
       if(value == "clip"){
-           
         if(this.imageShowMode == "clip"){
           return;
         }else{
@@ -495,9 +497,6 @@ export default {
 
         this.canvas.c.renderAll();
       }
-
-        
-      // }
 
     },
     //emptyImage
@@ -583,15 +582,15 @@ export default {
     imgWidthClip(width){
       var imgW = this.canvas.c.getActiveObject()._objects[1].getElement().width;
       var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;
-      this.canvas.c.getActiveObject().set("scaleX",1);
-      this.canvas.c.getActiveObject().set("scaleY",1);
-      this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
-      this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);         
+      // this.canvas.c.getActiveObject().set("scaleX",1);
+      // this.canvas.c.getActiveObject().set("scaleY",1);
+      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
+      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);         
       const activeObject = this.canvas.c.getActiveObjects()[0];
-      activeObject._objects[1].set({
-        left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
-        top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
-      });          
+      // activeObject._objects[1].set({
+      //   left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
+      //   top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
+      // });          
       var scale = activeObject._objects[1].scaleX;
       activeObject.set("width", width);
       activeObject._objects[1].set("scaleX",scale)
@@ -625,28 +624,26 @@ export default {
 
     imgHeightClip(height){
       const activeObject = this.canvas.c.getActiveObjects()[0];
-      this.canvas.c.getActiveObject().set("scaleX",1);
-      this.canvas.c.getActiveObject().set("scaleY",1);      
-      this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
-      this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
       var imgW = this.canvas.c.getActiveObject()._objects[1].getElement().width;
-      var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;      
-      activeObject._objects[1].set({
-        left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
-        top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
-      });      
+      var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;         
+      // this.canvas.c.getActiveObject().set("scaleX",1);
+      // this.canvas.c.getActiveObject().set("scaleY",1);      
+      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
+      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
+   
+      // activeObject._objects[1].set({
+      //   left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
+      //   top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
+      // });      
       var scale = this.baseAttr.width/imgW;
       var top = 0 - (imgH*scale) / 2;
       var left = -(activeObject.width/2);
       var diff = left+(activeObject.width/2*scale);
 
       if(scale <= height/imgH){
-        console.log("cale")
         scale = height/imgH; 
         top = 0 - (imgH*scale) / 2;
-        console.log(diff,-(activeObject.width/2*scale))
         left =   -(activeObject._objects.width*activeObject.scaleX/2)
-        console.log(-(activeObject.width/2*scale)+diff )
       }
 
       activeObject.set("height", height);
@@ -697,7 +694,6 @@ export default {
           this.imgHeightClip(Number(evt.target.value));
           return;
         }
-        // this.imgWidthClip(this.baseAttr.width);
       }
       // Transparency special conversion
       if (key === 'opacity') {
@@ -757,7 +753,7 @@ export default {
         // Create a picture object
         const imgInstance = new this.fabric.Image(imgEl, {
           id: this.emptyPatternState,
-          name: 'picture1',
+          name: 'image1',
           left: left,
           top: top,
           angle:activeObject.angle,

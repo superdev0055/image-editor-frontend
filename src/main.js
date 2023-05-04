@@ -6,6 +6,8 @@ import VueClipboard from 'vue3-clipboard';
 import BootstrapVue3 from "bootstrap-vue-3";
 import router from './router/index';
 import i18n from './language';
+
+import '@/assets/fonts/font.css';
 import "bootstrap/dist/css/bootstrap.css";
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 import "./styles/main.css"

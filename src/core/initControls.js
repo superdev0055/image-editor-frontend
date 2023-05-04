@@ -185,7 +185,7 @@ function rotationControl() {
 
 function initControls(canvas) {
   // delete icon
-  deleteControl(canvas);
+  // deleteControl(canvas);
   // apex icon
   peakControl(canvas);
   // middle bar icon

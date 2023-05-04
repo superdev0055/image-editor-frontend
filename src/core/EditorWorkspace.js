@@ -23,7 +23,8 @@ class EditorWorkspace {
 
   //Initialize the background
   _initBackground() {
-    this.canvas.setBackgroundColor('', this.canvas.renderAll.bind(this.canvas));
+    // this.canvas.setBackgroundColor('', this.canvas.renderAll.bind(this.canvas));
+    this.canvas.setBackgroundColor({source: transParent, repeat: 'repeat'});    
     this.canvas.backgroundImage = '';
     this.canvas.setWidth(this.workspaceEl.offsetWidth);
     this.canvas.setHeight(this.workspaceEl.offsetHeight);
@@ -38,22 +39,8 @@ class EditorWorkspace {
     this.option.height = height;
     // //reset workspace
     this.workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
-    
-    if(this.workspace.name != "rectworks"){
-
-      this.workspace.set("scaleX",width/this.imageW);
-      this.workspace.set("scaleY",height/this.imageH);
-      this.workspace.set("originW",width);
-      this.workspace.set("originH",height);
-
-    }else{
-
-      this.workspace.set("width",width);
-      this.workspace.set("height",height);
-      this.workspace.set("originW",width);
-      this.workspace.set("originH",height);  
-
-    }
+    this.workspace.set("width",width);
+    this.workspace.set("height",height);    
 
     // get offset
     const l1 = Number(this.workspace.left);
@@ -65,29 +52,47 @@ class EditorWorkspace {
   //Initialize the canvas
   _initWorkspace() {
     const { width, height } = this.option;
+    const workspace = new fabric.Rect({
+      fill: '',
+      width,
+      height,
+      
+      id: 'workspace',
+    });
+    workspace.set('selectable', false);
+    workspace.set('hasControls', false);
+    workspace.hoverCursor = 'selection';
+    this.canvas.add(workspace);
+    this.canvas.centerObject(workspace);
+    this.canvas.renderAll();
+
+    this.workspace = workspace;
+    this.auto();
+
+
     // <!-----------------backgroundImage-------------->
 
-    fabric.Image.fromURL(transParent, (workspace) => {
-      this.imageW = workspace.width;
-      this.imageH = workspace.height;
-      workspace.set({
-        id: 'workspace',
-        originW:width,       
-        originH:height,     
-        selectable:false,
-        hasControls:false,
-        left:0,
-        top:0,
-      });
-      workspace.set("scaleX",width/this.imageW);
-      workspace.set("scaleY",height/this.imageH);
-      workspace.hoverCursor = 'selection';
-      this.canvas.centerObject(workspace);
-      this.canvas.add(workspace);
-      this.canvas.renderAll();
-      this.workspace = workspace;
-      this.auto();      
-    });
+    // fabric.Image.fromURL(transParent, (workspace) => {
+    //   this.imageW = workspace.width;
+    //   this.imageH = workspace.height;
+    //   workspace.set({
+    //     id: 'workspace',
+    //     originW:width,       
+    //     originH:height,     
+    //     selectable:false,
+    //     hasControls:false,
+    //     left:0,
+    //     top:0,
+    //   });
+    //   workspace.set("scaleX",width/this.imageW);
+    //   workspace.set("scaleY",height/this.imageH);
+    //   workspace.hoverCursor = 'selection';
+    //   this.canvas.centerObject(workspace);
+    //   this.canvas.add(workspace);
+    //   this.canvas.renderAll();
+    //   this.workspace = workspace;
+    //   this.auto();      
+    // });
     // <!-----------------backgroundImage-------------->
   }
 

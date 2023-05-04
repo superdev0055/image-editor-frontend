@@ -95,6 +95,7 @@ export default {
     preview
   },
   created() {
+       
     // When selecting an object in the canvas, the object does not appear on top.
     this.event.on('selectMultiple', (e) => {
       this.mSelectMode = 'multiple';
@@ -114,6 +115,7 @@ export default {
     
   },
   methods: {
+
     save(event) {
       // Filter select element events
       const isSelect = event.action === undefined && event.e;
@@ -135,6 +137,7 @@ export default {
       this.width = width;
       this.height = height;
       this.setSize();
+
     },
     changeSize(key,evt) {
       var value = evt.target.value
@@ -143,8 +146,11 @@ export default {
       }else{
         this.height = value
       }
-      this.canvas.c.discardActiveObject();
+      // this.canvas.c.discardActiveObject();
+      console.log("asdfasdf")
+      this.$Spin.show(); 
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
+      this.$Spin.hide(); 
     },
     setSize() {
       this.canvas.c.discardActiveObject();

@@ -1,5 +1,5 @@
 <template>
-    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300">
+    <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300" style="margin-bottom:100px">
       <div
           class="list-styles"
           v-for="element in list"
@@ -9,6 +9,7 @@
           <div class="col-md-8" style="margin-top:5px;">
             <Icon type="md-apps" style="margin-right:15px;"/>
             <Checkbox v-model="element.select" @change="changeSelect(element)"/>
+            <!-- <h4><Icon type="ios-image"/></h4> -->
             <label style="cursor: pointer;" @click="selectElem(element)">{{element.name}}</label>
           </div>
 
@@ -80,6 +81,7 @@ const lockAttrs = [
 export default defineComponent({
   name: 'ToolBar',
   mixins: [select],
+  props:['mSelectOneTypeProps'],
   components: {
     draggable: VueDraggableNext,
     dele,
@@ -194,14 +196,17 @@ export default defineComponent({
       item.selectable = true;
       this.canvas.c.renderAll();
     },
+
     clone(id) {
-      if(id == "empty"){
-        return true;
+      if(id == "showBg" || id == "trimBg" || id == "removeBg"){
+        return false; 
       }
+
       var item = this.list.filter((arg)=>{
         return arg.id == id;
       });      
       item[0].clone((cloned) => {
+
         this.canvas.c.discardActiveObject();
         // Spacing settings
         const grid = 10;
@@ -216,7 +221,30 @@ export default defineComponent({
       })
     },
     del(id) {
-      this.canvas.editor.del(id);
+      console.log(id)
+      if(id == "showBg" || id == "trimBg" || id == "removeBg"){
+        return false;
+      }else{
+        const activeObject = this.canvas.c.getObjects();
+        console.log(activeObject)
+        if (activeObject) {
+          activeObject.map((item) => {
+            console.log(id,item.id)
+
+            console.log("asdfasdfsa")
+            if(item.id == id){
+
+              this.canvas.c.remove(item);
+
+            }
+          });
+          
+        }
+      }      
+
+      
+      this.canvas.c.requestRenderAll();
+      this.canvas.c.discardActiveObject();      
     },    
     //for drag and drop
     onMoveCallback(evt, originalEvent) {
@@ -256,7 +284,7 @@ export default defineComponent({
       if(this.mSelectMode == "one"){
         this.list = [...this.canvas.c.getObjects()]
           .reverse()
-          .map((item) => {
+          .map((item,index) => {
             item.select = false;
             if(item.opacity == 0){
               item.view = false;
@@ -268,20 +296,20 @@ export default defineComponent({
             }else{
               item.lock = false;
             }
-            switch(item.type){
-              case "i-text":
-                item.name = item.text.slice(0,10)+"...";
-                break;
-              case "image":
-                item.name = "image"+item.id.slice(0,5)
-                break;
-              case "rect" :
-                item.name = "rect"+item.id.slice(0,5)
-                break;
-              case "circle" :
-                item.name = "circle"+item.id.slice(0,5)
-                break;
-            }      
+            // switch(item.type){
+            //   case "i-text":
+            //     item.name = "text";
+            //     break;
+            //   case "image":
+            //     item.name = "image"+item.id.slice(0,5)
+            //     break;
+            //   case "rect" :
+            //     item.name = "rect"+item.id.slice(0,5)
+            //     break;
+            //   case "circle" :
+            //     item.name = "circle"+item.id.slice(0,5)
+            //     break;
+            // }      
             return item;
           })
           .filter((item) => {
@@ -309,20 +337,20 @@ export default defineComponent({
             }else{
               item.lock = false;
             }
-            switch(item.type){
-              case "i-text":
-                item.name = item.text.slice(0,10)+"...";
-                break;
-              case "image":
-                item.name = "image"+item.id.slice(0,5)
-                break;
-              case "rect" :
-                item.name = "rect"+item.id.slice(0,5)
-                break;
-              case "circle" :
-                item.name = "circle"+item.id.slice(0,5)
-                break;
-            }      
+            // switch(item.type){
+            //   case "i-text":
+            //     item.name = item.text.slice(0,10)+"...";
+            //     break;
+            //   case "image":
+            //     item.name = "image"+item.id.slice(0,5)
+            //     break;
+            //   case "rect" :
+            //     item.name = "rect"+item.id.slice(0,5)
+            //     break;
+            //   case "circle" :
+            //     item.name = "circle"+item.id.slice(0,5)
+            //     break;
+            // }      
             return item;
           })
           .filter((item) => {
@@ -336,3 +364,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="less" scoped>
+.ivu-select-dropdown{
+  z-index: 1000;
+}
+</style>

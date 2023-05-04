@@ -10,7 +10,7 @@ import select from '@/mixins/select';
 import {transParent} from '@/utils/imgConstant';
 export default {
   name: 'bgBar',
-  inject: ['canvas', 'fabric'],
+  // inject: ['canvas', 'fabric'],
   mixins: [select],
   data() {
     return {
@@ -46,78 +46,60 @@ export default {
       ],
     };
   },
+  mounted(){
+    this.canvas.c.on('after:render', this.setBgState); 
+    // this.canvas.c.on('after:render', function(){
+    //   if(this.canvas){
+    //     console.log("asdf")
+    //     console.log(this.canvas.c.getObjects())
+    //   }
+    // });
+    // showColor
+  },
   methods: {
+    setBgState(){
+      // console.log(this.canvas.c)
+      console.log(this.canvas.c.getObjects())
+      var obj = this.canvas.c.getObjects();
+      obj.forEach((item)=>{
+        if(item.id == "workspace"){
+          if(item.fill == ""){
+            this.showColor = false;
+          }else{
+            this.showColor = true;
+            console.log(item)
+            this.color = item.fill
+          }
+        }
+      })
+    },    
     clearColor(){
       const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
       workspace.set('fill', '');
       this.canvas.c.renderAll();
     },    
-    getOriginSize(){
-        var oldWorkspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
-        var size = {originW:oldWorkspace.originW,originH:oldWorkspace.originH,left:oldWorkspace.left,top:oldWorkspace.top};
-        return size;
-    },
-    oldBgRemove(){
-        var oldWorkspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
-        this.canvas.c.remove(oldWorkspace);
-    },
+    // getOriginSize(){
+    //     var oldWorkspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+    //     var size = {originW:oldWorkspace.originW,originH:oldWorkspace.originH,left:oldWorkspace.left,top:oldWorkspace.top};
+    //     return size;
+    // },
+    // oldBgRemove(){
+    //     var oldWorkspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+    //     this.canvas.c.remove(oldWorkspace);
+    // },
     set_bg(){
-      var shadow = new fabric.Shadow({
-        color: "#d1d1d1",
-        blur: 30,
-        offsetX: 0,
-        offsetY: 0,
-      })               
+      var objs = this.canvas.c.getObjects().filter((item)=>{
+        return item.id == "workspace";
+      });      
       if(this.showColor == true){
-        var oldSize = this.getOriginSize();
-        this.oldBgRemove();
-        var workspace = new fabric.Image();
-        workspace.setSrc(transParent);    
-        workspace.set({
-          id: 'workspace',
-          left:oldSize.left,
-          top:oldSize.top,
-          originW:oldSize.originW,
-          originH:oldSize.originH,
-          shadow:shadow
-        });
-        workspace.set('selectable', false);
-        workspace.set('hasControls', false);        
-        workspace.set("scaleX",oldSize.originW/this.canvas.editor.editorWorkspace.imageW);
-        workspace.set("scaleY",oldSize.originH/this.canvas.editor.editorWorkspace.imageH);        
-        this.canvas.c.add(workspace);
-        setTimeout(() => {
-          this.canvas.c.renderAll();  
-          this.canvas.editor.editorWorkspace.workspace = workspace// this.auto();
-        }, 200);        
-        this.canvas.c.renderAll();  
-        workspace.sendToBack();                   
         this.showColor = false;
+        objs[0].set("fill", "");
+        this.canvas.c.renderAll();              
       }else{
-
-        var oldSize = this.getOriginSize();
-        this.oldBgRemove();
-        var workspace = new fabric.Rect({
-          fill: '#ffffff',
-          width:oldSize.originW,
-          height:oldSize.originH,
-          originW:oldSize.originW,
-          originH:oldSize.originH,
-          shadow:shadow,
-          id: 'workspace',
-        });
-
-        workspace.set('selectable', false);
-        workspace.set('hasControls', false);
-        workspace.hoverCursor = 'selection';
-        this.canvas.c.add(workspace);
-        this.canvas.c.centerObject(workspace);
-        this.canvas.c.renderAll();
-        this.canvas.editor.editorWorkspace.workspace = workspace// this.auto();
-        workspace.sendToBack();                   
         this.showColor = true;
+        objs[0].set("fill", "#ffffff");
+        this.canvas.c.renderAll();
       }
-      // this.showColor ?this.showColor = false:this.showColor = true;
     },
     // background color setting
     setThisColor() {
