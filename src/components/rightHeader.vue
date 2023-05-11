@@ -3,23 +3,23 @@
         <div class="flex-item right-top mt-3" v-if="textType.includes(mSelectOneTypeProps[0])">
             <Button icon="md-arrow-round-back" class="border-btn" @click="mainPanel()"></Button>
             <h2 style="font-family: initial;margin-left:10px">T</h2>
-            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.name">
+            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.item_name">
             </Input>
         </div>
         <div class="flex-item right-top mt-3" v-if="imgType.includes(mSelectOneTypeProps[0])">
             <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
             <h2 style="margin-left:10px"><Icon type="ios-image" /></h2>
-            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.name"></Input>
+            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.item_name"></Input>
         </div>
         <div class="flex-item right-top mt-3" v-if="rectType.includes(mSelectOneTypeProps[0])">
             <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
             <h2 style="margin-left:10px"><Icon type="ios-square-outline" /></h2>
-            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.name"></Input>
+            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.item_name"></Input>
         </div> 
         <div class="flex-item right-top mt-3" v-if="circleType.includes(mSelectOneTypeProps[0])">
             <Button icon="md-arrow-round-back" class="border-btn left" @click="mainPanel()"></Button>
             <h2 style="margin-left:10px"><Icon type="ios-radio-button-off" /></h2>
-            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.name"></Input>
+            <Input style="margin-left:20px;width:75%" @on-change="changeName" v-model="baseAttr.item_name"></Input>
         </div>
     </div>    
 </template>
@@ -42,10 +42,9 @@ export default {
     },
     methods:{
         changeName(){
-            console.log(this.baseAttr.name);
             var activeObject = this.canvas.c.getActiveObject();
             if(activeObject){
-                activeObject.name = this.baseAttr.name;
+                activeObject.item_name = this.baseAttr.item_name;
             }
         },
         mainPanel(){

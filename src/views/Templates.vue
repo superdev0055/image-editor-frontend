@@ -11,18 +11,21 @@
         </div>
       </div>
     </div>
-    <div style="margin-top:100px;">
-      <Grid square padding=15px>
-        <GridItem>
-          <div><img src="" style="width:100%;height:250px" id="image0"/><router-link to="/editor/edit/0"><Button style="margin-top:25px" type="primary">edit</Button></router-link></div>
-        </GridItem>
-        <GridItem>
-          <div><img src="" style="width:100%;height:250px" id="image1"/><router-link to="/editor/edit/1"><Button style="margin-top:25px" type="primary">edit</Button></router-link></div>
-        </GridItem>
-        <GridItem>
-          <div><img src="" style="width:100%;height:250px" id="image2"/><router-link to="/editor/edit/2"><Button style="margin-top:25px" type="primary">edit</Button></router-link></div>
-        </GridItem>
-      </Grid>   
+    <div class="templateBox">
+      <div
+        id="main"
+        class="template-content"
+        v-for="(item, index) in user_templates"
+        :key="index"
+        >
+        
+          <router-link :to="'/editor/edit/'+item.template_id">
+            <div class="image-box" imgId = {{item.template_id}}>
+              <img v-bind:src="item.template_image_url" style="width:150px;height:150px;"/>
+            </div>
+          </router-link>
+
+      </div>      
     </div>
   </div>
 
@@ -35,13 +38,16 @@ import EditorWorkspace from '@/core/EditorWorkspace';
 
 import { fabric } from 'fabric';
 import Editor from '@/core';
-import axios from "axios"
-import { downFontByJSON } from '@/utils/utils';
-
+import {getAllUserTemps} from "@/service/endpoint";
 const event = new EventHandle();
 const canvas = {};
 export default {
   name: 'Templates',
+  data(){
+    return{
+      user_templates:[]
+    }
+  },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
@@ -58,45 +64,57 @@ export default {
       width: 900,
       height: 900,
     });
+    getAllUserTemps().then((resp)=>{
+      var data = resp.data;
+      data.forEach((e ,i)=> {
+        var template_id = data[i].template_id;
+        var template_name = data[i].template_name;
+        var template_image_url = data[i].template_image_url;
 
-    // axios.get('http://localhost:3000/feed-image')
-    //   .then(resp => {
-    //       var data = resp.data['feed-image'];
-    //       data.forEach((e ,i)=> {
-    //       var jsonFile = JSON.stringify(data[i]);
-    //       downFontByJSON(jsonFile).then(() => {
-    //           canvas.c.loadFromJSON(jsonFile, () => {
-    //             canvas.c.renderAll.bind(canvas.c);
-    //               const workspace = canvas.c.getObjects().find((item) => item.id === 'workspace');
-    //               const { left, top, width, height } = workspace;                  
-    //               workspace.set('selectable', false);
-    //               workspace.set('hasControls', false);
-    //               canvas.c.requestRenderAll();
-    //               canvas.c.renderAll();
-    //               canvas.c.requestRenderAll();
-
-    //               const option = {
-    //                 name: 'New Image',
-    //                 format: 'png',
-    //                 quality: 1,
-    //                 left,
-    //                 top,
-    //                 width,
-    //                 height,
-    //               };
-    //               canvas.c.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    //               const dataUrl = canvas.c.toDataURL(option);
-    //               document.getElementById("image"+i).src = dataUrl
-    //           });
-    //         });          
-
-    //       });          
-
-    //   })
-    //   .catch(error => {
-    //       console.log(error);
-    // });   
+        this.user_templates.push({
+          template_id:template_id,
+          template_name:template_name,
+          template_image_url:template_image_url
+        });         
+      });
+    }).catch(error => {
+          console.log(error);
+    });      
   },
 };
 </script>
-    
+<style scoped>
+.templateBox{
+  display: flex;
+  margin-top:100px;
+  width:80%;
+  padding:30px;
+  border:1px solid black  
+}
+
+#main {
+  display: flex;
+  flex-wrap: wrap;
+  float:left;
+  margin-top:20px;
+}
+
+.image-box{
+  width:180px;
+  height:200px;
+  border-radius:10px;
+  border: 1px solid #c3c3c3;
+  cursor: pointer;  
+  text-align: center;
+  padding:10px;
+}
+.image-item{
+  width:150px;
+  height:150px;
+  margin-left:auto;
+}
+.template-style{
+  border-radius:10px;
+  cursor: pointer;
+}
+</style>

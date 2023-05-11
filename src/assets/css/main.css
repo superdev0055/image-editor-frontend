@@ -29,6 +29,9 @@
   z-index:100;
   margin-top:35px !important;
 }
+.input-size{
+  width:20%
+}  
 span {
   font-size: 12px !important;
 
@@ -36,9 +39,16 @@ span {
 .right-box{
   width: 40%; 
   height: 100%; 
-  overflow-y: auto; 
   background: #fff;
-  border-left:1px solid #d7d2d2
+  border-left:1px solid #d7d2d2;
+  overflow-y: auto;
+  overflow-x: hidden;  
+}
+
+#workspace{
+  width:90%; 
+  position: relative; 
+  background: #f8f8f5;
 }
 .right-top{
   display: -webkit-box !important;
@@ -54,4 +64,38 @@ select{
 }
 ul>li{
   font-size: 12px !important;
+}
+
+@media screen and (max-width: 1366px ) {
+  .right-box{
+    width: 40%; 
+    height: 100%; 
+    background: #fff;
+    border-left:1px solid #d7d2d2;
+    overflow-y: auto;
+    overflow-x: hidden;    
+  }
+  
+  #workspace{
+    width:60%; 
+    position: relative; 
+    background: #f8f8f5;
+  }  
+}
+
+@media screen and (max-width: 1500px ) {
+  .right-box{
+    width: 40%; 
+    height: 100%; 
+    background: #fff;
+    border-left:1px solid #d7d2d2;
+    overflow-y: auto;
+    overflow-x: hidden;    
+  }
+  
+  #workspace{
+    width:60%; 
+    position: relative; 
+    background: #f8f8f5;
+  }  
 }

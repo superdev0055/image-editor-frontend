@@ -227,7 +227,7 @@ function initAligningGuidelines(canvas) {
     try {
       canvas.clearContext(canvas.contextTop);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   });
 

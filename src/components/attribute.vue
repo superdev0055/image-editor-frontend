@@ -2,13 +2,15 @@
   <div v-if="mSelectMode === 'one'" style="font-size:12px" id="attribute">
     <!-- general properties -->
     <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 4;background-color:white">
+
       <!-- Right Head -->
       <right-header :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></right-header>
       <!-- Right Head -->
+
       <!-- layer setting -->
       <div class="mt-2 customborder"></div>
-      <div class="mt-2" style="height: 40px;margin-right:40px">
-        <div style="float:left"><layer1></layer1></div>
+      <div class="mt-2" style="height:40px;margin-right:40px;">
+        <div style="float:left;margin-left:30px"><layer1></layer1></div>
         <div style="float:right">
           <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
             <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
@@ -41,7 +43,7 @@
             <div class="col col-lg-7">
               Size
             </div>
-            <div class="col col-lg-2">
+            <div class="input-size">
               <div class="content">
                 <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
                   <span class="ivu-input-suffix">
@@ -60,7 +62,7 @@
                 </div>
               </div>
             </div>
-            <div class="col col-lg-2">
+            <div class="input-size">
               <div class="content">
                 <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
                   <span class="ivu-input-suffix">
@@ -85,7 +87,7 @@
             <div class="col col-lg-7">
               Position
             </div>
-            <div class="col col-lg-2">
+            <div class="input-size">
               <div class="content">
                 <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
                   <span class="ivu-input-suffix">
@@ -99,11 +101,11 @@
                     placeholder="Enter text"
                     v-model="baseAttr.left"
                     @change="(value) => changeCommon('left', value)"
-                    number="true" />
+                    pattern="^\d*(\.\d{0,2})?$" />
                 </div>
               </div>
             </div>
-            <div class="col col-lg-2">
+            <div class="input-size">
               <div class="content">
                 <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
                   <span class="ivu-input-suffix">
@@ -130,7 +132,7 @@
       <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
         <div class="row mb-3">
           <flip></flip>
-          <div class="col col-lg-2">
+          <div class="input-size">
             <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
               <span class="ivu-input-suffix">
                 <i style="font-style: normal; font-size: 11px;">&deg;</i>
@@ -149,26 +151,26 @@
           </div>
         </div>
         <!-- emptypattern part -->
-        <div v-if="showProduct">
-          <div class="row mb-3" style="">
-            <div class="col col-lg-10">
+        <div v-if="showProduct" >
+          <div class="" style="height:40px;margin-right:15px;">
+            <div style="float:left">
               Remove white background
             </div>                
-            <div class="col col-lg-2">
-              <Switch size="small" v-model="removeBgState" @on-change="nonShowBg"/>
+            <div  style="float:right">
+              <Switch size="small" v-model="nonBgImageState" @on-change="nonproductImage"/>
             </div>
           </div>          
-          <div class="row mb-3" style="">
-            <div class="col col-lg-10">
+          <div class="" style="height:40px;margin-right:15px;">
+            <div class="float:left">
               Trim image
             </div>                
-            <div class="col col-lg-2">
-              <Switch size="small" v-model="trimBgState" @on-change="trimBg"/>
+            <div class="" style="float:right">
+              <Switch size="small" v-model="trimImageState" @on-change="trimImage"/>
             </div>
           </div>          
         </div>
-
-        <div class="row mb-3" style="">
+        <!---------------fit mode -------------->
+        <!-- <div class="row mb-3" style="">
           <div class="col col-lg-8">
             Fit mode
           </div>                
@@ -191,13 +193,14 @@
               </svg>
             </Button>
           </div>
-        </div>       
-        <div class="row mb-3" style="">
-          <div class="col col-lg-6">
+        </div>        -->
+        <!---------------fit mode -------------->
+        <div class="mt-4" style="height:30px;margin-right:15px;">
+          <div class="" style="float:left">
             Alignment
           </div>                
-          <div class="col col-lg-5">
-            <align></align>
+          <div class="" style="float:right">
+            <align-image></align-image>
           </div>
         </div>      
       </div>
@@ -211,62 +214,67 @@
                   
       <!-- Layer restriction -->
       <div class="customborder mt-3" ></div>
-      <div class="row mt-3 mb-3" style="margin-left:15px;">
-        <div class="col-9">
-          Layer time restriction
-        </div>
-        <div class="col-2" style="text-align: right;">
-          <Switch size="small" @on-change="showRestriction" true-color="#13ce66"/>
-        </div>
-        <div v-if="restrictionState">
-          <div class="row mt-3">
-            <div class="col-8">
+      <div class="mt-4" style="margin-left:15px">
+        <div class="" style="height:40px;margin-right:15px;">
+          <div style="float:left">
+            Layer time restriction
+          </div>                
+          <div  style="float:right">
+            <Switch size="small" v-model="restrictionState" true-color="#13ce66"/>
+          </div>
+        </div>           
+        <div v-if="restrictionState" class="" style="align-items: center;">
+          <div class="" style="height:40px;margin-right:15px;">
+            <div style="float:left">
               Generate
-            </div>
-            <div class="col-3">
-              <Select v-model="model1" @on-change="selectMode">
+            </div>                
+            <div class="input-size" style="float:right">
+              <Select v-model="this.baseAttr.layerShowPeriod.mode" @on-change="(value)=>changeLayerShowPeriod('mode',value)">
                   <Option v-for="item in modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
               </Select>
             </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-5">
+          </div>     
+          <div class="" style="height:40px;margin-right:15px;">
+            <div style="float:left">
               From
             </div>                
-            <div class="col-6">
-              <DatePicker type="date" style="width:100%" placeholder="Start date" @on-change="startDate"/>
+            <div style="float:right">
+              <DatePicker type="date" style="width:100%" placeholder="Start date" v-model="this.baseAttr.layerShowPeriod.startDate" @on-change="(value)=>changeLayerShowPeriod('startDate',value)"/>
             </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col col-5">
+          </div>   
+          <div class="" style="height:40px;margin-right:15px;">
+            <div style="float:left">
               Until
             </div>                
-            <div class="col col-6">
-              <DatePicker type="date" style="width:100%" placeholder="End date" @on-change="endDate"/>
+            <div style="float:right">
+              <DatePicker type="date" style="width:100%" placeholder="End date" v-model="this.baseAttr.layerShowPeriod.endDate" @on-change="(value)=>changeLayerShowPeriod('endDate',value)"/>
             </div>
-          </div>
-          <div class="col-11 mt-3">
-            <input type="text" class="ivu-input" value="Generated all the time."> 
-          </div>
-        </div>
+          </div>      
+          <div class="mt-3">
+            <input type="text" class="ivu-input" value="Generated all the time." id="genLayerPeriod" readonly> 
+          </div>                                    
+        </div>  
       </div>
+
       <!-- Layer restriction -->    
     </div>
   </div>
 </template>
 
 <script>
+
 import select from '@/mixins/select';
-import layer1 from './layer1.vue'
+import layer1 from './layer1.vue';
 import Color from './color.vue';
 import dele from "./del.vue";
-import clone from "./clone.vue"
-import flip from "./flip.vue"
-import align from "./align.vue"
-import {removeBg,trimBg,emptyData} from '@/utils/imgConstant';
-import rightHeader from "./rightHeader.vue" 
-import shapeType from "./shapeType.vue" 
-import textType from "./textType.vue" 
+import clone from "./clone.vue";
+import flip from "./flip.vue";
+import alignImage from "./alignImage.vue";
+import {nonBgImage,trimImage,productImage} from '@/utils/imgConstant';
+import rightHeader from "./rightHeader.vue";
+import shapeType from "./shapeType.vue";
+import textType from "./textType.vue";
+
 const lockAttrs = [
   'lockMovementX',
   'lockMovementY',
@@ -284,7 +292,7 @@ export default {
     dele,
     clone,
     flip,
-    align,
+    alignImage,
     rightHeader,
     shapeType,
     textType
@@ -302,16 +310,14 @@ export default {
               label: 'except'
           }
       ],
-      model1: '',
-      restrictionState:false,
+      restrictionState:true,
       //layer restriction
       isLock: false,
       isView:true,
 
-
-      emptyPatternState:"showBg", //emptyPatternState includes 'showBg' ,'trimBg',"nonShowBg" 
-      removeBgState:false,
-      trimBgState:false,  
+      emptyPatternState:"productImage", //emptyPatternState includes 'productImage' ,'trimImage',"nonproductImage" 
+      nonBgImageState:false,
+      trimImageState:false,  
       showProduct:false,
       
       // common element
@@ -343,9 +349,9 @@ export default {
         left: 0,
         top: 0,
         strokeWidth: 0,
-        stroke: '#fff',
+        stroke: '',
         shadow: {
-          color: '#fff',
+          color: '#ffffff',
           blur: 0,
           offsetX: 0,
           offsetY: 0,
@@ -375,19 +381,21 @@ export default {
         '<svg t="1650441512015" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3704" width="18" height="18"><path d="M313.6 198.4h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533333z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z m115.2 170.666666h398.933333c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-398.933333c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 10.666667-8.533333 19.2-8.533334z m-115.2 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z" p-id="3705"></path></svg>',
         '<svg t="1650441519862" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3854" width="18" height="18"><path d="M454.4 283.733333v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h341.333334c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-341.333334c-8.533333 0-14.933333-2.133333-19.2-8.533334-4.266667-4.266667-8.533333-10.666667-8.533333-19.2z m-226.133333 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h569.6c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333H256c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533333-19.2z m113.066666 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533334-19.2 6.4-6.4 12.8-8.533333 19.2-8.533334h454.4c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-454.4c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533334-19.2z m-170.666666 170.666666v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-4.266667-8.533333-10.666667-8.533333-19.2z" p-id="3855"></path></svg>',
       ],
-      imageShowMode:""
+      imageShowMode:"",
+      layerShowPeriod :{
+          mode:'',
+          startDate:'',
+          endDate:''
+        }      
     };
   },
 
   created() {
- 
+
     this.event.on('selectUpdate', () => {
       if(this.canvas.c.getActiveObject().name == "picture"){
         this.canvas.c.getActiveObject().clipState = this.imageShowMode;
       }
-    });
-    this.canvas.c.on('mouse:wheel',(e)=>{
-      this.setClip();
     });
 
     this.event.on('selectOne', (items) => {
@@ -395,7 +403,7 @@ export default {
       this.isLock = !items[0].hasControls;
       this.mSelectActive = items[0];      
       var activeObject = this.canvas.c.getActiveObjects()[0]; 
-      if(activeObject.id == "showBg" || activeObject.id =='removeBg' || activeObject.id == 'trimBg'){
+      if(activeObject.id == "productImage" || activeObject.id =='nonBgImage' || activeObject.id == 'trimImage'){
 
         this.showProduct = true;
 
@@ -406,15 +414,9 @@ export default {
       
 
       if (activeObject) {
-        // this.emptyPatternState = this.canvas.c.getActiveObjects()[0].id;
-        // if(this.emptyPatternState == "removeBg"){
-        //   this.removeBgState = true; 
-        // }else if(this.emptyPatternState == "trimBg"){
-        //   this.trimBgState = true;
-        // }
+
         // base
-        this.baseAttr.name = activeObject.name;
-        console.log(this.baseAttr.name);
+        this.baseAttr.item_name = activeObject.item_name;
         this.baseAttr.round = activeObject.get('rx');
         this.baseAttr.height = activeObject.get('height');
         this.baseAttr.width = activeObject.get('width');
@@ -427,36 +429,112 @@ export default {
         this.baseAttr.shadow = activeObject.get('shadow') || {};
         this.baseAttr.angle = activeObject.get('angle') || 0;
         this.baseAttr.padding = activeObject.get('padding') || 0;
-      }
-    });
+        this.baseAttr.layerShowPeriod = activeObject.get("layerShowPeriod");
+        if(items[0].type == "group"){
 
+          var activeObject = items[0]._objects[1];
+          this.fontAttr.string = activeObject.get('text');
+          this.fontAttr.fontSize = activeObject.get('fontSize');
+          this.fontAttr.fontFamily = activeObject.get('fontFamily');
+          this.fontAttr.lineHeight = activeObject.get('lineHeight');
+          this.fontAttr.textAlign = activeObject.get('textAlign');
+          this.fontAttr.underline = activeObject.get('underline');
+          this.fontAttr.linethrough = activeObject.get('linethrough');
+          this.fontAttr.charSpacing = activeObject.get('charSpacing');
+          this.fontAttr.overline = activeObject.get('overline');
+          this.fontAttr.fontStyle = activeObject.get('fontStyle');
+          this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
+          this.fontAttr.fontWeight = activeObject.get('fontWeight');      
+        }
+
+        //layerRestricion
+        this.setLayerShowPeriod();
+        setTimeout(() => {
+          this.generateLayerPeriod();     
+        }, 300);
+        //layerRestricion
+      }
+
+    });
   },
+
   mounted(){
+    setInterval(() => {
+      this.canvas.editor.checkLayerPeriod();
+    }, 1000);    
   },
+
   computed:{
   },
+
   methods: {
-    setClip(){
-      if(this.imageShowMode == "clip"){
-        setTimeout(() => {
+    setLayerShowPeriod(){
+      var state = this.baseAttr.layerShowPeriod;
 
-          var activeObject = this.canvas.c.getActiveObject();
-          var clipRect = new fabric.Rect({
-            originX: 'left',
-            originY: 'top',
-            left: activeObject.left,
-            top: activeObject.top,
-            width: activeObject.width,
-            height: activeObject.height,
-            angle:activeObject.angle,
-            absolutePositioned: true
-          });     
-          activeObject.clipPath = clipRect;
-          this.canvas.c.renderAll();
-          activeObject.clipPath = '';       
-          this.canvas.c.renderAll();
+      if(state.mode == '' && state.startDate == '' && state.endDate == ''){
+        this.restrictionState = false;
+      }else{
+        this.restrictionState = true;
+      }
+    },
 
-        }, 1);      
+    changeLayerShowPeriod(key,value){
+      var activeObject = this.canvas.c.getActiveObject();
+
+      switch(key){
+        case "mode":
+          activeObject.layerShowPeriod.mode = value;    
+          this.baseAttr.layerShowPeriod.mode = value
+          break;
+
+        case "startDate":
+
+          activeObject.layerShowPeriod.startDate = value;  
+          this.baseAttr.layerShowPeriod.startDate = value
+          break;
+
+        case "endDate":
+          activeObject.layerShowPeriod.endDate = value;                      
+          this.baseAttr.layerShowPeriod.endDate = value
+          break;
+      }
+      this.generateLayerPeriod();     
+      this.canvas.c.renderAll();
+    },
+
+    generateLayerPeriod(){
+
+      if(document.getElementById('genLayerPeriod') != null){
+        
+        if(this.baseAttr.layerShowPeriod.startDate != ''){
+          if(this.baseAttr.layerShowPeriod.mode == "except"){
+            document.getElementById('genLayerPeriod').value = "Generation stopped from "+this.baseAttr.layerShowPeriod.startDate; 
+          }else{
+            document.getElementById('genLayerPeriod').value = "Generated from "+this.baseAttr.layerShowPeriod.startDate; 
+          }
+        }
+
+        if(this.baseAttr.layerShowPeriod.endDate != ""){
+          if(this.baseAttr.layerShowPeriod.mode == "except"){
+            document.getElementById('genLayerPeriod').value = "Generation stopped until "+this.baseAttr.layerShowPeriod.endDate; 
+          }else{
+            document.getElementById('genLayerPeriod').value = "Generated until "+this.baseAttr.layerShowPeriod.endDate; 
+          }          
+        }
+        if(this.baseAttr.layerShowPeriod.startDate != "" && this.baseAttr.layerShowPeriod.endDate != ""){
+          
+          if(this.baseAttr.layerShowPeriod.mode == "except"){
+            document.getElementById('genLayerPeriod').value = "Generation stopped from "+this.baseAttr.layerShowPeriod.startDate+" until "+this.baseAttr.layerShowPeriod.endDate; 
+          }else{
+            document.getElementById('genLayerPeriod').value = "Generated from "+this.baseAttr.layerShowPeriod.startDate+" until "+this.baseAttr.layerShowPeriod.endDate; 
+          }             
+          
+        }
+        if(this.baseAttr.layerShowPeriod.startDate == "" && this.baseAttr.layerShowPeriod.endDate == ""){
+          document.getElementById('genLayerPeriod').value = "Generated all the time"; 
+        }         
+
+
       }
 
     },
@@ -499,39 +577,30 @@ export default {
       }
 
     },
+
     //emptyImage
-    nonShowBg(evt){
-      this.removeBgState = evt
+    nonproductImage(evt){
+      this.nonBgImageState = evt
       this.checkEmpty();
     },
-    trimBg(evt){
-      this.trimBgState = evt
+    trimImage(evt){
+      this.trimImageState = evt
       this.checkEmpty();
     },   
     checkEmpty(){
-      if(this.trimBgState == true){
-        this.emptyPatternState = "trimBg"
+      if(this.trimImageState == true){
+        this.emptyPatternState = "trimImage"
         return;
       }
-      if(this.removeBgState == true){
-        this.emptyPatternState = "removeBg"
+      if(this.nonBgImageState == true){
+        this.emptyPatternState = "nonBgImage"
         return;
       }
-      this.emptyPatternState = "showBg"
+      this.emptyPatternState = "productImage"
     },
+
     //emptyImage
-    startDate(evt){
-    },
 
-    endDate(evt){
-    },               
-
-    selectMode(evt){
-    },
-
-    showRestriction(){
-      this.restrictionState ? this.restrictionState = false : this.restrictionState = true
-    },
 
     doView(isView){
       isView ? this.view() : this.unView();
@@ -581,16 +650,8 @@ export default {
 
     imgWidthClip(width){
       var imgW = this.canvas.c.getActiveObject()._objects[1].getElement().width;
-      var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;
-      // this.canvas.c.getActiveObject().set("scaleX",1);
-      // this.canvas.c.getActiveObject().set("scaleY",1);
-      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
-      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);         
+      var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;  
       const activeObject = this.canvas.c.getActiveObjects()[0];
-      // activeObject._objects[1].set({
-      //   left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
-      //   top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
-      // });          
       var scale = activeObject._objects[1].scaleX;
       activeObject.set("width", width);
       activeObject._objects[1].set("scaleX",scale)
@@ -626,15 +687,6 @@ export default {
       const activeObject = this.canvas.c.getActiveObjects()[0];
       var imgW = this.canvas.c.getActiveObject()._objects[1].getElement().width;
       var imgH = this.canvas.c.getActiveObject()._objects[1].getElement().height;         
-      // this.canvas.c.getActiveObject().set("scaleX",1);
-      // this.canvas.c.getActiveObject().set("scaleY",1);      
-      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
-      // this.canvas.c.getActiveObject()._objects[1].set("scaleY",1);      
-   
-      // activeObject._objects[1].set({
-      //   left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
-      //   top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
-      // });      
       var scale = this.baseAttr.width/imgW;
       var top = 0 - (imgH*scale) / 2;
       var left = -(activeObject.width/2);
@@ -737,34 +789,35 @@ export default {
       var originTop = this.canvas.c.getActiveObjects()[0].top;
       var originHeight = this.canvas.c.getActiveObjects()[0].height;
       var originWidth = this.canvas.c.getActiveObjects()[0].width;
-
+      var originScaleX = this.canvas.c.getActiveObjects()[0].scaleX;
+      var originScaleY = this.canvas.c.getActiveObjects()[0].scaleY;      
+      var item_name = this.canvas.c.getActiveObjects()[0].item_name;
+      var angle = this.canvas.c.getActiveObject().angle; 
+      var opacity = this.canvas.c.getActiveObject().opacity;
+      var layerShowPeriod = this.canvas.c.getActiveObject().layerShowPeriod;
       const imgEl = document.createElement('img');
       imgEl.src = file
       document.body.appendChild(imgEl);
       imgEl.onload = () => {
-        if(originWidth > imgEl.width && originHeight>imgEl.height){
-          var left = originLeft + (originWidth-imgEl.width)/2  ;
-          var top = originTop + (originHeight-imgEl.height)/2;
-        }else{
-          var left = originLeft + (originWidth/2)-(imgEl.width/2);
-          var top = originTop + (originHeight/2)-(imgEl.height/2);
-        }
-        var activeObject = this.canvas.c.getActiveObject();
-        // Create a picture object
+        // Create a product image
         const imgInstance = new this.fabric.Image(imgEl, {
-          id: this.emptyPatternState,
-          name: 'image1',
-          left: left,
-          top: top,
-          angle:activeObject.angle,
-
+          id:this.emptyPatternState,
+          item_name:item_name,
+          left:originLeft,
+          top:originTop,
+          width:originWidth,
+          height:originHeight,
+          scaleX:originScaleX,
+          scaleY:originScaleY,
+          angle:angle,
+          opacity:opacity,
+          layerShowPeriod:layerShowPeriod
         });
-        imgInstance.scale(0.4);
-
-        // set zoom
+        
         this.canvas.c.remove(this.canvas.c.getActiveObjects()[0])
         this.canvas.c.add(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
+        this.canvas.c.renderAll();
         imgEl.remove();
       }      
     }
@@ -772,15 +825,15 @@ export default {
   watch:{
     emptyPatternState(){
       var id = this.canvas.c.getActiveObjects()[0].id;
-      if(id  == "removeBg" || id == "trimBg" || id=="showBg"){
-        if(this.emptyPatternState == "removeBg"){
-          this.insertEmpty(removeBg);
+      if(id  == "nonBgImage" || id == "trimImage" || id=="productImage"){
+        if(this.emptyPatternState == "nonBgImage"){
+          this.insertEmpty(nonBgImage);
           return true;
-        }else if(this.emptyPatternState == "trimBg"){
-          this.insertEmpty(trimBg);
+        }else if(this.emptyPatternState == "trimImage"){
+          this.insertEmpty(trimImage);
           return true;
         }else{
-          this.insertEmpty(emptyData);
+          this.insertEmpty(productImage);
           return true;
         }
       }
@@ -790,6 +843,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+.input-size{
+  width:20%
+}  
 Button {
   padding: 0px 5px;
 }

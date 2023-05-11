@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="image-size mt-2">
-                <img class="ivu-image-img" alt="" id="preview1" src="@/assets/img/preview.png" loading="eager" style="width: 500px; height:500px ">
+                <img class="ivu-image-img" alt="" id="preview1" src="@/assets/img/preview.png" loading="eager">
             </div>
             <hr style="margin: 10px 0px;"/>
             <div class="row">
@@ -70,45 +70,16 @@ export default {
     }
   },
   created() {
-
   },  
   mounted(){
 
-    console.log("asdfasdf");
-    console.log(this.list);
-
   },
-  
   methods: {
     showPreview(){
-        const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
-        const { left, top, width, height } = workspace;
-        const option = {
-            name: 'New Image',
-            format: 'png',
-            quality: 1,
-            left,
-            top,
-            width:300,
-            height:300,
-        };
-        this.canvas.c.setViewportTransform([1, 0, 0, 1, 0, 0]);
-        const dataUrl = this.canvas.c.toDataURL(option);
-        document.getElementById("preview1").src = dataUrl;
-        console.log(dataUrl);
-        // this.renderCanvas(this.list[this.list.length-1]);
-
+        var imgUrl = this.canvas.editor.getImageUrl();
+        document.getElementById("preview1").src = imgUrl;
+        document.getElementById("preview2").src = imgUrl;
     },
-    // render from data
-    renderCanvas(data) {
-        // console.log("asdf")
-
-    //   this.previewCanvas.clear();
-    //     // console.log("dddd")
-    //   this.previewCanvas.loadFromJSON(data, this.canvas.c.renderAll.bind(this.canvas.c));
-    //   this.previewCanvas.requestRenderAll();
-    },
-    
   },
 };
 </script>

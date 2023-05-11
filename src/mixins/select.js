@@ -25,7 +25,6 @@ export default {
           this.mSelectIds = e.map((item) => item.id);          
           return;
         }        
-        // if(e[0]._objects == "text");
       }
       this.mSelectMode = 'one';
       this.mSelectId = e[0].id;

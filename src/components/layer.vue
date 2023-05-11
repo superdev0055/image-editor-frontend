@@ -10,7 +10,7 @@
             <Icon type="md-apps" style="margin-right:15px;"/>
             <Checkbox v-model="element.select" @change="changeSelect(element)"/>
             <!-- <h4><Icon type="ios-image"/></h4> -->
-            <label style="cursor: pointer;" @click="selectElem(element)">{{element.name}}</label>
+            <label style="cursor: pointer;" @click="selectElem(element)">{{element.item_name}}</label>
           </div>
 
           <div class="col-md-4">
@@ -27,12 +27,12 @@
               </Button>
               <template #list>
                   <DropdownMenu>
-                    <DropdownItem  size="small">
-                      <Button @click="clone(element.id)" icon="ios-copy" type="text" size="small"></Button>
+                    <DropdownItem  size="small" @click="clone(element.id)">
+                      <Button  icon="ios-copy" type="text" size="small"></Button>
                       <span style="font-size:10px">Duplicate layer1</span>
                     </DropdownItem>
-                    <DropdownItem size="small">
-                      <Button @click="del(element.id)" icon="ios-trash" type="text" size="small"></Button>
+                    <DropdownItem size="small" @click="del(element.id)">
+                      <Button  icon="ios-trash" type="text" size="small"></Button>
                       <span style="font-size:10px">Delete</span>
                     </DropdownItem>
                   </DropdownMenu>
@@ -198,47 +198,44 @@ export default defineComponent({
     },
 
     clone(id) {
-      if(id == "showBg" || id == "trimBg" || id == "removeBg"){
+      if(id == "productImage" || id == "trimImage" || id == "nonBgImage"){
         return false; 
       }
 
       var item = this.list.filter((arg)=>{
         return arg.id == id;
       });      
+
       item[0].clone((cloned) => {
 
-        this.canvas.c.discardActiveObject();
         // Spacing settings
         const grid = 10;
+        var item_name = this.canvas.editor.getNameClone(item[0].item_name);
         cloned.set({
           left: cloned.left + grid,
           top: cloned.top + grid,
           id: uuid(),
+          layerShowPeriod:item[0].layerShowPeriod,
+          item_name:item_name
         });
+
         this.canvas.c.add(cloned);
+        this.canvas.c.discardActiveObject();
         this.canvas.c.setActiveObject(cloned);
         this.canvas.c.requestRenderAll();
       })
     },
     del(id) {
-      console.log(id)
-      if(id == "showBg" || id == "trimBg" || id == "removeBg"){
+      if(id == "productImage" || id == "trimImage" || id == "nonBgImage"){
         return false;
       }else{
         const activeObject = this.canvas.c.getObjects();
-        console.log(activeObject)
         if (activeObject) {
           activeObject.map((item) => {
-            console.log(id,item.id)
-
-            console.log("asdfasdfsa")
             if(item.id == id){
-
               this.canvas.c.remove(item);
-
             }
           });
-          
         }
       }      
 
@@ -295,21 +292,7 @@ export default defineComponent({
               item.lock = true;
             }else{
               item.lock = false;
-            }
-            // switch(item.type){
-            //   case "i-text":
-            //     item.name = "text";
-            //     break;
-            //   case "image":
-            //     item.name = "image"+item.id.slice(0,5)
-            //     break;
-            //   case "rect" :
-            //     item.name = "rect"+item.id.slice(0,5)
-            //     break;
-            //   case "circle" :
-            //     item.name = "circle"+item.id.slice(0,5)
-            //     break;
-            // }      
+            }  
             return item;
           })
           .filter((item) => {

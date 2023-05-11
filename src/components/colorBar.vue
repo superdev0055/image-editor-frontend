@@ -48,18 +48,9 @@ export default {
   },
   mounted(){
     this.canvas.c.on('after:render', this.setBgState); 
-    // this.canvas.c.on('after:render', function(){
-    //   if(this.canvas){
-    //     console.log("asdf")
-    //     console.log(this.canvas.c.getObjects())
-    //   }
-    // });
-    // showColor
   },
   methods: {
     setBgState(){
-      // console.log(this.canvas.c)
-      console.log(this.canvas.c.getObjects())
       var obj = this.canvas.c.getObjects();
       obj.forEach((item)=>{
         if(item.id == "workspace"){
@@ -67,7 +58,6 @@ export default {
             this.showColor = false;
           }else{
             this.showColor = true;
-            console.log(item)
             this.color = item.fill
           }
         }

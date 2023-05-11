@@ -138,9 +138,15 @@ function deleteControl(canvas) {
   function deleteObject() {
     const activeObject = canvas.getActiveObjects();
     if (activeObject) {
-      activeObject.map((item) => canvas.remove(item));
-      canvas.requestRenderAll();
-      canvas.discardActiveObject();
+      activeObject.map((item) => {
+        if(item.id == "productImage" || item.id == "trimImage" || item.id == "nonBgImage"){
+          return false;
+        }else{
+          canvas.remove(item);
+        }
+      }); 
+      canvas.renderAll();
+      canvas.discardActiveObject();      
     }
   }
 
@@ -183,16 +189,16 @@ function rotationControl() {
   });
 }
 
+
 function initControls(canvas) {
   // delete icon
-  // deleteControl(canvas);
+  deleteControl(canvas);
   // apex icon
   peakControl(canvas);
   // middle bar icon
   intervalControl(canvas);
   // Rotate icon
   rotationControl(canvas);
-
   // selected style
   fabric.Object.prototype.set({
     transparentCorners: false,
@@ -203,6 +209,67 @@ function initControls(canvas) {
     cornerStrokeColor: '#0E98FC',
     borderOpacityWhenMoving: 1,
   });
+  fabric.Arrow = fabric.util.createClass(fabric.Line, {
+    type: 'Arrow',
+    initialize: function(points, options) {
+      options || (options = { });
+      this.callSuper('initialize',points, options);
+    this.strokeWidth=1;
+    this.fill= '#444';
+    this.stroke= '#444';
+    this.id= 'Arrow' + canvas.linecounter;
+    this.name= 'arrow';
+    this.selectable= true;		//if turn this off hovercursor doesn't work. So arrow is selectable. But setting hasBorders to false stops blue rectangle appearing around it so there's no problem.
+    this.lockMovementX= true;
+    this.lockMovementY= true;
+    this.lockScalingX= true;
+    this.lockScalingY= true;
+    this.lockRotation= true;
+    this.hasControls= true;
+    this.lockRotation= true;
+    this.hasBorders= false;
+    this.cornerColor= 'rgba(255,0,0,1)';
+    this.cornerSize=9;
+    var vx1,vy1,vx2,vy2;
+    
+    /** [Create triangle attached to the end of the line pointing to the target entity] */
+    this.triangle = new fabric.Triangle({
+      originX: 'left',
+      originY: 'top',
+      hasBorders: true,
+      id: 'triangle' + canvas.linecounter,
+      lockScalingX: true,
+      lockScalingY: true,
+      lockRotation: true,
+      hasControls: false,
+      pointType: 'arrow_start',
+      fill:  '#444',
+      stroke: "#444444",
+      strokeWidth: 1,
+      selectable: false,
+    });
+    
+    this.text= new fabric.Text("", {
+      id: 'text' + canvas.linecounter,
+      fontSize:20,
+      selectable: false,
+    });
+  
+    
+    },
+    toObject: function() {
+      return fabric.util.object.extend(this.callSuper('toObject'), {
+      });
+    },
+    
+    length: function(){
+    return Math.sqrt(Math.pow(this.y2-this.y1,2) + Math.pow(this.x2-this.x1,2));},
+   
+  });
+  
+  fabric.Arrow.fromObject = function(object, callback) {
+      return fabric.Object._fromObject('Arrow', object, callback);
+    };  
 }
 
 export default initControls;

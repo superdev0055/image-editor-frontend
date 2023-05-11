@@ -24,7 +24,30 @@ class Editor extends EventEmitter {
     initControlsRotate(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
   }
+  getName(type){
 
+    var items = this.canvas.getObjects().filter(arg=>{
+      if(arg.id != "workspace"){
+        return arg.type == type;
+      }
+
+    });
+    if(type == "rect"){
+      return type+"#"+(items.length);
+    }else{
+      return type+"#"+(items.length);
+    }
+  }
+  getNameClone(name){
+    var items = this.canvas.getObjects().filter(arg=>{
+      if(arg.id != "workspace"){
+        return arg.item_name.split("#")[0] == name.split("#")[0];
+      }
+    }); 
+
+    return name.split("#")[0]+'#'+items.length;
+
+  }
   clone() {
     const activeObject = this.canvas.getActiveObject();
     if(activeObject.id == "showBg"){
@@ -136,7 +159,7 @@ class Editor extends EventEmitter {
   }
 
   getJson() {
-    return this.canvas.toJSON(['id', 'gradientAngle', 'selectable', 'hasControls']);
+    return this.canvas.toJSON(['id','item_name','layerShowPeriod', 'gradientAngle', 'selectable', 'hasControls',"fillState","borderState"]);
   }
 
   /**
@@ -158,6 +181,125 @@ class Editor extends EventEmitter {
     this.canvas.add(item);
     this.canvas.requestRenderAll();
   }
+
+  checkLayerPeriod(){
+      var items = this.canvas.getObjects();
+      var nowDate = new Date();
+      var date = nowDate.getDate();
+      var month = nowDate.getMonth()+1;
+
+      var year = nowDate.getFullYear();
+      if(month.toString().length == 1){
+        month = '0'+month;
+      }
+      if(date.toString().length == 1){
+        date = '0'+date;
+      }
+      var today = `${year}-${month}-${date}`;      
+      var isShow=true;      
+      items.forEach(item => {
+        if(item.layerShowPeriod){
+
+          if(item.layerShowPeriod.startDate != ''){
+
+            if(item.layerShowPeriod.mode == "except"){
+              if(item.layerShowPeriod.startDate>=today){
+                isShow = true;
+              }else{
+                isShow = false;
+              }
+            }else{
+              if(item.layerShowPeriod.startDate<=today){
+                isShow = true;
+              }else{
+                isShow = false;
+              }              
+            }
+
+          }
+
+          if(item.layerShowPeriod.endDate != ""){
+            if(item.layerShowPeriod.mode == "except"){
+              if(item.layerShowPeriod.endDate>=today){
+                isShow = false;
+              }else{
+                isShow = true;
+              }
+            }else{
+
+              if(item.layerShowPeriod.endDate<=today){
+                isShow = true;
+              }else{
+                isShow = false;
+              }  
+
+
+
+            }        
+          }
+          if(item.layerShowPeriod.startDate != "" && item.layerShowPeriod.endDate != ""){
+            
+            if(item.layerShowPeriod.mode == "except"){
+
+              if(item.layerShowPeriod.startDate<=today && item.layerShowPeriod.endDate>=today){
+                isShow=false;
+              }else{
+                isShow=true;
+              }
+            
+            }else{
+              if(item.layerShowPeriod.startDate<=today && item.layerShowPeriod.endDate>=today){
+                isShow=true;
+              }else{
+                isShow=false;
+              }              
+            }             
+            
+          }
+
+          if(item.layerShowPeriod.startDate == "" && item.layerShowPeriod.endDate == ""){
+            isShow=true;
+          }
+          if(item.lock == true){
+            isShow = false;
+          }
+          if(isShow == true){
+            item.set("opacity",100);
+          }else{
+            item.set("opacity",0);
+          }
+
+          this.canvas.renderAll();
+
+        }
+        
+      });
+
+      
+  }
+
+  getImageUrl(){
+      
+    const workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
+    const { left, top, width, height } = workspace;                  
+    const option = {
+      name: 'New Image',
+      format: 'png',
+      quality: 1,
+      left,
+      top,
+      width,
+      height,
+    };
+    var oldViewport = this.canvas.viewportTransform;
+    
+    this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const imgUrl = this.canvas.toDataURL(option);
+    this.canvas.setViewportTransform(oldViewport);
+    return imgUrl;
+
+  }
+
 }
 
 export default Editor;

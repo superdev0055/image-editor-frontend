@@ -7,7 +7,7 @@
             <div class="col-md-11">
               <div class="image-name mt-2">
                 <label class="font-s">Image name</label>         
-                <b-form-input size="sm"></b-form-input>
+                <b-form-input size="sm" id="canvasName" v-model="canvasName"></b-form-input>
               </div>
               <div class="image-size mt-2" style="">
                 <label class="font-s">Image size</label>  
@@ -87,6 +87,7 @@ export default {
       selected: "900x900",
       width: 900,
       height: 900,
+      canvasName:''
     };
   },
   components:{
@@ -104,7 +105,7 @@ export default {
     this.canvas.c.on({
       'object:modified': this.save,
       'selection:updated': this.save,
-    });   
+    }); 
     hotkeys(keyNames.ctrlz, this.undo);        
   },    
   mounted() {
@@ -112,7 +113,7 @@ export default {
       width: this.width,
       height: this.height,
     });
-    
+    // if(name)
   },
   methods: {
 
@@ -127,52 +128,70 @@ export default {
       this.list.push(data);
       this.getTime();
     },    
+
     getTime() {
       const myDate = new Date();
       const str = myDate.toTimeString();
       const timeStr = str.substring(0, 8);
       this.time = timeStr;
     },    
+
     setSizeBy(width, height) {
       this.width = width;
       this.height = height;
       this.setSize();
 
     },
+    
     changeSize(key,evt) {
+
       var value = evt.target.value
       if(key == "width"){
         this.width = value
       }else{
         this.height = value
       }
-      // this.canvas.c.discardActiveObject();
-      console.log("asdfasdf")
-      this.$Spin.show(); 
-      this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
-      this.$Spin.hide(); 
+
     },
     setSize() {
+      this.$Spin.show();  
       this.canvas.c.discardActiveObject();
+      
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
+      setTimeout(() => {
+        this.$Spin.hide();
+        
+      },100);        
     },
   },
   watch:{
     selected(){
-      var resolution = this.selected.split("x")
+      var resolution = this.selected.split("x");
       this.width = Number(resolution[0]);
       this.height = Number(resolution[1]);
       this.setSize();
+      
     },
-    // width(){
-    //   this.width = Number(this.width)
-    //   this.setSize();
-
-    // },
-    // height(){
-    //   this.height = Number(this.height)
-    //   this.setSize()
-    // },
+    width(){
+      // this.$Spin.show();  
+      this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
+      this.canvas.c.discardActiveObject();
+      this.canvas.c.renderAll();      
+      // setTimeout(() => {
+      //   this.$Spin.hide();
+        
+      // }, 1000);        
+    },
+    height(){
+      // this.$Spin.show();  
+      this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
+      this.canvas.c.discardActiveObject();
+      this.canvas.c.renderAll(); 
+      // setTimeout(() => {
+      //   this.$Spin.hide();
+        
+      // }, 1000);                  
+    },
 
     selectMode(){
       if(this.selectMode === '1'){

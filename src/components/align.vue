@@ -207,7 +207,6 @@ export default {
         const activeObjectTop = -(activeObject.height / 2);
         activeSelection.forEachObject((item) => {
           if(item.id != "virtural"){
-            console.log(item.id)
             item.set({
               top: activeObjectTop,
             });

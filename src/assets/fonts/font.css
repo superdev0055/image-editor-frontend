@@ -1,9 +1,9 @@
 @font-face {
-  font-family: 'Arial';
-  src: url('./cn/Arial.ttf');
+  font-family: '汉体';
+  src: url('./cn/汉体.ttf');
 }
 
 @font-face {
-  font-family: 'SIMSUN';
-  src: url('./cn/SIMSUN.ttf');
+  font-family: '华康金刚黑';
+  src: url('./cn/华康金刚黑.ttf');
 }

@@ -11,8 +11,8 @@
         </div>
       </div>
       <div class="col-6">
-        <Button class="ivu-btn ivu-btn-text" icon="ios-flash" size="small">Liver Preview</Button>
-        <Button class="ivu-btn ivu-btn-text" icon="md-grid" size="small">Design Mode</Button>
+        <!-- <Button class="ivu-btn ivu-btn-text" icon="ios-flash" size="small">Liver Preview</Button>
+        <Button class="ivu-btn ivu-btn-text" icon="md-grid" size="small">Design Mode</Button> -->
       </div>
       <div class="col-3" style="text-align: right;">
         <button class="ivu-btn ivu-btn-primary ivu-btn-circle ivu-btn-icon-only" type="button">
@@ -21,7 +21,7 @@
       </div>
     </header>
     <div>
-      <Content style="display: flex; height: calc(100vh - 64px)">
+      <Content style="display: flex; height: calc(100vh - 64px);">
         
         <!-- --------------------------------- Import Button(+) ----------------------------------- -->
         <Dropdown class="m-md-4 plus-btn" v-if="show" placement="bottom-start">
@@ -36,7 +36,7 @@
         <!-- --------------------------------- End Import Button(+) ----------------------------------- -->
 
         <!-- --------------------------------- Left Side ----------------------------------- -->
-        <div id="workspace" style="width:90%; position: relative; background: #f8f8f5;">
+        <div id="workspace">
           <!-- <div class="canvas-box"> -->
           <div>
             <div class="inside-shadow">
@@ -91,6 +91,8 @@ import attribute from '@/components/attribute.vue';
 // functional components
 import EventHandle from '@/utils/eventHandler';
 
+import "@/assets/css/main.css"
+
 import { fabric } from 'fabric';
 import Editor from '@/core';
 
@@ -136,12 +138,17 @@ export default {
     this.show = true;
     this.$Spin.hide();      
     canvas.c.renderAll();
+
   },
 };
 </script>
 <style scoped lang="less">
+
 #canvas {
   filter: drop-shadow(0px 5px 10px #d1d1d1);
+}
+span {
+  font-size: 12px !important;
 }
 .bottomBar {
   margin: auto; 
@@ -153,4 +160,5 @@ export default {
   padding: 10px;
   border-radius:10px
 }
+
 </style>

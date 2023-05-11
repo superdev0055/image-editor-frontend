@@ -34,20 +34,23 @@ class EditorWorkspace {
   }
 
   setSize(width, height) {
-    this._initBackground();
+    // this._initBackground();
+
     this.option.width = width;
     this.option.height = height;
     // //reset workspace
     this.workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
     this.workspace.set("width",width);
-    this.workspace.set("height",height);    
+    this.workspace.set("height",height);          
+
 
     // get offset
     const l1 = Number(this.workspace.left);
     const t1 = Number(this.workspace.top);
     this.canvas.centerObject(this.workspace);
     this.moveEl(this.workspace.left - l1, this.workspace.top - t1);
-    this.auto();
+    this.auto();      
+
   }
   //Initialize the canvas
   _initWorkspace() {

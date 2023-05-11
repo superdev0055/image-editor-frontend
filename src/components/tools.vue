@@ -9,6 +9,7 @@
 <script>
 import { v4 as uuid } from 'uuid';
 import initializeLineDrawing from '@/core/initializeLineDrawing';
+import select from '@/mixins/select';
 
 // default property
 const defaultPosition = { shadow: '', fontFamily: 'arial' };
@@ -19,6 +20,7 @@ const dragOption = {
 };
 export default {
   name: 'ToolBar',
+  mixins: [select],
   inject: ['canvas', 'fabric'],
   data() {
     return {
@@ -91,13 +93,22 @@ export default {
           id:"virtural"
       });      
       var group = new fabric.Group([rect, text]);
+      group.set({
+        id:uuid(),
+        left:0-group.width,
+        customType:"text",
+        padding:10,
+        item_name:this.canvas.editor.getName("text"),
+        layerShowPeriod:{
+          mode:'',
+          startDate:'',
+          endDate:''
+        },
+
+      });
+
 	    group.setCoords();	
-      group.id = uuid();
-      group.set("left",0-group.width);
-      group.type = "text";
-      group.set("padding",10);      
-      var name = this.getName('text');
-      group.name = name;
+
       this.canvas.c.add(group);
       rect.set("width",group.width*group.scaleX+5);
       rect.set("height",group.height*group.scaleY+5);
@@ -105,19 +116,7 @@ export default {
       this.canvas.c.setActiveObject(group);
     },
     
-    getName(type){
-      var objects = this.canvas.c.getObjects();
-      var count = 1;
-      console.log(objects,type)
-      objects.forEach(arg=>{
-        console.log(arg.type);
-        if(arg.type == type){
-          count++;
-        }
-      });
-      console.log(type+"#"+count);
-      return type+"#"+count;
-    },
+
     addImg(e) {
       const imgEl = e.target.cloneNode(true);
       const imgInstance = new this.fabric.Image(imgEl, {
@@ -158,38 +157,52 @@ export default {
       this.canvas.c.setActiveObject(triangle);
     },
     addCircle(option) {
-      var name = this.getName('circle');
+      var name = this.canvas.editor.getName("circle");
+      // this.getName('circle');
       const circle = new this.fabric.Circle({
         left:-200,
         radius: 150,
         fill: 'yellow',
         id: uuid(),
-        name: name,
+        item_name: name,
+        layerShowPeriod:{
+          mode:'',
+          startDate:'',
+          endDate:''
+        }        
       });
-      
       this.canvas.c.add(circle);
       this.canvas.c.centerObject(circle);
       this.canvas.c.setActiveObject(circle);
     },
+    
     addRect(option) {
-      var name = this.getName('rect');      
+     var name = this.canvas.editor.getName("rect"); 
       const rect = new this.fabric.Rect({
         left:-200,
         fill: 'blue',
         width: 400,
         height: 400,
         id: uuid(),
-        name: name,
+        item_name: name,
+        tempValueForPadding:0,
+        layerShowPeriod:{
+          mode:'',
+          startDate:'',
+          endDate:''
+        }        
       });
       this.canvas.c.add(rect);
       this.canvas.c.centerObject(rect);
       this.canvas.c.setActiveObject(rect);
     },
+
     drawingLineModeSwitch(isArrow) {
       this.isArrow = isArrow;
       this.isDrawingLineMode = !this.isDrawingLineMode;
       this.drawHandler.setMode(this.isDrawingLineMode);
       this.drawHandler.setArrow(isArrow);
+      
       this.canvas.c.forEachObject((obj) => {
         if (obj.id !== 'workspace') {
           obj.selectable = !this.isDrawingLineMode;
@@ -197,6 +210,7 @@ export default {
         }
       });
     },
+
   },
 };
 </script>

@@ -1,6 +1,6 @@
 
 <template>
-  <DropdownItem size="small">
+  <DropdownItem size="small" @click="del">
     <Button @click="del" icon="ios-trash" type="text" size="small"></Button>
     <span style="font-size:10px">Delete</span>
   </DropdownItem>
@@ -27,7 +27,7 @@ export default {
       if (activeObject) {
 
         activeObject.map((item) => {
-          if(item.id == "showBg" || item.id == "trimBg" || item.id == "removeBg"){
+          if(item.id == "productImage" || item.id == "trimImage" || item.id == "nonBgImage"){
             return false;
           }else{
             this.canvas.c.remove(item)

@@ -10,7 +10,6 @@ import i18n from './language';
 import '@/assets/fonts/font.css';
 import "bootstrap/dist/css/bootstrap.css";
 import 'view-ui-plus/dist/styles/viewuiplus.css'
-import "./styles/main.css"
 import './styles/index.less';
 
 // custom font file

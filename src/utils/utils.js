@@ -1,10 +1,9 @@
 
-
 import FontFaceObserver from 'fontfaceobserver';
 
 /**
- * @description: Image file to string
- * @param {Blob|File} file document
+ * @description: 
+ * @param {Blob|File} file
  * @return {String}
  */
 export function getImgStr(file) {
@@ -22,7 +21,7 @@ export function getImgStr(file) {
 }
 
 /**
- * @description: Download the font file according to the json template
+ * @description: 
  * @param {String} str
  * @return {Promise}
  */
@@ -31,7 +30,7 @@ export function downFontByJSON(str) {
   const fontFamilys = JSON.parse(str)
     .objects.filter(
       (item) =>
-        // is text and does not contain fonts
+        // 为text 并且不为包含字体
         // eslint-disable-next-line implicit-arrow-linebreak
         item.type.includes('text') && !skipFonts.includes(item.fontFamily)
     )
@@ -43,8 +42,9 @@ export function downFontByJSON(str) {
   return Promise.all(fontFamilysAll);
 }
 
+
 /**
- * @description:Select a document
+ * @description: 选择文件
  * @param {Object} options accept = '', capture = false, multiple = false
  * @return {Promise}
  */
