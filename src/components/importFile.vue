@@ -52,7 +52,7 @@ import { getImgStr, selectFiles,downFontByJSON } from '@/utils/utils';
 import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
 import {productImage} from '@/utils/imgConstant' 
-  import {getAllTemps,getTempById,getUserTempById} from "@/service/endPoint";
+  import {getAllTemps,getTempById,getUserTempById} from "@/service/endpoint";
 export default {
   name: 'ToolBar',
   mixins: [select],

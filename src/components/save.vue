@@ -10,7 +10,7 @@
 
 <script>
 import select from '@/mixins/select';
-import {createUserTemp,updateUserTemp} from "@/service/endPoint";
+import {createUserTemp,updateUserTemp} from "@/service/endpoint";
 import {v4 as uuid} from "uuid";
 export default {
   name: 'saveBar',
