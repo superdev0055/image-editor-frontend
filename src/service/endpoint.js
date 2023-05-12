@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const server_url='http://localhost:3000' ;
+const server_url='image-editor-backend.netlify.app' ;
 
 
 //user template
