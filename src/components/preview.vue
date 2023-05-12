@@ -16,7 +16,7 @@
                 <div class="ivu-space-item col-6">
                     <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 100%">
                         <i class="ivu-icon ivu-icon-ios-loading ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
-                        <input autocomplete="off" spellcheck="false" type="text" class="ivu-input ivu-input-default ivu-input-with-prefix" placeholder="Search phrase">
+                        <input autocomplete="off" v-model="keyword" spellcheck="false" type="text" class="ivu-input ivu-input-default ivu-input-with-prefix" placeholder="Search phrase">
                         <span class="ivu-input-prefix">
                             <Icon type="ivu-icon ivu-icon-ios-search" />
                         </span>
@@ -27,58 +27,76 @@
         </div>
         <hr style="margin: 10px 0px;"/>
         <div class="col-md-11">
-            <div class="row">
-                <div class="col-10">
-                    <label class="font-s">mobile-phones-i-mobile</label>
+            <div
+                id="main"
+                class="template-content"
+                v-for="(item, index) in product_images"
+                :key="index"
+                >
+                <div class="row">
+                    <div class="col-10">
+                        <div class="font-s">{{item.title}}</div>
+                        <div class="font-s">{{item.id}}</div>
+                        <div class="font-s">{{item.brand}}</div>
+                    </div>
+                    <div class="col-2">
+                        <button class="ivu-btn ivu-btn-text ivu-btn-large ivu-btn-circle ivu-btn-icon-only" type="button">
+                            <Icon type="ios-information-circle-outline" />
+                        </button>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <button class="ivu-btn ivu-btn-text ivu-btn-large ivu-btn-circle ivu-btn-icon-only" type="button">
-                        <Icon type="ios-information-circle-outline" />
-                    </button>
+                <div class="image-size mt-2">
+                    <img class="ivu-image-img" alt="" :id="'preview'+index" src="@/assets/img/preview.png" loading="eager">
                 </div>
-            </div>
-            <div class="image-size mt-2">
-                <img class="ivu-image-img" alt="" id="preview1" src="@/assets/img/preview.png" loading="eager">
-            </div>
-            <hr style="margin: 10px 0px;"/>
-            <div class="row">
-                <div class="col-10">
-                    <label class="font-s">tablets-Fujitsu</label>
-                </div>
-                <div class="col-2">
-                    <button class="ivu-btn ivu-btn-text ivu-btn-large ivu-btn-circle ivu-btn-icon-only" type="button">
-                        <Icon type="ios-information-circle-outline" />
-                    </button>
-                </div>
-            </div>
-            <div class="image-size mt-2" style="width:100%, height: 100%">
-                <img class="ivu-image-img" alt="" id="preview2" src="@/assets/img/preview.png" loading="eager" >
-            </div>
+                <hr style="margin: 10px 0px;"/>                
+
+            </div>              
         </div>       
         <hr />   
     </div> 
 </template>
 <script>
 import select from '@/mixins/select';
+import {getPreviewImage} from "@/service/endpoint.js"
 export default {
   name: 'ToolBar',
   mixins: [select],
   props:['list'],
   data() {
+
     return{
-        previewCanvas:'',
+        keyword:'',
+        product_images:'',
     }
-  },
-  created() {
-  },  
-  mounted(){
 
   },
+  created() {
+     
+  },  
+  mounted(){
+    this.product_images = [1,2,3,4,5];
+  },
   methods: {
+
     showPreview(){
-        var imgUrl = this.canvas.editor.getImageUrl();
-        document.getElementById("preview1").src = imgUrl;
-        document.getElementById("preview2").src = imgUrl;
+
+        getPreviewImage(this.keyword).then((res)=>{
+            this.product_images = res.data;
+        }).then((result)=>{
+            this.product_images.forEach(async (item,index)=>{
+                if(index == 0){
+                    await this.canvas.editor.changeProductImage(item);
+                }
+                var first_product_image =  item;
+                if(first_product_image!=null){
+                    await this.canvas.editor.changeProductImageLists(first_product_image,index);
+                }
+
+            });
+    });     
+
+
+           
     },
   },
 };

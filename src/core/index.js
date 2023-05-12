@@ -279,7 +279,6 @@ class Editor extends EventEmitter {
   }
 
   getImageUrl(){
-      
     const workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
     const { left, top, width, height } = workspace;                  
     const option = {
@@ -299,7 +298,93 @@ class Editor extends EventEmitter {
     return imgUrl;
 
   }
+  
+  changeProductImageLists(final_product_image,index){
+      var jsonFile = JSON.stringify(this.getJson());
+      var canvas = document.createElement("CANVAS");
+      canvas.id = "tempCanvas";
+      canvas.style.display = "none";
+      var canvasClone = new fabric.Canvas("tempCanvas",{
+        fireRightClick: true,
+        stopContextMenu: true,
+        controlsAboveOverlay: true,        
+      });
+      canvasClone.loadFromJSON(jsonFile, () => {
 
+        canvasClone.renderAll.bind(canvasClone);
+        const productImage = canvasClone.getObjects().find((item) => item.id === "productImage");
+        fabric.Image.fromURL(final_product_image.image_link, (final_product_image) => {
+        final_product_image._element.crossOrigin = 'anonymous'
+        final_product_image.set({
+              left: productImage.left,
+              top: productImage.top,
+              layerShowPeriod:productImage.layerShowPeriod,
+              id: productImage.id,
+              item_name: "final_product_image"
+            }).setCoords();
+        final_product_image.scaleToWidth(productImage.width*productImage.scaleX).setCoords();
+        //set position
+        var diffWidth = productImage.width*productImage.scaleX-final_product_image.width*final_product_image.scaleX;
+        var diffHeight = productImage.height*productImage.scaleY-final_product_image.height*final_product_image.scaleY;
+
+        final_product_image.set("left",final_product_image.left-diffWidth/2).setCoords();
+        final_product_image.set("top",final_product_image.top+diffHeight/2).setCoords();
+        canvasClone.remove(productImage); 
+        canvasClone.add(final_product_image);
+
+        setTimeout(() => {
+          const workspace = canvasClone.getObjects().find((item) => item.id === 'workspace');
+          const { left, top, width, height } = workspace;                  
+            const option = {
+              name: 'New Image',
+              format: 'png',
+              quality: 1,
+              left,
+              top,
+              width,
+              height,
+            };
+            var oldViewport = canvasClone.viewportTransform;
+            
+            canvasClone.setViewportTransform([1, 0, 0, 1, 0, 0]);
+            const imgUrl = canvasClone.toDataURL(option);
+            canvasClone.setViewportTransform(oldViewport);  
+            console.log(canvasClone);
+            canvasClone.requestRenderAll();
+            canvasClone.renderAll();          
+            document.getElementById("preview"+(index)).src =imgUrl;  
+          }, 2000);
+      });      
+        
+    })
+       
+  }
+  changeProductImage(final_product_image){
+    const productImage = this.canvas.getObjects().find((item) => item.id === "productImage");
+
+    fabric.Image.fromURL(final_product_image.image_link, (final_product_image) => {
+      final_product_image._element.crossOrigin = 'anonymous'
+      final_product_image.set({
+            left: productImage.left,
+            top: productImage.top,
+            layerShowPeriod:productImage.layerShowPeriod,
+            id: productImage.id,
+            item_name: "final_product_image"
+          }).setCoords();
+      final_product_image.scaleToWidth(productImage.width*productImage.scaleX).setCoords();
+      //set position
+      var diffWidth = productImage.width*productImage.scaleX-final_product_image.width*final_product_image.scaleX;
+      var diffHeight = productImage.height*productImage.scaleY-final_product_image.height*final_product_image.scaleY;
+
+      final_product_image.set("left",final_product_image.left-diffWidth/2).setCoords();
+      final_product_image.set("top",final_product_image.top+diffHeight/2).setCoords();
+      this.canvas.remove(productImage); 
+      this.canvas.add(final_product_image);
+      this.canvas.requestRenderAll();
+      this.canvas.discardActiveObject();    
+      
+    });    
+  }
 }
 
 export default Editor;

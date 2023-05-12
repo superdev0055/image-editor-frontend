@@ -6,9 +6,11 @@
     "dev": "vite",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "build": "cross-env NODE_ENV=development && vite build",
+    "set-env":"cross-env NODE_ENV=development",
+    "build": "set-env && vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
+  
   "dependencies": {
     "@popperjs/core": "^2.11.7",
     "autoprefixer": "^10.4.14",
