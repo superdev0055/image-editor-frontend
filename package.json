@@ -3,11 +3,10 @@
   "version": "16.14.2",
   "private": true,
   "scripts": {
-    "dev": "yarn add vite && vite",
-    "build": "run-p type-check build-only",
+    "dev": "vite",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "build-only": "yarn add vite && vite build",
+    "build": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
