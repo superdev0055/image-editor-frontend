@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const server_url='https://image-editor-backend.netlify.app';
+const server_url='https://image-editor-fabric-server.vercel.app';
+
 //user template
+
 export const createUserTemp=(data) =>{
     return axios.post(server_url+'/user/create-template',data);
 }
