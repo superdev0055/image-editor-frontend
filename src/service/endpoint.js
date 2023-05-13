@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const server_url='https://image-editor-fabric-server.vercel.app';
+const server_url='https://image-editro-backend.onrender.com';
 
 //user template
 
