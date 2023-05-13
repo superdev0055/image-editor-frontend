@@ -84,9 +84,7 @@ export default {
             this.product_images = res.data;
         }).then((result)=>{
             this.product_images.forEach(async (item,index)=>{
-                if(index == 0){
-                    await this.canvas.editor.changeProductImage(item);
-                }
+
                 var first_product_image =  item;
                 if(first_product_image!=null){
                     await this.canvas.editor.changeProductImageLists(first_product_image,index);
