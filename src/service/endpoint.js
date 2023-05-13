@@ -28,7 +28,9 @@ export const getAllTemps=() =>{
 export const getTempById = (id) =>{
     return axios.get(server_url+'/demo/get-specific-template/'+id);
 }
-
+export const updateTempName=(id,name) =>{
+    return axios.post(server_url+'/user/update-template/'+id,{name:name});
+}
 // /product/get-preview-image/:id
 export const getPreviewImage = (keyword) =>{
     return axios.post(server_url+"/product/get-preview-image/",{keyword:keyword});

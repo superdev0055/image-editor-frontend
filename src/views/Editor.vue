@@ -9,7 +9,9 @@
         </div>
         <Modal
           v-model="modal"
-          title="Name">
+          title="Name"
+          :on-ok="saveName"
+          >
           <div class="row">
 
             <label class="col-md-3">Name</label>
@@ -156,6 +158,7 @@ export default {
       this.canvasName = canvas.c.template_name
     },2000);
   },
+  
 };
 </script>
 <style scoped lang="less">
