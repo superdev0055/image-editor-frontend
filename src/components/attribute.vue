@@ -422,10 +422,15 @@ export default {
         this.baseAttr.width = activeObject.get('width');
         this.baseAttr.opacity = activeObject.get('opacity') * 100;
         this.baseAttr.fill = activeObject.get('fill');
+        if(this.baseAttr.fill == null){
+          this.baseAttr.fill = '';
+        }           
         this.baseAttr.left = activeObject.get('left');
         this.baseAttr.top = activeObject.get('top');
         this.baseAttr.stroke = activeObject.get('stroke');
-        this.baseAttr.strokeWidth = activeObject.get('strokeWidth');
+        if(this.baseAttr.stroke == null){
+          this.baseAttr.stroke = '';
+        }           
         this.baseAttr.shadow = activeObject.get('shadow') || {};
         this.baseAttr.angle = activeObject.get('angle') || 0;
         this.baseAttr.padding = activeObject.get('padding') || 0;

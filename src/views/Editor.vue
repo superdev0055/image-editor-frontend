@@ -1,24 +1,32 @@
 <template>
   <div class="home">
     <header class="header text-center row" style="width: 100%;z-index:100000">
-      <div class="col-3 row">
-        <div class="col-1" style="padding-top: 5px;">
-          <Button icon="md-arrow-round-back" class="left-btn" @click="selectM()"></Button>
-        </div>
-        <div class="col-11" style="text-align: left;">
+      <div class="">
+
+        <div style="text-align: left; cursor:pointer" @click="modal = true">
             <Icon type="ios-create-outline" style="font-weight: bolder;"/>
             <span style="font-weight: bolder;">Custom image template</span>
         </div>
+        <Modal
+          v-model="modal"
+          title="Name">
+          <div class="row">
+
+            <label class="col-md-3">Name</label>
+            <b-form-input class="col-md-8" size="sm" v-model="canvasName"></b-form-input>
+
+          </div>
+        </Modal>          
       </div>
       <div class="col-6">
         <!-- <Button class="ivu-btn ivu-btn-text" icon="ios-flash" size="small">Liver Preview</Button>
         <Button class="ivu-btn ivu-btn-text" icon="md-grid" size="small">Design Mode</Button> -->
       </div>
-      <div class="col-3" style="text-align: right;">
-        <button class="ivu-btn ivu-btn-primary ivu-btn-circle ivu-btn-icon-only" type="button">
+      <!-- <div class="col-3" style="text-align: right;"> -->
+        <!-- <button class="ivu-btn ivu-btn-primary ivu-btn-circle ivu-btn-icon-only" type="button">
             <Icon type="md-person" />
         </button>
-      </div>
+      </div> -->
     </header>
     <div>
       <Content style="display: flex; height: calc(100vh - 64px);">
@@ -64,14 +72,16 @@
          <!-- --------------------------------- Right Side ----------------------------------- -->
         <div class="right-box">
           <div v-if="show">
-            <set-size></set-size> 
+            <set-size :canvasName="this.canvasName"></set-size> 
           </div>
             <attribute v-if="show"></attribute>
         </div>
         <!-- --------------------------------- End Right Side ----------------------------------- -->
       </Content>
     </div>
+  
   </div>
+  
 </template>
 <script>
 
@@ -107,11 +117,14 @@ export default {
       "fabric":fabric,
       "event":event,
       "path":this.$route.path,
-      "param_id":this.$route.params.id
+      "param_id":this.$route.params.id,
+      "canvasName":this.canvasName
     }
-  },    
+  },
   data() {
     return {
+      canvasName:'',
+      modal: false,
       show: false,
       select: null,
       ruler: true,
@@ -138,7 +151,10 @@ export default {
     this.show = true;
     this.$Spin.hide();      
     canvas.c.renderAll();
-
+    setTimeout(() => {
+      console.log(canvas.c.template_name);
+      this.canvasName = canvas.c.template_name
+    },2000);
   },
 };
 </script>

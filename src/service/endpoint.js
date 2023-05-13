@@ -1,15 +1,12 @@
 import axios from 'axios';
 
-const server_url='image-editor-backend.netlify.app' ;
-
-
+const server_url='https://image-editor-backend.netlify.app';
 //user template
 export const createUserTemp=(data) =>{
     return axios.post(server_url+'/user/create-template',data);
 }
 
 export const updateUserTemp=(id,data) =>{
-    console.log(id,data)
     return axios.post(server_url+'/user/update-template/'+id,data);
 }
 
@@ -20,8 +17,6 @@ export const getAllUserTemps=() =>{
 export const getUserTempById=(id) =>{
     return axios.get(server_url+'/user/get-specific-template/'+id);
 }
-
-
 
 //demo template
 export const getAllTemps=() =>{
@@ -34,6 +29,5 @@ export const getTempById = (id) =>{
 
 // /product/get-preview-image/:id
 export const getPreviewImage = (keyword) =>{
-    console.log("keyword")
     return axios.post(server_url+"/product/get-preview-image/",{keyword:keyword});
 }

@@ -49,11 +49,13 @@ export default {
     }
   },
   mounted() {
+    
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
       stopContextMenu: true,
       controlsAboveOverlay: true,
     });
+
     canvas.c = this.canvas;
     event.init(canvas.c);
     canvas.editor = new Editor(canvas.c);
@@ -64,6 +66,7 @@ export default {
       width: 900,
       height: 900,
     });
+    
     getAllUserTemps().then((resp)=>{
       var data = resp.data;
       data.forEach((e ,i)=> {

@@ -262,6 +262,9 @@ export default {
           this.baseAttr.width = activeObject.get('width');
           this.baseAttr.opacity =activeObject.get('opacity') * 100;
           this.baseAttr.fill = activeObject.get('fill');
+          if(this.baseAttr.fill == null){
+            this.baseAttr.fill = '';
+          }          
           this.baseAttr.left = activeObject.get('left');
           this.baseAttr.top = activeObject.get('top');
           this.baseAttr.stroke = activeObject.get('stroke');
@@ -273,7 +276,8 @@ export default {
           this.baseAttr.angle = activeObject.get('angle') || 0;   
           this.initSet()         
     });      
-  },  
+  },
+  
   methods:{
     initSet(){
       var activeObject = this.canvas.c.getActiveObject();
@@ -315,6 +319,7 @@ export default {
         this.canvas.c.renderAll();
       }      
     } ,   
+
     changeBorderState(value){
       if(value == false){
         const activeObject = this.canvas.c.getActiveObject();
@@ -325,6 +330,7 @@ export default {
         this.canvas.c.renderAll();
       }
     },    
+    
     showBorder(){
       this.baseAttr.borderState ? this.baseAttr.borderState = false : this.baseAttr.borderState = true;
       const activeObject = this.canvas.c.getActiveObjects()[0];     

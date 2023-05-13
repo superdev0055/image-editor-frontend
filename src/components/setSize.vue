@@ -7,7 +7,7 @@
             <div class="col-md-11">
               <div class="image-name mt-2">
                 <label class="font-s">Image name</label>         
-                <b-form-input size="sm" id="canvasName" v-model="canvasName"></b-form-input>
+                <b-form-input size="sm" v-model="name" readonly></b-form-input>
               </div>
               <div class="image-size mt-2" style="">
                 <label class="font-s">Image size</label>  
@@ -71,13 +71,12 @@ import layer from "./layer.vue";
 import colorBar from "./colorBar.vue";
 import preview from "./preview.vue";
 import { keyNames, hotkeys } from '@/core/initHotKeys';
-import $ from "jquery";
 const maxStep = 10;
 
 export default {
   name: 'canvasSize',
   mixins: [select],
-  inject: ['canvas', 'fabric'],
+  inject: ['canvas', 'fabric',"canvasName"],
   data() {
     return {
       index: 0,
@@ -87,7 +86,7 @@ export default {
       selected: "900x900",
       width: 900,
       height: 900,
-      canvasName:''
+      name:this.canvasName
     };
   },
   components:{
@@ -96,12 +95,14 @@ export default {
     preview
   },
   created() {
-       
     // When selecting an object in the canvas, the object does not appear on top.
     this.event.on('selectMultiple', (e) => {
       this.mSelectMode = 'multiple';
       this.$forceUpdate();
-    });    
+    });
+
+
+
     this.canvas.c.on({
       'object:modified': this.save,
       'selection:updated': this.save,
@@ -109,6 +110,7 @@ export default {
     hotkeys(keyNames.ctrlz, this.undo);        
   },    
   mounted() {
+    console.log(this.canvasName)
     this.canvas.editor.editorWorkspace = new EditorWorkspace(this.canvas.c, {
       width: this.width,
       height: this.height,
@@ -116,7 +118,9 @@ export default {
     // if(name)
   },
   methods: {
-
+    getCanvasName(){
+      this.canvasName = this.canvas.c.template_name;
+    },
     save(event) {
       // Filter select element events
       const isSelect = event.action === undefined && event.e;
@@ -192,7 +196,9 @@ export default {
         
       // }, 1000);                  
     },
-
+    canvasName(){
+      console.log("asdf")
+    },
     selectMode(){
       if(this.selectMode === '1'){
         this.mSelectMode = '';

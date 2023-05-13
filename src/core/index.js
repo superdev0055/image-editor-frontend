@@ -349,7 +349,6 @@ class Editor extends EventEmitter {
             canvasClone.setViewportTransform([1, 0, 0, 1, 0, 0]);
             const imgUrl = canvasClone.toDataURL(option);
             canvasClone.setViewportTransform(oldViewport);  
-            console.log(canvasClone);
             canvasClone.requestRenderAll();
             canvasClone.renderAll();          
             document.getElementById("preview"+(index)).src =imgUrl;  
