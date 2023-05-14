@@ -1,8 +1,12 @@
 import axios from 'axios';
 
-const server_url='https://localhost:5000';
+const server_url='http://localhost:3000';
 
 //user template
+
+export const test=() =>{
+    return axios.get(server_url+'/test');
+}
 
 export const createUserTemp=(data) =>{
     return axios.post(server_url+'/user/create-template',data);
