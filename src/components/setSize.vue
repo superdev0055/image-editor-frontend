@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="mSelectMode =='multiple'||!mSelectMode=='one' || mSelectMode ==''" class="row">
-      <Tabs value="name1" size="default" type="line" style="width:100%" class="mt-3"  model-value="name2" :animated=false> 
+      <Tabs value="name1" size="default" type="line" style="width:100%" class="mt-3" @on-click="changeTab" model-value="name2" :animated=false> 
         <TabPane label="Setup" name="name1" class="col-md-4" icon="md-apps">
           <div class="row d-flex justify-content-center">
             <div class="col-md-11">
@@ -58,7 +58,7 @@
           </div>      
         </TabPane>
         <TabPane label="Layer" icon="md-reorder" name="name2" class="col-md-4"><layer></layer></TabPane>
-        <TabPane label="Preview" icon="md-fastforward" name="name3" id="preview" class="col-md-4"><preview :list="list"/></TabPane>
+        <TabPane label="Preview" icon="md-fastforward" name="name3" id="preview" class="col-md-4"><preview ref="form" /></TabPane>
       </Tabs> 
 
     </div>
@@ -101,8 +101,6 @@ export default {
       this.$forceUpdate();
     });
 
-
-
     this.canvas.c.on({
       'object:modified': this.save,
       'selection:updated': this.save,
@@ -110,17 +108,44 @@ export default {
     hotkeys(keyNames.ctrlz, this.undo);        
   },    
   mounted() {
-    console.log(this.canvasName)
+
     this.canvas.editor.editorWorkspace = new EditorWorkspace(this.canvas.c, {
       width: this.width,
       height: this.height,
     });
-    // if(name)
+
   },
   methods: {
+
+    changeTab(name){
+
+      if(name == "name3"){
+
+        var oldData = document.cookie.split(';')[0];
+        if(oldData.includes('preview') == true){
+
+          var count = Number(oldData.slice(8));
+          count++;
+          document.cookie = "preview=" + count;
+          this.$refs.form.loaderActive = true;
+          this.$refs.form.showPreview();
+          setTimeout(() => {
+            this.$refs.form.loaderActive = false;
+          }, 7000);
+          
+        }else{
+          document.cookie = "preview=" + 0;
+        }
+      
+      }
+
+      console.log(document.cookie.split(';'));
+
+    },
     getCanvasName(){
       this.canvasName = this.canvas.c.template_name;
     },
+
     save(event) {
       // Filter select element events
       const isSelect = event.action === undefined && event.e;

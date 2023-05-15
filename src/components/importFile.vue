@@ -3,8 +3,9 @@
     <DropdownItem @click="insertImg"><Icon type="ios-image" /><span style="margin-left:10px">Upload image</span></DropdownItem>
     <!-- <DropdownItem @click="insert"><Icon type="ios-image" /><span style="margin-left:10px">json</span></DropdownItem> -->
     <DropdownItem @click="loadTemplate"><Icon type="ios-image" /><span style="margin-left:10px">templates</span></DropdownItem>
+    <DropdownItem @click="loadElement"><Icon type="ios-image" /><span style="margin-left:10px">elements</span></DropdownItem>
     <Modal
-        v-model="modal"
+        v-model="template"
         title="Choose the Template"
         :footer-hide="true"
         width="60%"
@@ -43,7 +44,50 @@
         </div>
 
 
-    </Modal>    
+    </Modal>
+    <Modal
+        v-model="element"
+        title="Choose the Template"
+        :footer-hide="true"
+        width="60%"
+        :loading="loading"
+        >
+        <div class="row">
+          <div class="col-md-3">
+            asdfasdf
+          </div>
+          <div class="col-md-9" >
+            <div class="template-header row">
+              <div  class="col-md-8">
+                <Input suffix="ios-search" placeholder="Enter text" />
+              </div>
+              <div  class="col-md-4">
+                <Select clearable>
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+              </div>              
+            </div>
+            
+            <div
+              id="main"
+              class="template-content"
+              v-for="(item, index) in elementLists"
+              :key="index"
+              >
+
+              <div class="image-box" imgId = {{item.id}} @click="()=>insertElement(item.id)">
+                <img v-bind:src="item.image_url" style="width:150px;height:150px;" id="images0"/>
+                <div><span>{{item.name}}</span></div>
+              </div>
+
+            </div>            
+            
+          </div>
+        </div>
+
+
+    </Modal>        
+
   </div>
 </template>
 
@@ -51,15 +95,16 @@
 import { getImgStr, selectFiles,downFontByJSON } from '@/utils/utils';
 import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
-import {productImage} from '@/utils/imgConstant' 
-  import {getAllTemps,getTempById,getUserTempById} from "@/service/endpoint";
+import {productImage} from '@/utils/imgConstant';
+import {getAllTemps,getTempById,getUserTempById,getAllElements,getElementById} from "@/service/endpoint";
 export default {
   name: 'ToolBar',
   mixins: [select],
   inject:["path","param_id"],
   data() {
     return {
-      modal: false,
+      element:false,
+      template:false,
       loading: true,
       border: true,
       hover: true,
@@ -89,7 +134,8 @@ export default {
                       label: 'Canberra'
                   }
               ],        
-      demoTempLists:''
+      demoTempLists:'',
+      elementLists:''
     };
   },
   created() {
@@ -105,29 +151,7 @@ export default {
       this.insertFileFromJSON(this.param_id);
     }
 
-    getAllTemps().then((resp)=>{
-      var templist = new Array();
-        var data = resp.data;
-        if(data){
-          data.forEach((e ,i)=> {
-
-            var template_id = data[i].template_id;
-            var template_name = data[i].template_name;
-            var template_image_url = data[i].template_image_url;
-
-            templist.push({
-              template_id:template_id,
-              template_name:template_name,
-              template_image_url:template_image_url
-            });           
-
-          });     
-        this.demoTempLists = templist;
-        }
-
-    }).catch(error => {
-          console.log(error);
-    });     
+     
 
   },  
 
@@ -154,10 +178,93 @@ export default {
         this.modal = false;
         
       });
-    },  
+    },
+
+    insertElement(id){
+      getElementById(id).then(res=>{
+        var index = 0;
+        var data = res.data;
+        var dataUrl = this.canvas.editor.getJson();
+
+        if(data.type == "background"){
+
+          var data = data.objects.forEach((item)=>{
+            if(item.id != "workspace"){
+              dataUrl.objects =[
+                ...dataUrl.objects.slice(0, index),
+                item,
+                ...dataUrl.objects.slice(index)
+              ];
+            }
+            index++;
+          });
+
+        }else{
+
+          var data = data.objects.forEach((item)=>{
+            if(item.id != "workspace"){
+              dataUrl.objects.push(item);
+            }
+          });
+
+        }
+
+        this.canvasUpdateByJson(dataUrl);
+        this.element = false;
+
+      });      
+    },
 
     loadTemplate(){
-      this.modal = true;
+      this.template = true; 
+      getAllTemps().then((resp)=>{
+        var templist = new Array();
+        var data = resp.data;
+        if(data){
+          data.forEach((e ,i)=> {
+            var template_id = data[i].template_id;
+            var template_name = data[i].template_name;
+            var template_image_url = data[i].template_image_url;
+            templist.push({
+              template_id:template_id,
+              template_name:template_name,
+              template_image_url:template_image_url
+            });           
+
+          });     
+          this.demoTempLists = templist;
+        }
+      }).catch(error => {
+            console.log(error);
+      });
+    },
+    
+    loadElement(){
+      this.element = true;
+
+      getAllElements().then((resp)=>{
+
+        var lists = new Array();
+        var data = resp.data;
+        if(data){
+          data.forEach((e ,i)=> {
+            var id = data[i].id;
+            var name = data[i].name;
+            var image_url = data[i].image_url;
+
+            lists.push({
+              id:id,
+              name:name,
+              image_url:image_url
+            });           
+
+          });  
+          this.elementLists = lists;
+        }
+
+      }).catch(error => {
+        console.log(error);
+      });         
     },
 
     insert() {
@@ -242,6 +349,7 @@ export default {
         imgEl.remove();
       };
     },
+    
     insertFileFromJSON(id){
       getUserTempById(id)
         .then(resp => {

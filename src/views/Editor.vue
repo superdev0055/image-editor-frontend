@@ -114,6 +114,7 @@ const canvas = {};
 export default {
   name: 'Editor',
   provide() {
+    
     return {
       "canvas":canvas,
       "fabric":fabric,
@@ -122,6 +123,7 @@ export default {
       "param_id":this.$route.params.id,
       "canvasName":this.canvasName
     }
+
   },
   data() {
     return {
@@ -133,6 +135,7 @@ export default {
       param_id:this.$route.params.id
     };
   },
+
   components: {
     setSize,
     tools,
@@ -141,6 +144,7 @@ export default {
     save,
     zoom,
   },
+
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
@@ -154,10 +158,14 @@ export default {
     this.$Spin.hide();      
     canvas.c.renderAll();
     setTimeout(() => {
-      console.log(canvas.c.template_name);
       this.canvasName = canvas.c.template_name
     },2000);
   },
+  methods:{
+    saveName(){
+      console.log("asdf")
+    }
+  }
   
 };
 </script>

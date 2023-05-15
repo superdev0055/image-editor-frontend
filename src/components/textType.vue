@@ -99,9 +99,9 @@
           <Input v-model="this.fontAttr.string" @on-change="(value) =>changeString(value)" @on-keyup="(value) =>textKeyPress(value)" class="mb-2 mt-2" style="width:98%;">
             <template #append>
               <Select style="width:70px" @on-change="changeAddTag" v-model="shortTag" size="small">
-                  <Option value="[avability]">[avability]</Option>
-                  <Option value="[brand]">[brand]</Option>
-                  <Option value="[channel]">[channel]</Option>
+
+                  <Option v-for="tag in tags" :value="'['+tag+']'" :key="tag"></Option>
+
               </Select>
             </template>
           </Input>
@@ -366,13 +366,15 @@
       </div>  
     </div>  
 </template>
+
 <script>
+
 import select from '@/mixins/select';
 import Color from './color.vue';
 import Align from './align.vue';
 import $ from "jquery";
-import FontFaceObserver from 'fontfaceobserver';
-import fontList from '@/assets/fonts/font';
+import {getShortTags} from "@/service/endpoint.js";
+
 export default {
     mixins: [select],
     props:['mSelectOneTypeProps'],
@@ -395,10 +397,9 @@ export default {
           textType: ['i-text', 'textbox', 'text'],
           baseAttr: this.mSelectOneTypeProps[1],
           strokeDashArray: [],
-          
+          tags:'',
           // font properties
           fontFamilyList: ["Arial","Helvetica","Myriad Pro","Delicious","Verdana","Georgia","Hoefler Text","Courier", "Comic Sans MS" ,"Impact" ,"Monaco" ,"Optima"],
-          // fontFamilyList: fontList.map((item) => item.fontFamily),
           fillType: [
               'normal',
               'multiply',
@@ -513,7 +514,6 @@ export default {
           this.fontAttr.fontStyle = activeObject.get('fontStyle');
           this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
           this.fontAttr.fontWeight = activeObject.get('fontWeight');
-          // this.fontAttr.rectFill = e[0]._objects[0].get("fill");        
           
         }
             
@@ -524,6 +524,10 @@ export default {
     },
     mounted(){
       this.initSet();
+      getShortTags().then((res)=>{
+        this.tags = res.data
+        console.log(res.data);
+      })
     },
 
     methods:{

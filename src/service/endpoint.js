@@ -35,7 +35,24 @@ export const getTempById = (id) =>{
 export const updateTempName=(id,name) =>{
     return axios.post(server_url+'/user/update-template/'+id,{name:name});
 }
+
 // /product/get-preview-image/:id
 export const getPreviewImage = (keyword) =>{
     return axios.post(server_url+"/product/get-preview-image/",{keyword:keyword});
 }
+
+//get element
+export const getAllElements = () =>{
+    console.log("elements");
+    return axios.get(server_url+'/element/get-all-elements');
+}
+
+export const getElementById = (id) =>{
+    return axios.get(server_url+'/element/get-specific-element/'+id);
+}
+
+export const getShortTags = () =>{
+    return axios.get(server_url+'/tags/get-all-tags');
+}
+
+//get shortTag
