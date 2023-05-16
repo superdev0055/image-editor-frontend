@@ -7,7 +7,7 @@
             <div class="col-md-11">
               <div class="image-size mt-2" style="">
                 <label class="font-s">Image size</label>  
-                <b-form-select class="mb-3" v-model="selected" size="sm" :options="canvasSizes">
+                <b-form-select class="mb-3" v-model="selected" @change="changeSelect" size="sm" :options="canvasSizes">
                 </b-form-select>
               </div>
 

@@ -5,7 +5,7 @@
 
         <div style="text-align: left; cursor:pointer" @click="modal = true">
             <Icon type="ios-create-outline" style="font-weight: bolder;"/>
-            <span style="font-weight: bolder;" id="canvasName">{{canvasName}}</span>
+            <span style="font-weight: bolder;" id="canvasName">{{canvasName?"New template":canvasName}}</span>
         </div>
 
         <Modal
