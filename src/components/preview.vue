@@ -1,24 +1,22 @@
 <template>
     <div>
         <Loader :active="loaderActive" style="margin-left:40%;margin-top:200px"/>
-        <div class="row d-flex justify-content-center">
             <div class="row">
-                <div class="ivu-space ivu-space-horizontal ivu-space-center row">
-                    <div class="col-1"></div>
+                <div class="ivu-space-center row" >
 
-                    <div class="ivu-space-item col-2">
+                    <div class="ivu-space-item col-3" style="margin-left:10px">
                         <h5 style="font-weight: bold;">Preview</h5>
                     </div>
 
                     <div class="ivu-space-item col-3">
                         <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: auto;">
-                            <button class="ivu-btn ivu-btn-text ivu-btn-large" type="button">
-                                <p class="refresh-btn" @click="showPreview"><Icon type="md-sync" />Refresh</p>
-                            </button>
+                            <!-- <button class="ivu-btn ivu-btn-text ivu-btn-large" type="button"> -->
+                                <p class="refresh-btn ivu-btn ivu-btn-text ivu-btn-large" @click="showPreview"><Icon type="md-sync" />Refresh</p>
+                            <!-- </button> -->
                         </div>
                     </div>
 
-                    <div class="ivu-space-item col-6">
+                    <div class="ivu-space-item col-5">
                         <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 100%">
                             <i class="ivu-icon ivu-icon-ios-loading ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
                             <input autocomplete="off" v-model="keyword" spellcheck="false" type="text" class="ivu-input ivu-input-default ivu-input-with-prefix" placeholder="Search phrase">
@@ -31,8 +29,9 @@
                 </div>
             </div>
             <hr style="margin: 10px 0px;"/>
-            <div class="col-md-11">
+            <div>
                 <div
+                    style="padding:10px"
                     id="main"
                     class="template-content"
                     v-for="(item, index) in product_images"
@@ -59,7 +58,6 @@
                 </div>              
             </div>       
             <hr />   
-        </div>
 
 
     </div>

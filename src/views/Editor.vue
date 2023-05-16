@@ -5,18 +5,17 @@
 
         <div style="text-align: left; cursor:pointer" @click="modal = true">
             <Icon type="ios-create-outline" style="font-weight: bolder;"/>
-            <span style="font-weight: bolder;">Custom image template</span>
+            <span style="font-weight: bolder;" id="canvasName">{{canvasName}}</span>
         </div>
+
         <Modal
           v-model="modal"
           title="Change Name"
           :on-ok="saveName"
           >
           <div class="row">
-
             <label class="col-md-3">Name</label>
             <b-form-input class="col-md-8" size="sm" v-model="canvasName" id="canvasName"></b-form-input>
-
           </div>
         </Modal>          
       </div>
@@ -74,7 +73,7 @@
          <!-- --------------------------------- Right Side ----------------------------------- -->
         <div class="right-box">
           <div v-if="show">
-            <set-size :canvasName="this.canvasName"></set-size> 
+            <set-size></set-size> 
           </div>
             <attribute v-if="show"></attribute>            
         </div>
@@ -106,7 +105,7 @@ import "@/assets/css/main.css"
 
 import { fabric } from 'fabric';
 import Editor from '@/core';
-
+import $ from "jquery";
 const event = new EventHandle();
 event.setMaxListeners(0)
 const canvas = {};
@@ -145,6 +144,7 @@ export default {
   },
 
   mounted() {
+
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
       stopContextMenu: true,
@@ -157,8 +157,29 @@ export default {
     this.$Spin.hide();      
     canvas.c.renderAll();
     setTimeout(() => {
-      this.canvasName = canvas.c.template_name
+      this.canvasName = canvas.c.template_name;
+
+      //when delete keyboard press, select element is deleted
+      $(document).keydown(e=>{
+        console.log(e.originalEvent.code );
+        if(e.originalEvent.code == "Delete"){
+          const activeObject = this.canvas.getActiveObjects();
+          if (activeObject) {
+            activeObject.map((item) => {
+              if(item.id == "productImage" || item.id == "trimImage" || item.id == "nonBgImage"){
+                return false;
+              }else{
+                this.canvas.remove(item)
+              }
+            });
+          }
+          this.canvas.requestRenderAll();
+          this.canvas.discardActiveObject();          
+        }
+      });      
     },2000);
+
+
   },
   methods:{
     saveName(){

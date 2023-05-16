@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const server_url='https://image-editro-backend.onrender.com';
+// const server_url='http://localhost:3000';
 
 //user template
 
@@ -52,6 +53,10 @@ export const getElementById = (id) =>{
 
 export const getShortTags = () =>{
     return axios.get(server_url+'/tags/get-all-tags');
+}
+
+export const getCanvasSizes = () =>{
+    return axios.get(server_url+'/get-all-canvas-sizes');
 }
 
 //get shortTag

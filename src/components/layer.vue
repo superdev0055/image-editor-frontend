@@ -135,7 +135,7 @@ export default defineComponent({
     	})
 
       if(c.length == 1){
-        return true;         
+        return false;         
       }else{
         var gfg = new fabric.ActiveSelection(c, {
           canvas:this.canvas.c,

@@ -8,14 +8,15 @@
       title="Custom Image Creation"
       @on-ok="createCustomImage"
       ok-text = "Create"
-      width="60%"
+      width="50%"
+      style="margin-top:-50px"
       >
       <div class="row">
-
         <label class="col-md-3">Name</label>
         <b-form-input class="col-md-5" size="sm" v-model="customImageName"></b-form-input>
-        <img class="ivu-image-img" alt="" id='previewCustomImageBox' src="" loading="eager">
-        
+        <div style="width:100%">
+          <img class="ivu-image-img text-center" alt="" id='previewCustomImageBox' src=""  loading="eager">
+        </div>        
       </div>
     </Modal>        
   </div>

@@ -23,7 +23,6 @@ class EditorWorkspace {
 
   //Initialize the background
   _initBackground() {
-    // this.canvas.setBackgroundColor('', this.canvas.renderAll.bind(this.canvas));
     this.canvas.setBackgroundColor({source: transParent, repeat: 'repeat'});    
     this.canvas.backgroundImage = '';
     this.canvas.setWidth(this.workspaceEl.offsetWidth);

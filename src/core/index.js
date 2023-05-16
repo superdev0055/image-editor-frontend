@@ -227,7 +227,6 @@ class Editor extends EventEmitter {
                 isShow = false;
               }              
             }
-
           }
 
           if(item.layerShowPeriod.endDate != ""){
@@ -272,22 +271,15 @@ class Editor extends EventEmitter {
             isShow=true;
           }
 
-          // if(item.lock == true){
-          //   isShow = false;
-          // }
-
           if(isShow == true){
             item.set("visible",true);
           }else{
             item.set("visible",false);
           }
 
-          this.canvas.renderAll();
         }
         
       });
-
-      
   }
 
   getImageUrl(){

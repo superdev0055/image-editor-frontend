@@ -1,26 +1,16 @@
 <template>
   <div>
     <div v-if="mSelectMode =='multiple'||!mSelectMode=='one' || mSelectMode ==''" class="row">
-      <Tabs value="name1" size="default" type="line" style="width:100%" class="mt-3" @on-click="changeTab" model-value="name2" :animated=false> 
+      <Tabs size="default" type="line" style="width:100%" class="mt-3" @on-click="changeTab" model-value="name2" :animated=false> 
         <TabPane label="Setup" name="name1" class="col-md-4" icon="md-apps">
           <div class="row d-flex justify-content-center">
             <div class="col-md-11">
-              <div class="image-name mt-2">
-                <label class="font-s">Image name</label>         
-                <b-form-input size="sm" v-model="name" readonly></b-form-input>
-              </div>
               <div class="image-size mt-2" style="">
                 <label class="font-s">Image size</label>  
-                  <b-form-select v-model="selected" class="mb-3" size="sm">
-                    <b-form-select-option :value="'900x900'" :selected="true">900x900</b-form-select-option>
-                    <b-form-select-option :value="'1200x628'">Facebook - single image(1200x628)</b-form-select-option>
-                    <b-form-select-option :value="'1920x1080'">1920x1080(16:9)</b-form-select-option>
-                    <b-form-select-option :value="'1024x1280'">1080x1080</b-form-select-option>
-                    <b-form-select-option :value="'1024x1280'">1024x1280(4:5)</b-form-select-option>
-                    <b-form-select-option :value="'1024x1536'">1024x1536(2:3)</b-form-select-option>
-                    <b-form-select-option :value="'1080x1920'">1080x1920(9:6)</b-form-select-option>
-                  </b-form-select>
+                <b-form-select class="mb-3" v-model="selected" size="sm" :options="canvasSizes">
+                </b-form-select>
               </div>
+
               <div class="mt-2">
                 <div class="image-width mt-2 col-md-5" style="float:left">
                   <label class="font-s">Width</label>      
@@ -30,10 +20,9 @@
                     class="ivu-input ivu-input-default ivu-input-with-suffix" 
                     placeholder="Enter text"
                     v-model="width"
-                    @change="(value) => changeSize('width', value)"
                     number="true" />                  
-                  <!-- <input  size="sm" type="number" :max="2000" :min="1" v-model="width" @change="(value) => setSize('width', value)"/> -->
                 </div>
+
                 <div class="image-height mt-2 col-md-5" style="float:right">
                   <label class="font-s">Height</label>    
                   <input
@@ -42,13 +31,11 @@
                     class="ivu-input ivu-input-default ivu-input-with-suffix" 
                     placeholder="Enter text"
                     v-model="height"
-                    @change="(value) => changeSize('height', value)"
                     number="true" />                                                  
-                  <!-- <input size="sm" type="number" :max="2000" :min="1" v-model="height" @change="(value) => setSize('height', value)"/> -->
                 </div>                
               </div>  
+            </div>             
 
-            </div>              
             <div class="mt-4"  style="border-top: solid 1px #d7d2d2;padding-left:35px;padding-right:35px">
               <div style="" class="">
                 <label class="mt-4 font-s" style="float:left;">Background Color</label>
@@ -65,49 +52,74 @@
   </div>
 </template>
 <script>
+
 import select from '@/mixins/select';
 import EditorWorkspace from '@/core/EditorWorkspace';
 import layer from "./layer.vue";
 import colorBar from "./colorBar.vue";
 import preview from "./preview.vue";
-import { keyNames, hotkeys } from '@/core/initHotKeys';
-const maxStep = 10;
+import {getCanvasSizes} from "@/service/endpoint";
 
 export default {
   name: 'canvasSize',
   mixins: [select],
   inject: ['canvas', 'fabric',"canvasName"],
+
   data() {
     return {
-      index: 0,
-      redoList: [],
-      list: [],
-      time: '',      
       selected: "900x900",
       width: 900,
       height: 900,
-      name:this.canvasName
+      name:this.canvasName,
+      canvasSizes:''
     };
   },
+
   components:{
     layer,
     colorBar,
     preview
   },
-  created() {
-    // When selecting an object in the canvas, the object does not appear on top.
-    this.event.on('selectMultiple', (e) => {
-      this.mSelectMode = 'multiple';
-      this.$forceUpdate();
-    });
-
-    this.canvas.c.on({
-      'object:modified': this.save,
-      'selection:updated': this.save,
-    }); 
-    hotkeys(keyNames.ctrlz, this.undo);        
-  },    
+  computed: {
+    currentValue() {
+      return this.canvasSizes.find(option => option.value === this.selected)
+    }
+  },  
   mounted() {
+    getCanvasSizes().then(res=>{
+
+      var customSizes = {
+        name:"Custom resolution",
+        width:'',
+        height:''
+      }
+      
+      res.data.push(customSizes);
+      var tempData = res.data.map((el,index)=>{
+        if(index == 3){
+          return{
+            selectable:true,
+            value:el.width+'x'+el.height,
+            text:el.width+'x'+el.height+' '+el.name,
+          }
+        }
+        if(el.width == '' && el.height == ''){
+          return{
+            value:'custom-size',
+            text:el.name,
+          }          
+        }else{
+          return{
+            value:el.width+'x'+el.height,
+            text:el.width+'x'+el.height+' '+el.name,
+          }
+        }
+
+      })
+      // this.canvasSizes = res.data;
+      this.canvasSizes = tempData
+      console.log(res.data);
+    });
 
     this.canvas.editor.editorWorkspace = new EditorWorkspace(this.canvas.c, {
       width: this.width,
@@ -118,117 +130,46 @@ export default {
   methods: {
 
     changeTab(name){
-
+      //when preview tab is pressed,load data from endpoint. 
       if(name == "name3"){
-
-        var oldData = document.cookie.split(';')[0];
-        if(oldData.includes('preview') == true){
-
-          var count = Number(oldData.slice(8));
-          count++;
-          document.cookie = "preview=" + count;
-          this.$refs.form.loaderActive = true;
-          this.$refs.form.showPreview();
-          setTimeout(() => {
-            this.$refs.form.loaderActive = false;
-          }, 7000);
-          
-        }else{
-          document.cookie = "preview=" + 0;
-        }
-      
-      }
-    },
-    getCanvasName(){
-      this.canvasName = this.canvas.c.template_name;
-    },
-
-    save(event) {
-      // Filter select element events
-      const isSelect = event.action === undefined && event.e;
-      if (isSelect) return;
-      const data = this.canvas.editor.getJson();
-      if (this.list.length > maxStep) {
-        this.list.shift();
-      }
-      this.list.push(data);
-      this.getTime();
-    },    
-
-    getTime() {
-      const myDate = new Date();
-      const str = myDate.toTimeString();
-      const timeStr = str.substring(0, 8);
-      this.time = timeStr;
-    },    
-
-    setSizeBy(width, height) {
-      this.width = width;
-      this.height = height;
-      this.setSize();
-
-    },
-    
-    changeSize(key,evt) {
-
-      var value = evt.target.value
-      if(key == "width"){
-        this.width = value
-      }else{
-        this.height = value
+        this.$refs.form.loaderActive = true;
+        this.$refs.form.showPreview();
+        setTimeout(() => {
+          this.$refs.form.loaderActive = false;
+        }, 7000);
       }
 
     },
     setSize() {
-      this.$Spin.show();  
       this.canvas.c.discardActiveObject();
-      
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
-      setTimeout(() => {
-        this.$Spin.hide();
-        
-      },100);        
-    },
+    },    
+    changeSelect(evt){
+      var resolution = evt.split("x");
+      if(resolution[0] == ''){
+        this.selected = '';
+      }else{
+        this.width = Number(resolution[0]);
+        this.height = Number(resolution[1]);
+        this.setSize();
+      }
+      this.selected = evt
+    },   
   },
   watch:{
-    selected(){
-      var resolution = this.selected.split("x");
-      this.width = Number(resolution[0]);
-      this.height = Number(resolution[1]);
-      this.setSize();
-      
-    },
     width(){
-      // this.$Spin.show();  
+      this.selected = "custom-size";
+      console.log(this.selected)
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
       this.canvas.c.discardActiveObject();
       this.canvas.c.renderAll();      
-      // setTimeout(() => {
-      //   this.$Spin.hide();
-        
-      // }, 1000);        
     },
     height(){
-      // this.$Spin.show();  
+      this.selected = "custom-size";
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
       this.canvas.c.discardActiveObject();
       this.canvas.c.renderAll(); 
-      // setTimeout(() => {
-      //   this.$Spin.hide();
-        
-      // }, 1000);                  
     },
-    canvasName(){
-    },
-    selectMode(){
-      if(this.selectMode === '1'){
-        this.mSelectMode = '';
-        this.$forceUpdate();
-      }else{
-        this.mSelectMode = '';
-        this.$forceUpdate();
-      }
-    }
   }
 };
 </script>

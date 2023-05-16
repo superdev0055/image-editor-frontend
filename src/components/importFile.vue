@@ -5,46 +5,45 @@
     <DropdownItem @click="loadTemplate"><Icon type="ios-image" /><span style="margin-left:10px">templates</span></DropdownItem>
     <DropdownItem @click="loadElement"><Icon type="ios-image" /><span style="margin-left:10px">elements</span></DropdownItem>
     <Modal
-        v-model="template"
-        title="Choose the Template"
-        :footer-hide="true"
-        width="60%"
-        :loading="loading"
-        >
-        <div class="row">
-          <div class="col-md-3">
-            asdfasdf
+      v-model="template"
+      title="Choose the Template"
+      :footer-hide="true"
+      width="60%"
+      :loading="loading"
+      >
+      <div class="row">
+        <div class="col-md-3">
+          asdfasdf
+        </div>
+        <div class="col-md-9" >
+          <div class="template-header row">
+            <div  class="col-md-8">
+              <Input suffix="ios-search" placeholder="Enter text" v-model="keyword"/>
+            </div>
+            <div  class="col-md-4">
+              <Select clearable>
+                  <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
+            </div>              
           </div>
-          <div class="col-md-9" >
-            <div class="template-header row">
-              <div  class="col-md-8">
-                <Input suffix="ios-search" placeholder="Enter text" />
-              </div>
-              <div  class="col-md-4">
-                <Select clearable>
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-              </div>              
-            </div>
-            
-            <div
-              id="main"
-              class="template-content"
-              v-for="(item, index) in demoTempLists"
-              :key="index"
-              >
+          
+          <div
+            id="main"
+            class="template-content"
+            v-for="(item, index) in filterDemoTempLists"
+            :key="index"
+            >
 
-              <div class="image-box" imgId = {{item.template_id}} @click="()=>insertDemoTemplate(item.template_id)">
-                <img v-bind:src="item.template_image_url" style="width:150px;height:150px;" id="images0"/>
-                <div><span>{{item.template_name}}</span></div>
-              </div>
-
+            <div class="image-box" imgId = {{item.template_id}} @click="()=>insertDemoTemplate(item.template_id)">
+              <img v-bind:src="item.template_image_url" style="width:150px;height:150px;" id="images0"/>
+              <div><span>{{item.template_name}}</span></div>
             </div>
+
           </div>
         </div>
-
-
+      </div>
     </Modal>
+
     <Modal
         v-model="element"
         title="Choose the Template"
@@ -53,31 +52,33 @@
         :loading="loading"
         >
         <div class="row">
-          <div class="col-md-3">
-            asdfasdf
+          <div class="col-md-2">
+            <!-- asdfasdf -->
           </div>
           <div class="col-md-9" >
             <div class="template-header row">
+
               <div  class="col-md-8">
-                <Input suffix="ios-search" placeholder="Enter text" />
+                <Input suffix="ios-search" placeholder="Enter text" v-model="keyword"/>
               </div>
-              <div  class="col-md-4">
-                <Select clearable>
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-              </div>              
+
+                <!-- <div  class="col-md-4">
+                  <Select clearable>
+                      <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                  </Select>
+                </div>               -->
             </div>
             
             <div
               id="main"
               class="template-content"
-              v-for="(item, index) in elementLists"
+              v-for="(item, index) in filterElementLists"
               :key="index"
               >
 
               <div class="image-box" imgId = {{item.id}} @click="()=>insertElement(item.id)">
                 <img v-bind:src="item.image_url" style="width:150px;height:150px;" id="images0"/>
-                <div><span>{{item.name}}</span></div>
+                <div><span style="color:red;font-weight:bold">{{item.title}}</span></div>
               </div>
 
             </div>            
@@ -108,6 +109,7 @@ export default {
       loading: true,
       border: true,
       hover: true,
+      keyword:'',
       cityList: [
                   {
                       value: 'New York',
@@ -154,6 +156,35 @@ export default {
      
 
   },  
+  computed: {
+    filterDemoTempLists() {
+
+      if(this.demoTempLists != ''){
+        let filteredDemoLists = this.demoTempLists.filter((el) => {
+          console.log(el)
+          return el.template_name.toLowerCase().includes(this.keyword.toLowerCase());
+        })
+        let orderedDemoLists = filteredDemoLists.sort((a, b) => {
+          return b.upvoted - a.upvoted;
+        })
+        return orderedDemoLists;
+      }
+
+    },
+
+    filterElementLists(){
+      if(this.elementLists != ''){
+        let filteredElementLists = this.elementLists.filter((el) => {
+          console.log(el)
+          return el.title.toLowerCase().includes(this.keyword.toLowerCase());
+        })
+        let orderedElementLists = filteredElementLists.sort((a, b) => {
+          return b.upvoted - a.upvoted;
+        })
+        return orderedElementLists;
+      }
+    }
+  },
 
   methods: {
     canvasUpdateByJson(jsonFile){
@@ -168,6 +199,7 @@ export default {
         this.canvas.c.requestRenderAll();
       });      
     },
+
     insertFileFromJSON(id){
       getUserTempById(id)
         .then(resp => {
@@ -222,16 +254,30 @@ export default {
           });
 
         }else{
-
-          var data = data.objects.forEach((item)=>{
+          
+          data.objects.forEach((item)=>{
             if(item.id != "workspace"){
               dataUrl.objects.push(item);
             }
           });
 
         }
+
         this.canvasUpdateByJson(dataUrl);
-        this.element = false;
+        setTimeout(() => {
+          var temp = [];
+          var objs = this.canvas.c.getObjects();
+          for(var i=objs.length-1;i>objs.length-data.objects.length;i--){
+            temp.push(objs[i]);
+          }
+          var gfg = new fabric.ActiveSelection(temp, {
+            canvas:this.canvas.c,
+          });        
+          this.canvas.c.setActiveObject(gfg);
+          this.canvas.c.requestRenderAll();           
+          this.element = false;
+        }, 200);
+           
 
       });      
     },
@@ -264,18 +310,18 @@ export default {
       this.element = true;
 
       getAllElements().then((resp)=>{
-
+        
         var lists = new Array();
         var data = resp.data;
         if(data){
           data.forEach((e ,i)=> {
             var id = data[i].id;
-            var name = data[i].name;
+            var title = data[i].title;
             var image_url = data[i].image_url;
 
             lists.push({
               id:id,
-              name:name,
+              title:title,
               image_url:image_url
             });           
 
@@ -372,7 +418,12 @@ export default {
     },
     
 
-  }
+  },
+  // watch:{
+  //   keyword(){
+  //     console.log(this.keyword);
+  //   }
+  // }
 
 };
 </script>
