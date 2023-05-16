@@ -13,7 +13,7 @@
                     <div class="ivu-space-item col-3">
                         <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: auto;">
                             <button class="ivu-btn ivu-btn-text ivu-btn-large" type="button">
-                                <p style="color: rgb(61, 210, 255);" @click="showPreview"><Icon type="md-sync" />Refresh</p>
+                                <p class="refresh-btn" @click="showPreview"><Icon type="md-sync" />Refresh</p>
                             </button>
                         </div>
                     </div>
@@ -115,7 +115,13 @@ export default {
 };
 </script>
 <style scoped>
-
+    .refresh-btn{
+        color: #fff;
+        border-color: #0053b8 !important;
+        background-color: #0053b8 !important;
+        padding: 5px 10px !important;
+        border-radius: 8px;       
+    }
     .Heading--md, .Modal--confirm h5 {
         font-family: Lato Bold;
         line-height: 20px;

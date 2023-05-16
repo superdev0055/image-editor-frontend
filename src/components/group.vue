@@ -15,6 +15,7 @@
         <label class="col-md-3">Name</label>
         <b-form-input class="col-md-5" size="sm" v-model="customImageName"></b-form-input>
         <img class="ivu-image-img" alt="" id='previewCustomImageBox' src="" loading="eager">
+        
       </div>
     </Modal>        
   </div>

@@ -129,13 +129,12 @@ export default defineComponent({
     	this.canvas.c.getObjects().forEach(arg=>{
     		aaa.forEach(arg1=>{
     			if(arg.id == arg1.id){
-    				c.push(arg)
+    				c.push(arg);
     			}
     		})
     	})
 
       if(c.length == 1){
-        // c.push("dddd");
         return true;         
       }else{
         var gfg = new fabric.ActiveSelection(c, {
@@ -147,6 +146,8 @@ export default defineComponent({
    
 
     },
+
+
     selectElem(item){
       this.canvas.c.setActiveObject(item);
       this.canvas.c.requestRenderAll();      
