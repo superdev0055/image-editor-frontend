@@ -156,14 +156,15 @@ export default {
     this.$Spin.hide();      
     canvas.c.renderAll();
     setTimeout(() => {
-      console.log(canvas.c.template_name);
-      if(canvas.c.template_name != ''){
+
+      if(canvas.c.template_name == undefined || canvas.c.template_name == ''){
+        this.canvasName = "New template"
+      }else{
         this.canvasName = canvas.c.template_name;
       }
 
       //when delete keyboard press, select element is deleted
       $(document).keydown(e=>{
-        console.log(e.originalEvent.code );
         if(e.originalEvent.code == "Delete"){
           const activeObject = this.canvas.getActiveObjects();
           if (activeObject) {

@@ -115,9 +115,7 @@ export default {
         }
 
       })
-      // this.canvasSizes = res.data;
       this.canvasSizes = tempData
-      console.log(res.data);
     });
 
     this.canvas.editor.editorWorkspace = new EditorWorkspace(this.canvas.c, {
@@ -158,7 +156,6 @@ export default {
   watch:{
     width(){
       this.selected = "custom-size";
-      console.log(this.selected)
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
       this.canvas.c.discardActiveObject();
       this.canvas.c.renderAll();      

@@ -67,15 +67,18 @@ import history from "./history.vue"
 export default {
   name: 'ToolBar',
   mixins: [select],
+  
   data() {
     return {
       zoom: 0,
     };
   },
+
   components:{
     save,
     history
   },
+
   computed: {
     unShow() {
       return this.mSelectMode === 'one' && this.mSelectOneType === 'group';

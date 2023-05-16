@@ -135,12 +135,10 @@ export default {
   methods: {
     groupChange(evt){
       this.filterResultDemoLists = this.filterDemoTempLists('type',evt);
-      console.log(this.filterResultDemoLists)
     },
 
     elementChange(evt){
       this.filterResultElementLists = this.filterElementLists('type',evt);
-      console.log(this.filterResultElementLists)      
     },
 
     filterElementLists(search_type,value){
@@ -155,7 +153,6 @@ export default {
           return orderedElementLists;          
         }else{
           let filteredElementLists = this.elementLists.filter((el) => {
-            console.log(el)
             return el.group_type.toLowerCase().includes(value);
           })
           let orderedElementLists = filteredElementLists.sort((a, b) => {
@@ -170,7 +167,6 @@ export default {
       if(this.demoTempLists != ''){
         if(search_type == 'keyword'){
           let filteredDemoLists = this.demoTempLists.filter((el) => {
-            console.log(el)
             return el.template_name.toLowerCase().includes(value);
           })
           let orderedDemoLists = filteredDemoLists.sort((a, b) => {
@@ -179,7 +175,6 @@ export default {
           return orderedDemoLists;          
         }else{
           let filteredDemoLists = this.demoTempLists.filter((el) => {
-            console.log(el)
             return el.group_type.toLowerCase().includes(value);
           })
           let orderedDemoLists = filteredDemoLists.sort((a, b) => {
@@ -231,8 +226,8 @@ export default {
         var data = res.data;
         var jsonFile = JSON.stringify(data);
         this.canvasUpdateByJson(jsonFile);
+        
         document.getElementById("canvasName").value = data.template_name;
-
         this.template = false;
         
       });
