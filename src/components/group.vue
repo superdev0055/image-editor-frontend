@@ -1,6 +1,6 @@
 <template>
-  <div class="text-center"  style="position:fixed;margin-top: calc(100vh - 500px);" >
-    <Button :disabled="!isMultiple" @click="previewCustomImage" type="primary" shape="circle" icon="ios-search">
+  <div class="text-center"  style="position: fixed; bottom: 0;maring-top:-10px" >
+    <Button :disabled="!isMultiple" @click="previewCustomImage" type="primary" shape="circle" icon="md-albums">
       Group into Custom Image
     </Button>
     <Modal
@@ -14,7 +14,6 @@
 
         <label class="col-md-3">Name</label>
         <b-form-input class="col-md-5" size="sm" v-model="customImageName"></b-form-input>
-        <!-- <canvas id="previewCustomImageCanvas"></canvas> -->
         <img class="ivu-image-img" alt="" id='previewCustomImageBox' src="" loading="eager">
       </div>
     </Modal>        
@@ -23,7 +22,7 @@
 
 <script>
 import select from '@/mixins/select';
-// import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 export default {
   name: 'ToolBar',
@@ -35,13 +34,11 @@ export default {
     };
   },
   created(){
-
     this.event.on('selectMultiple', (e) => {
       this.mSelectMode = 'multiple';
       this.mSelectId = '';
       this.mSelectIds = e.map((item) => item.id);            
     }); 
-
   },
   computed: {
     // Single select and equal to group element
@@ -55,7 +52,14 @@ export default {
   },
   methods: {
     createCustomImage(){
-      this.canvas.editor.group(this.customImageName);
+
+      if(this.customImageName == ''){
+        alert("Please input Name.");
+        return false;
+      }else{
+        this.canvas.editor.group(this.customImageName);
+      }
+
     },
     previewCustomImage(){
       var jsonFile = this.canvas.editor.getJson();

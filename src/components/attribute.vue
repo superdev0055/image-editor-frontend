@@ -470,9 +470,9 @@ export default {
   },
 
   mounted(){
-    // setInterval(() => {
-    //   this.canvas.editor.checkLayerPeriod();
-    // }, 1000);    
+    setInterval(() => {
+      this.canvas.editor.checkLayerPeriod();
+    }, 1000);    
   },
 
   computed:{

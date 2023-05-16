@@ -9,7 +9,7 @@
         </div>
         <Modal
           v-model="modal"
-          title="Name"
+          title="Change Name"
           :on-ok="saveName"
           >
           <div class="row">
@@ -169,7 +169,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-
+  
 #canvas {
   filter: drop-shadow(0px 5px 10px #d1d1d1);
 }

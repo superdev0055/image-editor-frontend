@@ -208,6 +208,7 @@ class Editor extends EventEmitter {
       }
       var today = `${year}-${month}-${date}`;      
       var isShow=true;      
+
       items.forEach(item => {
         if(item.layerShowPeriod){
 
@@ -265,23 +266,23 @@ class Editor extends EventEmitter {
                 isShow=false;
               }              
             }             
-            
           }
 
           if(item.layerShowPeriod.startDate == "" && item.layerShowPeriod.endDate == ""){
             isShow=true;
           }
-          if(item.lock == true){
-            isShow = false;
-          }
+
+          // if(item.lock == true){
+          //   isShow = false;
+          // }
+
           if(isShow == true){
-            item.set("opacity",100);
+            item.set("visible",true);
           }else{
-            item.set("opacity",0);
+            item.set("visible",false);
           }
 
           this.canvas.renderAll();
-
         }
         
       });
