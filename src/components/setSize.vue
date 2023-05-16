@@ -63,14 +63,13 @@ import {getCanvasSizes} from "@/service/endpoint";
 export default {
   name: 'canvasSize',
   mixins: [select],
-  inject: ['canvas', 'fabric',"canvasName"],
+  inject: ['canvas', 'fabric'],
 
   data() {
     return {
       selected: "900x900",
       width: 900,
       height: 900,
-      name:this.canvasName,
       canvasSizes:''
     };
   },

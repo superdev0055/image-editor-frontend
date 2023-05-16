@@ -5,7 +5,7 @@
 
         <div style="text-align: left; cursor:pointer" @click="modal = true">
             <Icon type="ios-create-outline" style="font-weight: bolder;"/>
-            <span style="font-weight: bolder;" id="canvasName">{{canvasName?"New template":canvasName}}</span>
+            <span style="font-weight: bolder;" id="canvasName">{{canvasName}}</span>
         </div>
 
         <Modal
@@ -119,13 +119,12 @@ export default {
       "event":event,
       "path":this.$route.path,
       "param_id":this.$route.params.id,
-      "canvasName":this.canvasName
     }
 
   },
   data() {
     return {
-      canvasName:'',
+      canvasName:'New template',
       modal: false,
       show: false,
       select: null,
@@ -157,7 +156,10 @@ export default {
     this.$Spin.hide();      
     canvas.c.renderAll();
     setTimeout(() => {
-      this.canvasName = canvas.c.template_name;
+      console.log(canvas.c.template_name);
+      if(canvas.c.template_name != ''){
+        this.canvasName = canvas.c.template_name;
+      }
 
       //when delete keyboard press, select element is deleted
       $(document).keydown(e=>{
