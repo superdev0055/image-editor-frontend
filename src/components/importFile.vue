@@ -12,19 +12,18 @@
       :loading="loading"
       >
       <div class="row">
-        <div class="col-md-3">
-          asdfasdf
+        <div class="col-md-2">
         </div>
         <div class="col-md-9" >
           <div class="template-header row">
             <div  class="col-md-8">
               <Input suffix="ios-search" placeholder="Enter text" v-model="keyword"/>
             </div>
-            <div  class="col-md-4">
+            <!-- <div  class="col-md-4">
               <Select clearable>
                   <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
               </Select>
-            </div>              
+            </div>               -->
           </div>
           
           <div
@@ -310,7 +309,7 @@ export default {
       this.element = true;
 
       getAllElements().then((resp)=>{
-        
+
         var lists = new Array();
         var data = resp.data;
         if(data){
