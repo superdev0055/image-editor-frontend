@@ -3,15 +3,14 @@
         <Loader :active="loaderActive" style="margin-left:40%;margin-top:200px"/>
             <div class="row">
                 <div class="ivu-space-center row" >
-
                     <div class="ivu-space-item col-3" style="margin-left:10px">
-                        <h5 style="font-weight: bold;">Preview</h5>
+                        <h6 style="font-weight: bold;">Preview</h6>
                     </div>
 
                     <div class="ivu-space-item col-3">
                         <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: auto;">
                             <!-- <button class="ivu-btn ivu-btn-text ivu-btn-large" type="button"> -->
-                                <p class="refresh-btn ivu-btn ivu-btn-text ivu-btn-large" @click="showPreview"><Icon type="md-sync" />Refresh</p>
+                                <p class="refresh-btn ivu-btn ivu-btn-text ivu-btn-normal" @click="showPreview"><Icon type="md-sync" />Refresh</p>
                             <!-- </button> -->
                         </div>
                     </div>
@@ -120,13 +119,7 @@ export default {
         padding: 5px 10px !important;
         border-radius: 8px;       
     }
-    .Heading--md, .Modal--confirm h5 {
-        font-family: Lato Bold;
-        line-height: 20px;
-        padding-top: 2px;
-        padding-bottom: 2px;
-        margin-bottom: 0!important;
-    }  
+
 </style>
 
 <script>

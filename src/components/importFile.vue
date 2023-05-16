@@ -17,19 +17,19 @@
         <div class="col-md-9" >
           <div class="template-header row">
             <div  class="col-md-8">
-              <Input suffix="ios-search" placeholder="Enter text" v-model="keyword"/>
+              <Input suffix="ios-search" placeholder="Enter text" v-model="keyword_template"/>
             </div>
-            <!-- <div  class="col-md-4">
-              <Select clearable>
-                  <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <div  class="col-md-4">
+              <Select @on-change="groupChange" clearable>
+                  <Option v-for="item in group_types_template" :value="item" :key="item">{{ item}}</Option>
               </Select>
-            </div>               -->
+            </div>              
           </div>
           
           <div
             id="main"
             class="template-content"
-            v-for="(item, index) in filterDemoTempLists"
+            v-for="(item, index) in filterResultDemoLists"
             :key="index"
             >
 
@@ -58,20 +58,21 @@
             <div class="template-header row">
 
               <div  class="col-md-8">
-                <Input suffix="ios-search" placeholder="Enter text" v-model="keyword"/>
+                <Input suffix="ios-search" placeholder="Enter text" v-model="keyword_element"/>
               </div>
 
-                <!-- <div  class="col-md-4">
-                  <Select clearable>
-                      <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                  </Select>
-                </div>               -->
+                <div  class="col-md-4">
+                  <Select @on-change="elementChange" clearable>
+                      <Option v-for="item in group_types_element" :value="item" :key="item">{{ item}}</Option>
+                  </Select>                  
+
+                </div>              
             </div>
             
             <div
               id="main"
               class="template-content"
-              v-for="(item, index) in filterElementLists"
+              v-for="(item, index) in filterResultElementLists"
               :key="index"
               >
 
@@ -108,35 +109,14 @@ export default {
       loading: true,
       border: true,
       hover: true,
-      keyword:'',
-      cityList: [
-                  {
-                      value: 'New York',
-                      label: 'New York'
-                  },
-                  {
-                      value: 'London',
-                      label: 'London'
-                  },
-                  {
-                      value: 'Sydney',
-                      label: 'Sydney'
-                  },
-                  {
-                      value: 'Ottawa',
-                      label: 'Ottawa'
-                  },
-                  {
-                      value: 'Paris',
-                      label: 'Paris'
-                  },
-                  {
-                      value: 'Canberra',
-                      label: 'Canberra'
-                  }
-              ],        
+      keyword_template:'',
+      keyword_element:'',
+      group_types_template: '',  
+      group_types_element: '',  
       demoTempLists:'',
-      elementLists:''
+      filterResultDemoLists:'',
+      elementLists:'',
+      filterResultElementLists:''
     };
   },
   created() {
@@ -151,41 +131,66 @@ export default {
     }else{
       this.insertFileFromJSON(this.param_id);
     }
-
-     
-
   },  
-  computed: {
-    filterDemoTempLists() {
-
-      if(this.demoTempLists != ''){
-        let filteredDemoLists = this.demoTempLists.filter((el) => {
-          console.log(el)
-          return el.template_name.toLowerCase().includes(this.keyword.toLowerCase());
-        })
-        let orderedDemoLists = filteredDemoLists.sort((a, b) => {
-          return b.upvoted - a.upvoted;
-        })
-        return orderedDemoLists;
-      }
-
+  methods: {
+    groupChange(evt){
+      this.filterResultDemoLists = this.filterDemoTempLists('type',evt);
+      console.log(this.filterResultDemoLists)
     },
 
-    filterElementLists(){
-      if(this.elementLists != ''){
-        let filteredElementLists = this.elementLists.filter((el) => {
-          console.log(el)
-          return el.title.toLowerCase().includes(this.keyword.toLowerCase());
-        })
-        let orderedElementLists = filteredElementLists.sort((a, b) => {
-          return b.upvoted - a.upvoted;
-        })
-        return orderedElementLists;
-      }
-    }
-  },
+    elementChange(evt){
+      this.filterResultElementLists = this.filterElementLists('type',evt);
+      console.log(this.filterResultElementLists)      
+    },
 
-  methods: {
+    filterElementLists(search_type,value){
+      if(this.elementLists != ''){
+        if(search_type == 'keyword'){
+          let filteredElementLists = this.elementLists.filter((el) => {
+            return el.title.toLowerCase().includes(value);
+          })
+          let orderedElementLists = filteredElementLists.sort((a, b) => {
+            return b.upvoted - a.upvoted;
+          })
+          return orderedElementLists;          
+        }else{
+          let filteredElementLists = this.elementLists.filter((el) => {
+            console.log(el)
+            return el.group_type.toLowerCase().includes(value);
+          })
+          let orderedElementLists = filteredElementLists.sort((a, b) => {
+            return b.upvoted - a.upvoted;
+          });
+          return orderedElementLists;          
+        }
+      }
+    },
+
+    filterDemoTempLists(search_type,value){
+      if(this.demoTempLists != ''){
+        if(search_type == 'keyword'){
+          let filteredDemoLists = this.demoTempLists.filter((el) => {
+            console.log(el)
+            return el.template_name.toLowerCase().includes(value);
+          })
+          let orderedDemoLists = filteredDemoLists.sort((a, b) => {
+            return b.upvoted - a.upvoted;
+          })
+          return orderedDemoLists;          
+        }else{
+          let filteredDemoLists = this.demoTempLists.filter((el) => {
+            console.log(el)
+            return el.group_type.toLowerCase().includes(value);
+          })
+          let orderedDemoLists = filteredDemoLists.sort((a, b) => {
+            return b.upvoted - a.upvoted;
+          });
+          return orderedDemoLists;          
+        }
+      }
+    },
+
+
     canvasUpdateByJson(jsonFile){
       this.canvas.c.loadFromJSON(jsonFile, () => {
         this.canvas.c.renderAll.bind(canvas.c);
@@ -285,20 +290,30 @@ export default {
       this.template = true; 
       getAllTemps().then((resp)=>{
         var templist = new Array();
+        var tempTypes = [];
         var data = resp.data;
         if(data){
+
           data.forEach((e ,i)=> {
             var template_id = data[i].template_id;
             var template_name = data[i].template_name;
             var template_image_url = data[i].template_image_url;
+            var group_type = data[i].group_type;
+            if(tempTypes.includes(group_type) == false){
+              tempTypes.push(group_type)
+            }
             templist.push({
               template_id:template_id,
+              group_type:group_type,
               template_name:template_name,
               template_image_url:template_image_url
             });           
 
           });     
+          this.group_types_template = tempTypes;
           this.demoTempLists = templist;
+          this.filterResultDemoLists = templist;
+
         }
       }).catch(error => {
             console.log(error);
@@ -310,22 +325,29 @@ export default {
 
       getAllElements().then((resp)=>{
 
-        var lists = new Array();
+        var templist = new Array();
         var data = resp.data;
+        var tempTypes = [];
         if(data){
           data.forEach((e ,i)=> {
             var id = data[i].id;
             var title = data[i].title;
             var image_url = data[i].image_url;
-
-            lists.push({
+            var group_type = data[i].group_type;
+            if(tempTypes.includes(group_type) == false){
+              tempTypes.push(group_type)
+            }
+            templist.push({
               id:id,
+              group_type:group_type,
               title:title,
               image_url:image_url
             });           
 
           });  
-          this.elementLists = lists;
+          this.group_types_element = tempTypes;
+          this.elementLists = templist;
+          this.filterResultElementLists = templist;          
         }
 
       }).catch(error => {
@@ -418,11 +440,17 @@ export default {
     
 
   },
-  // watch:{
-  //   keyword(){
-  //     console.log(this.keyword);
-  //   }
-  // }
+  watch:{
+    keyword_template(){
+
+      var result = this.filterDemoTempLists("keyword",this.keyword_template);
+      this.filterResultDemoLists = result;
+    },
+    keyword_element(){
+      var result = this.filterElementLists("keyword",this.keyword_element);
+      this.filterResultElementLists = result;
+    }    
+  }
 
 };
 </script>
