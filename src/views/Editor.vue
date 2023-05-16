@@ -15,7 +15,7 @@
           <div class="row">
 
             <label class="col-md-3">Name</label>
-            <b-form-input class="col-md-8" size="sm" v-model="canvasName"></b-form-input>
+            <b-form-input class="col-md-8" size="sm" v-model="canvasName" id="canvasName"></b-form-input>
 
           </div>
         </Modal>          
@@ -76,12 +76,11 @@
           <div v-if="show">
             <set-size :canvasName="this.canvasName"></set-size> 
           </div>
-            <attribute v-if="show"></attribute>
+            <attribute v-if="show"></attribute>            
         </div>
         <!-- --------------------------------- End Right Side ----------------------------------- -->
       </Content>
     </div>
-  
   </div>
   
 </template>
@@ -142,7 +141,7 @@ export default {
     attribute,
     importFile,
     save,
-    zoom,
+    zoom
   },
 
   mounted() {
@@ -163,7 +162,6 @@ export default {
   },
   methods:{
     saveName(){
-      console.log("asdf")
     }
   }
   

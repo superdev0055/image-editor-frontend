@@ -1,262 +1,266 @@
 <template>
-  <div v-if="mSelectMode === 'one'" style="font-size:12px" id="attribute">
-    <!-- general properties -->
-    <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 4;background-color:white">
+  <div>
+    <div v-if="mSelectMode === 'one' " style="font-size:12px" id="attribute">
+      <!-- general properties -->
+      <div class="right_header" style="position: sticky; width: 100%; top: 0px; z-index: 4;background-color:white">
 
-      <!-- Right Head -->
-      <right-header :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></right-header>
-      <!-- Right Head -->
+        <!-- Right Head -->
+        <right-header :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></right-header>
+        <!-- Right Head -->
 
-      <!-- layer setting -->
-      <div class="mt-2 customborder"></div>
-      <div class="mt-2" style="height:40px;margin-right:40px;">
-        <div style="float:left;margin-left:30px"><layer1></layer1></div>
-        <div style="float:right">
-          <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
-            <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
-            <Button v-else @click="doLock(true)" icon="ios-unlock-outline" type="text"></Button>
-          </Tooltip>
-          <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
-            <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
-            <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
-          </Tooltip>
-          <Dropdown placement="bottom-end">
-              <Button icon="ios-more" type="text">
-              </Button>
-              <template #list>
-                  <DropdownMenu>
-                    <clone></clone>
-                    <dele></dele>
-                  </DropdownMenu>
-              </template>
-          </Dropdown>
+        <!-- layer setting -->
+        <div class="mt-2 customborder"></div>
+        <div class="mt-2" style="height:40px;margin-right:40px;">
+          <div style="float:left;margin-left:30px"><layer1></layer1></div>
+          <div style="float:right">
+            <Tooltip v-if="mSelectMode === 'one'" content="Click to unlock or lock" placement="top">
+              <Button v-if="isLock" @click="doLock(false)" icon="md-lock" type="text"></Button>
+              <Button v-else @click="doLock(true)" icon="ios-unlock-outline" type="text"></Button>
+            </Tooltip>
+            <Tooltip v-if="mSelectMode === 'one'" content="Click to view or unview" placement="top">
+              <Button v-if="isView" icon="ios-eye-off-outline" @click="doView(true)" type="text"></Button>
+              <Button v-else @click="doView(false)" icon="ios-eye-outline" type="text"></Button>
+            </Tooltip>
+            <Dropdown placement="bottom-end">
+                <Button icon="ios-more" type="text">
+                </Button>
+                <template #list>
+                    <DropdownMenu>
+                      <clone></clone>
+                      <dele></dele>
+                    </DropdownMenu>
+                </template>
+            </Dropdown>
+          </div>
         </div>
+        <!-- layer setting -->    
+        <div class="customborder"></div>
       </div>
-      <!-- layer setting -->    
-      <div class="customborder"></div>
-    </div>
-    <div class="setBox">
-      <div v-show="imgType.includes(mSelectOneType)">
-        <!-- control part -->
-        <div class="control" style="margin-left:15px">
-          <div class="row mt-3 mb-3" style="align-items: center;">
-            <div class="col col-lg-7">
-              Size
-            </div>
-            <div class="input-size">
-              <div class="content">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                  <span class="ivu-input-suffix">
-                    <i style="font-style: normal; font-size: 11px;">w</i>
-                  <!-- W -->
-                  </span>
-                  <input
-                    style="width:100%"
-                    autocomplete="off" 
-                    type="number" 
-                    class="ivu-input ivu-input-with-suffix" 
-                    placeholder="Enter text"
-                    v-model="baseAttr.width"
-                    @change="(value) => changeCommon('width', value)"
-                    number="true" />
+      <div class="setBox">
+        <div v-show="imgType.includes(mSelectOneType)">
+          <!-- control part -->
+          <div class="control" style="margin-left:15px">
+            <div class="row mt-3 mb-3" style="align-items: center;">
+              <div class="col col-lg-7">
+                Size
+              </div>
+              <div class="input-size">
+                <div class="content">
+                  <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                    <span class="ivu-input-suffix">
+                      <i style="font-style: normal; font-size: 11px;">w</i>
+                    <!-- W -->
+                    </span>
+                    <input
+                      style="width:100%"
+                      autocomplete="off" 
+                      type="number" 
+                      class="ivu-input ivu-input-with-suffix" 
+                      placeholder="Enter text"
+                      v-model="baseAttr.width"
+                      @change="(value) => changeCommon('width', value)"
+                      number="true" />
+                  </div>
+                </div>
+              </div>
+              <div class="input-size">
+                <div class="content">
+                  <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                    <span class="ivu-input-suffix">
+                      <i style="font-style: normal; font-size: 11px;">h</i>
+                    <!-- H -->
+                    </span>
+                    <input
+                      autocomplete="off" 
+                      type="number" 
+                      class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                      placeholder="Enter text"
+                      v-model="baseAttr.height"
+                      @change="(value) => changeCommon('height', value)"
+                      number="true" />
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="input-size">
-              <div class="content">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                  <span class="ivu-input-suffix">
-                    <i style="font-style: normal; font-size: 11px;">h</i>
-                  <!-- H -->
-                  </span>
-                  <input
-                    autocomplete="off" 
-                    type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                    placeholder="Enter text"
-                    v-model="baseAttr.height"
-                    @change="(value) => changeCommon('height', value)"
-                    number="true" />
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- --------------------- Position ----------------------->
-          <div class="row mb-3" style="align-items: center;">
-            <div class="col col-lg-7">
-              Position
-            </div>
-            <div class="input-size">
-              <div class="content">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                  <span class="ivu-input-suffix">
-                    <i style="font-style: normal; font-size: 11px;">x</i>
-                  <!-- X -->
-                  </span>
-                  <input
-                    autocomplete="off" 
-                    type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                    placeholder="Enter text"
-                    v-model="baseAttr.left"
-                    @change="(value) => changeCommon('left', value)"
-                    pattern="^\d*(\.\d{0,2})?$" />
+            <!-- --------------------- Position ----------------------->
+            <div class="row mb-3" style="align-items: center;">
+              <div class="col col-lg-7">
+                Position
+              </div>
+              <div class="input-size">
+                <div class="content">
+                  <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                    <span class="ivu-input-suffix">
+                      <i style="font-style: normal; font-size: 11px;">x</i>
+                    <!-- X -->
+                    </span>
+                    <input
+                      autocomplete="off" 
+                      type="number" 
+                      class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                      placeholder="Enter text"
+                      v-model="baseAttr.left"
+                      @change="(value) => changeCommon('left', value)"
+                      pattern="^\d*(\.\d{0,2})?$" />
+                  </div>
+                </div>
+              </div>
+              <div class="input-size">
+                <div class="content">
+                  <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                    <span class="ivu-input-suffix">
+                      <i style="font-style: normal; font-size: 11px;">y</i>
+                    <!-- Y -->
+                    </span>
+                    <input
+                      autocomplete="off" 
+                      type="number" 
+                      class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                      placeholder="Enter text"
+                      v-model="baseAttr.top"
+                      @change="(value) => changeCommon('top', value)"
+                      number="true" />
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="input-size">
-              <div class="content">
-                <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-                  <span class="ivu-input-suffix">
-                    <i style="font-style: normal; font-size: 11px;">y</i>
-                  <!-- Y -->
-                  </span>
-                  <input
-                    autocomplete="off" 
-                    type="number" 
-                    class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                    placeholder="Enter text"
-                    v-model="baseAttr.top"
-                    @change="(value) => changeCommon('top', value)"
-                    number="true" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- --------------------- End Position ----------------------->
+            <!-- --------------------- End Position ----------------------->
 
+          </div>
+          <!-- control part -->
         </div>
-        <!-- control part -->
-      </div>
-      <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
-        <div class="row mb-3">
-          <flip></flip>
-          <div class="input-size">
-            <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
-              <span class="ivu-input-suffix">
-                <i style="font-style: normal; font-size: 11px;">&deg;</i>
-              <!-- Degree -->
-              </span>
-              <input
-                autocomplete="off" 
-                type="number"
-                class="ivu-input ivu-input-default ivu-input-with-suffix" 
-                placeholder="Enter text"
-                v-model="baseAttr.angle"
-                :max="360"
-                @change="(value)=>changeCommon('angle', value)"
-              />
+        <div v-show="imgType.includes(mSelectOneType)" style="margin-left:15px"> 
+          <div class="row mb-3">
+            <flip></flip>
+            <div class="input-size">
+              <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
+                <span class="ivu-input-suffix">
+                  <i style="font-style: normal; font-size: 11px;">&deg;</i>
+                <!-- Degree -->
+                </span>
+                <input
+                  autocomplete="off" 
+                  type="number"
+                  class="ivu-input ivu-input-default ivu-input-with-suffix" 
+                  placeholder="Enter text"
+                  v-model="baseAttr.angle"
+                  :max="360"
+                  @change="(value)=>changeCommon('angle', value)"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <!-- emptypattern part -->
-        <div v-if="showProduct" >
-          <div class="" style="height:40px;margin-right:15px;">
-            <div style="float:left">
-              Remove white background
+          <!-- emptypattern part -->
+          <div v-if="showProduct" >
+            <div class="" style="height:40px;margin-right:15px;">
+              <div style="float:left">
+                Remove white background
+              </div>                
+              <div  style="float:right">
+                <Switch size="small" v-model="nonBgImageState" @on-change="nonproductImage"/>
+              </div>
+            </div>          
+            <div class="" style="height:40px;margin-right:15px;">
+              <div class="float:left">
+                Trim image
+              </div>                
+              <div class="" style="float:right">
+                <Switch size="small" v-model="trimImageState" @on-change="trimImage"/>
+              </div>
+            </div>          
+          </div>
+          <!---------------fit mode -------------->
+          <!-- <div class="row mb-3" style="">
+            <div class="col col-lg-8">
+              Fit mode
             </div>                
-            <div  style="float:right">
-              <Switch size="small" v-model="nonBgImageState" @on-change="nonproductImage"/>
-            </div>
-          </div>          
-          <div class="" style="height:40px;margin-right:15px;">
-            <div class="float:left">
-              Trim image
-            </div>                
-            <div class="" style="float:right">
-              <Switch size="small" v-model="trimImageState" @on-change="trimImage"/>
-            </div>
-          </div>          
-        </div>
-        <!---------------fit mode -------------->
-        <!-- <div class="row mb-3" style="">
-          <div class="col col-lg-8">
-            Fit mode
-          </div>                
-          <div class="col-lg-3" style="text-align: right; maring-right: 5px;">
-            <Button type="text" @click="()=>fitImage('clip')">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <rect id="bound" x="0" y="0" width="24" height="24"/>
-                    <rect id="Rectangle-151" fill="#000000" opacity="0.3" x="4" y="4" width="8" height="16"/>
-                    <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
-                </g>
-              </svg>
-            </Button>
-            <Button type="text" @click="()=>fitImage('fit')">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+            <div class="col-lg-3" style="text-align: right; maring-right: 5px;">
+              <Button type="text" @click="()=>fitImage('clip')">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
                   <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <polygon id="Bound" points="0 0 24 0 24 24 0 24"/>
+                      <rect id="bound" x="0" y="0" width="24" height="24"/>
+                      <rect id="Rectangle-151" fill="#000000" opacity="0.3" x="4" y="4" width="8" height="16"/>
                       <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
                   </g>
-              </svg>
-            </Button>
-          </div>
-        </div>        -->
-        <!---------------fit mode -------------->
-        <div class="mt-4" style="height:30px;margin-right:15px;">
-          <div class="" style="float:left">
-            Alignment
-          </div>                
-          <div class="" style="float:right">
-            <align-image></align-image>
-          </div>
-        </div>      
-      </div>
-
-      <!----------------- shape and text ----------------------->
-
-      <shape-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></shape-type>
-      <text-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr,this.fontAttr]" @textGroupSet = textGroupSet($event)></text-type>
-
-      <!----------------- shape and text ----------------------->
-                  
-      <!-- Layer restriction -->
-      <div class="customborder mt-3" ></div>
-      <div class="mt-4" style="margin-left:15px">
-        <div class="" style="height:40px;margin-right:15px;">
-          <div style="float:left">
-            Layer time restriction
-          </div>                
-          <div  style="float:right">
-            <Switch size="small" v-model="restrictionState" true-color="#13ce66"/>
-          </div>
-        </div>           
-        <div v-if="restrictionState" class="" style="align-items: center;">
-          <div class="" style="height:40px;margin-right:15px;">
-            <div style="float:left">
-              Generate
-            </div>                
-            <div class="input-size" style="float:right">
-              <Select v-model="this.baseAttr.layerShowPeriod.mode" @on-change="(value)=>changeLayerShowPeriod('mode',value)">
-                  <Option v-for="item in modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
-              </Select>
+                </svg>
+              </Button>
+              <Button type="text" @click="()=>fitImage('fit')">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <polygon id="Bound" points="0 0 24 0 24 24 0 24"/>
+                        <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
+                    </g>
+                </svg>
+              </Button>
             </div>
-          </div>     
-          <div class="" style="height:40px;margin-right:15px;">
-            <div style="float:left">
-              From
+          </div>        -->
+          <!---------------fit mode -------------->
+          <div class="mt-4" style="height:30px;margin-right:15px;">
+            <div class="" style="float:left">
+              Alignment
             </div>                
-            <div style="float:right">
-              <DatePicker type="date" style="width:100%" placeholder="Start date" v-model="this.baseAttr.layerShowPeriod.startDate" @on-change="(value)=>changeLayerShowPeriod('startDate',value)"/>
-            </div>
-          </div>   
-          <div class="" style="height:40px;margin-right:15px;">
-            <div style="float:left">
-              Until
-            </div>                
-            <div style="float:right">
-              <DatePicker type="date" style="width:100%" placeholder="End date" v-model="this.baseAttr.layerShowPeriod.endDate" @on-change="(value)=>changeLayerShowPeriod('endDate',value)"/>
+            <div class="" style="float:right">
+              <align-image></align-image>
             </div>
           </div>      
-          <div class="mt-3">
-            <input type="text" class="ivu-input" value="Generated all the time." id="genLayerPeriod" readonly> 
-          </div>                                    
-        </div>  
-      </div>
+        </div>
 
-      <!-- Layer restriction -->    
+        <!----------------- shape and text ----------------------->
+
+        <shape-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr]"></shape-type>
+        <text-type :mSelectOneTypeProps="[mSelectOneType,this.baseAttr,this.fontAttr]" @textGroupSet = textGroupSet($event)></text-type>
+
+        <!----------------- shape and text ----------------------->
+                    
+        <!-- Layer restriction -->
+        <div class="customborder mt-3" ></div>
+        <div class="mt-4" style="margin-left:15px">
+          <div class="" style="height:40px;margin-right:15px;">
+            <div style="float:left">
+              Layer time restriction
+            </div>                
+            <div  style="float:right">
+              <Switch size="small" v-model="restrictionState" true-color="#13ce66"/>
+            </div>
+          </div>           
+          <div v-if="restrictionState" class="" style="align-items: center;">
+            <div class="" style="height:40px;margin-right:15px;">
+              <div style="float:left">
+                Generate
+              </div>                
+              <div class="input-size" style="float:right">
+                <Select v-model="this.baseAttr.layerShowPeriod.mode" @on-change="(value)=>changeLayerShowPeriod('mode',value)">
+                    <Option v-for="item in modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+              </div>
+            </div>     
+            <div class="" style="height:40px;margin-right:15px;">
+              <div style="float:left">
+                From
+              </div>                
+              <div style="float:right">
+                <DatePicker type="date" style="width:100%" placeholder="Start date" v-model="this.baseAttr.layerShowPeriod.startDate" @on-change="(value)=>changeLayerShowPeriod('startDate',value)"/>
+              </div>
+            </div>   
+            <div class="" style="height:40px;margin-right:15px;">
+              <div style="float:left">
+                Until
+              </div>                
+              <div style="float:right">
+                <DatePicker type="date" style="width:100%" placeholder="End date" v-model="this.baseAttr.layerShowPeriod.endDate" @on-change="(value)=>changeLayerShowPeriod('endDate',value)"/>
+              </div>
+            </div>      
+            <div class="mt-3">
+              <input type="text" class="ivu-input" value="Generated all the time." id="genLayerPeriod" readonly> 
+            </div>                                    
+          </div>  
+        </div>
+
+        <!-- Layer restriction -->    
+
+      
+      </div>
     </div>
   </div>
 </template>
@@ -274,6 +278,7 @@ import {nonBgImage,trimImage,productImage} from '@/utils/imgConstant';
 import rightHeader from "./rightHeader.vue";
 import shapeType from "./shapeType.vue";
 import textType from "./textType.vue";
+import group from "./group.vue";
 
 const lockAttrs = [
   'lockMovementX',
@@ -295,7 +300,8 @@ export default {
     alignImage,
     rightHeader,
     shapeType,
-    textType
+    textType,
+    group
   },
   data() {
     return {

@@ -526,7 +526,6 @@ export default {
       this.initSet();
       getShortTags().then((res)=>{
         this.tags = res.data
-        console.log(res.data);
       })
     },
 

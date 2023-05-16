@@ -168,14 +168,36 @@ export default {
         this.canvas.c.requestRenderAll();
       });      
     },
-
+    insertFileFromJSON(id){
+      getUserTempById(id)
+        .then(resp => {
+          var data = resp.data;
+          document.getElementById("canvasName").value = data.template_name;
+          var jsonFile = JSON.stringify(data);
+          this.canvas.c.loadFromJSON(jsonFile, () => {
+            this.canvas.c.renderAll.bind(canvas.c);
+              const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
+              const { left, top, width, height } = workspace;                  
+              workspace.set('selectable', false);
+              workspace.set('hasControls', false);
+              this.canvas.editor.editorWorkspace.setSize(workspace.width, workspace.height);
+              this.canvas.c.requestRenderAll();
+              this.canvas.c.renderAll();
+          });
+        })
+        .catch(error => {
+            console.log(error);
+      }); 
+    },
     insertDemoTemplate(id){
       getTempById(id).then(res=>{
 
         var data = res.data;
         var jsonFile = JSON.stringify(data);
-        this.canvasUpdateByJson(jsonFile)
-        this.modal = false;
+        this.canvasUpdateByJson(jsonFile);
+        document.getElementById("canvasName").value = data.template_name;
+
+        this.template = false;
         
       });
     },
@@ -208,7 +230,6 @@ export default {
           });
 
         }
-
         this.canvasUpdateByJson(dataUrl);
         this.element = false;
 
@@ -350,26 +371,7 @@ export default {
       };
     },
     
-    insertFileFromJSON(id){
-      getUserTempById(id)
-        .then(resp => {
-          var data = resp.data;
-          var jsonFile = JSON.stringify(data);
-          this.canvas.c.loadFromJSON(jsonFile, () => {
-            this.canvas.c.renderAll.bind(canvas.c);
-              const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
-              const { left, top, width, height } = workspace;                  
-              workspace.set('selectable', false);
-              workspace.set('hasControls', false);
-              this.canvas.editor.editorWorkspace.setSize(workspace.width, workspace.height);
-              this.canvas.c.requestRenderAll();
-              this.canvas.c.renderAll();
-          });
-        })
-        .catch(error => {
-            console.log(error);
-      }); 
-    }
+
   }
 
 };

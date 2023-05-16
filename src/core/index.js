@@ -82,13 +82,24 @@ class Editor extends EventEmitter {
     this.canvas.discardActiveObject().renderAll();
   }
 
-  group() {
+  group(name) {
     // composite element
     const activeObj = this.canvas.getActiveObject();
     const activegroup = activeObj.toGroup();
     const objectsInGroup = activegroup.getObjects();
     activegroup.clone((newgroup) => {
       newgroup.set('id', uuid());
+      newgroup.set({
+        id:uuid(),
+        item_name:"group",
+        customType:"real-group",
+        item_name:name,
+        layerShowPeriod:{
+          mode:'',
+          startDate:'',
+          endDate:''
+        },
+      });
       this.canvas.remove(activegroup);
       objectsInGroup.forEach((object) => {
         this.canvas.remove(object);
@@ -369,7 +380,6 @@ class Editor extends EventEmitter {
               canvasClone.requestRenderAll();
               canvasClone.renderAll();          
               document.getElementById("preview"+(index)).src =imgUrl;  
-
             }, 2000);
       });      
     });

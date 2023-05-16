@@ -1,4 +1,5 @@
 <template>
+  <div>
     <draggable class="dragArea list-group w-full" :list="list" @change="log" :animation="300" style="margin-bottom:100px">
       <div
           class="list-styles"
@@ -10,7 +11,7 @@
             <Icon type="md-apps" style="margin-right:15px;"/>
             <Checkbox v-model="element.select" @change="changeSelect(element)"/>
             <!-- <h4><Icon type="ios-image"/></h4> -->
-            <label style="cursor: pointer;" @click="selectElem(element)">{{element.item_name}}</label>
+            <label style="cursor:pointer;" @click="selectElem(element)">{{element.item_name}}</label>
           </div>
 
           <div class="col-md-4">
@@ -42,6 +43,9 @@
         </div>      
       </div>
     </draggable>
+
+    <group></group>
+    </div>
 </template>
 <style scoped>
   .layerBox{
@@ -70,6 +74,8 @@ import select from '@/mixins/select';
 import { VueDraggableNext } from 'vue-draggable-next'
 import dele from "./del.vue";
 import clone from "./clone.vue";
+import group from "./group.vue";
+
 import { v4 as uuid } from 'uuid';
 const lockAttrs = [
   'lockMovementX',
@@ -85,7 +91,8 @@ export default defineComponent({
   components: {
     draggable: VueDraggableNext,
     dele,
-    clone
+    clone,
+    group
   },
   data() {
     return {
@@ -101,12 +108,7 @@ export default defineComponent({
     // When selecting an object in the canvas, the object does not appear on top.
     this.canvas.c.preserveObjectStacking = true;
     this.canvas.c.on('after:render', this.getList);
-    this.event.on('selectMultiple', (e) => {
-      this.mSelectMode = 'multiple';
-      this.mSelectId = e[0].id;
-      this.mSelectOneType = e[0].type;
-      this.mSelectIds = e.map((item) => item.id);
-    });    
+ 
   },  
   mounted(){
     setTimeout(() => {
@@ -319,21 +321,7 @@ export default defineComponent({
               item.lock = true;
             }else{
               item.lock = false;
-            }
-            // switch(item.type){
-            //   case "i-text":
-            //     item.name = item.text.slice(0,10)+"...";
-            //     break;
-            //   case "image":
-            //     item.name = "image"+item.id.slice(0,5)
-            //     break;
-            //   case "rect" :
-            //     item.name = "rect"+item.id.slice(0,5)
-            //     break;
-            //   case "circle" :
-            //     item.name = "circle"+item.id.slice(0,5)
-            //     break;
-            // }      
+            }   
             return item;
           })
           .filter((item) => {

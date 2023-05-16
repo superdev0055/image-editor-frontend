@@ -138,9 +138,6 @@ export default {
         }
       
       }
-
-      console.log(document.cookie.split(';'));
-
     },
     getCanvasName(){
       this.canvasName = this.canvas.c.template_name;
@@ -222,7 +219,6 @@ export default {
       // }, 1000);                  
     },
     canvasName(){
-      console.log("asdf")
     },
     selectMode(){
       if(this.selectMode === '1'){

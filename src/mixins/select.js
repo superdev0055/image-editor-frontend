@@ -18,13 +18,13 @@ export default {
           this.mSelectIds = e.map((item) => item.id);          
           return;
         }
-        if(e[0]._objects[1].type == "image"){
+        if(e[0].customType == "real-group"){
           this.mSelectMode = 'one';
           this.mSelectId = e[0].id;
           this.mSelectOneType = "image";
           this.mSelectIds = e.map((item) => item.id);          
-          return;
-        }        
+          return;          
+        }
       }
       this.mSelectMode = 'one';
       this.mSelectId = e[0].id;
@@ -34,9 +34,12 @@ export default {
 
     this.event.on('selectMultiple', (e) => {
       this.mSelectMode = 'multiple';
-      this.mSelectId = e[0].id;
-      this.mSelectOneType = e[0].type;
-      this.mSelectIds = e.map((item) => item.id);
+      this.mSelectId = '';
+      this.mSelectIds = e.map((item) => item.id);      
+      // this.mSelectMode = 'multiple';
+      // this.mSelectId = e[0].id;
+      // this.mSelectOneType = e[0].type;
+      // this.mSelectIds = e.map((item) => item.id);
     });
 
     this.event.on('selectCancel', () => {
@@ -45,6 +48,7 @@ export default {
       this.mSelectMode = '';
       this.mSelectOneType = '';
     });
+    
   },
   methods: {
     /**

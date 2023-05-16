@@ -43,7 +43,6 @@ export const getPreviewImage = (keyword) =>{
 
 //get element
 export const getAllElements = () =>{
-    console.log("elements");
     return axios.get(server_url+'/element/get-all-elements');
 }
 
