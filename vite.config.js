@@ -2,15 +2,13 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import dotenv from 'dotenv'
 const path = require('path');
-dotenv.config();
-
 const autoprefixer = require('autoprefixer');
+
 export default defineConfig({
   define: {
-    __VALUE__: `"${process.env.VALUE}"` // wrapping in "" since it's a string
-  },  
+    'process.env': {mode:"development"}
+  },
   chainWebpack: config => {
     config.module
       .rule('vue')

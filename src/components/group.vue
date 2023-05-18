@@ -14,8 +14,8 @@
       <div class="row">
         <label class="col-md-3">Name</label>
         <b-form-input class="col-md-5" size="sm" v-model="customImageName"></b-form-input>
-        <div style="width:100%">
-          <img class="ivu-image-img text-center" alt="" id='previewCustomImageBox' src=""  loading="eager">
+        <div style="width:100%;margin-top:10px" class="text-center">
+          <img class="ivu-image-img" style=" height: calc(100vh - 300px);width:calc(100vh - 300px)" alt="" id='previewCustomImageBox' src=""  loading="eager">
         </div>        
       </div>
     </Modal>        
@@ -64,16 +64,25 @@ export default {
 
     },
     previewCustomImage(){
+      var state = true;
       var jsonFile = this.canvas.editor.getJson();
       var tempArr = [];
       const activeObj = this.canvas.c.getActiveObject()._objects;
       jsonFile.objects.forEach((el,index)=>{
         activeObj.forEach((item)=>{
           if(item.item_name == el.item_name || index ==0){
+            if(el.id == "productImage" || el.id == "trimImage" || el.id == "nonBgImage"){
+              state = false;
+            }
             tempArr.push(el);
           }
         });
       });
+      if(state == false){
+        alert("Product image can't be group");
+        this.groupState = false;
+        return false;
+      }
       jsonFile.objects = tempArr;
       var canvas = document.createElement("CANVAS");
       canvas.id = "previewCustomImageCanvas";

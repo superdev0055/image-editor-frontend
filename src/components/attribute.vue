@@ -152,23 +152,23 @@
             </div>
           </div>
           <!-- emptypattern part -->
-          <div v-if="showProduct" >
+          <div>
             <div class="" style="height:40px;margin-right:15px;">
               <div style="float:left">
                 Remove white background
               </div>                
               <div  style="float:right">
-                <Switch size="small" v-model="nonBgImageState" @on-change="nonproductImage"/>
+                <Switch size="small" v-model="nonBgImageState" @on-change="nonproductImageChange"/>
               </div>
             </div>          
-            <div class="" style="height:40px;margin-right:15px;">
+            <!-- <div class="" style="height:40px;margin-right:15px;">
               <div class="float:left">
                 Trim image
               </div>                
               <div class="" style="float:right">
                 <Switch size="small" v-model="trimImageState" @on-change="trimImage"/>
               </div>
-            </div>          
+            </div>           -->
           </div>
           <!---------------fit mode -------------->
           <!-- <div class="row mb-3" style="">
@@ -320,11 +320,11 @@ export default {
       //layer restriction
       isLock: false,
       isView:true,
-
-      emptyPatternState:"productImage", //emptyPatternState includes 'productImage' ,'trimImage',"nonproductImage" 
       nonBgImageState:false,
-      trimImageState:false,  
-      showProduct:false,
+      // productImageState:"productImage", //emptyPatternState includes 'productImage' ,'trimImage',"nonproductImage" 
+      // nonBgImageState:false,
+      // trimImageState:false,  
+      // showProduct:false,
       
       // common element
       baseType: [
@@ -409,14 +409,14 @@ export default {
       this.isLock = !items[0].hasControls;
       this.mSelectActive = items[0];      
       var activeObject = this.canvas.c.getActiveObjects()[0]; 
-      if(activeObject.id == "productImage" || activeObject.id =='nonBgImage' || activeObject.id == 'trimImage'){
+      // if(activeObject.id == "productImage" || activeObject.id =='nonBgImage' || activeObject.id == 'trimImage'){
 
-        this.showProduct = true;
+      //   this.showProduct = true;
 
-      }else{
+      // }else{
 
-        this.showProduct = false;
-      } 
+      //   this.showProduct = false;
+      // } 
       
 
       if (activeObject) {
@@ -464,6 +464,10 @@ export default {
           this.generateLayerPeriod();     
         }, 300);
         //layerRestricion
+
+        //productimagestate
+        this.initialProductImageState();
+
       }
 
     });
@@ -473,12 +477,30 @@ export default {
     setInterval(() => {
       this.canvas.editor.checkLayerPeriod();
     }, 1000);    
+
   },
 
   computed:{
   },
 
   methods: {
+    initialProductImageState(){
+      var productImageState = this.canvas.c.getActiveObject().nonBgImageState;
+      console.log(productImageState)
+      this.nonBgImageState = productImageState;
+      // if(productImageState == true){
+      //   this.productImageState = "productImage"
+      //   this.nonBgImageState = false;
+      //   this.showProductImage = true;
+
+      // }else{
+      //   this.productImageState = "nonBgImage"
+
+      //   this.nonBgImageState = true;
+      //   this.showProductImage = false;   
+
+      // }
+    },
     setLayerShowPeriod(){
       var state = this.baseAttr.layerShowPeriod;
 
@@ -589,29 +611,41 @@ export default {
 
     },
 
-    //emptyImage
-    nonproductImage(evt){
-      this.nonBgImageState = evt
-      this.checkEmpty();
-    },
-    trimImage(evt){
-      this.trimImageState = evt
-      this.checkEmpty();
-    },   
-    checkEmpty(){
-      if(this.trimImageState == true){
-        this.emptyPatternState = "trimImage"
-        return;
-      }
-      if(this.nonBgImageState == true){
-        this.emptyPatternState = "nonBgImage"
-        return;
-      }
-      this.emptyPatternState = "productImage"
-    },
+    // //emptyImage
+    // nonproductImage(evt){
+    //   this.nonBgImageState = evt
+    //   this.checkEmpty();
+    // },
+    // trimImage(evt){
+    //   this.trimImageState = evt
+    //   this.checkEmpty();
+    // }, 
+    // checkEmpty(){
+    //   if(this.trimImageState == true){
+    //     this.productImageState = "trimImage";
+    //     return;
+    //   }
+    //   if(this.nonBgImageState == true){
+    //     this.productImageState = "nonBgImage";
+    //     return;
+    //   }
+    //   this.productImageState = "productImage";
+    // },
 
     //emptyImage
 
+    nonproductImageChange(evt){
+      console.log(evt)
+      if(evt == true){
+        this.nonBgImageState = true;
+        this.removeBg();
+        return true;
+      }else{
+        this.nonBgImageState = false;
+        this.showProductImage();
+        return true;
+      }      
+    }, 
 
     doView(isView){
       isView ? this.view() : this.unView();
@@ -795,7 +829,7 @@ export default {
       }
     },
 
-    insertEmpty(file){
+    insertEmpty(file,id,oldUrl=''){
       var originLeft = this.canvas.c.getActiveObjects()[0].left;
       var originTop = this.canvas.c.getActiveObjects()[0].top;
       var originHeight = this.canvas.c.getActiveObjects()[0].height;
@@ -812,7 +846,7 @@ export default {
       imgEl.onload = () => {
         // Create a product image
         const imgInstance = new this.fabric.Image(imgEl, {
-          id:this.emptyPatternState,
+          id:id,
           item_name:item_name,
           left:originLeft,
           top:originTop,
@@ -822,33 +856,71 @@ export default {
           scaleY:originScaleY,
           angle:angle,
           opacity:opacity,
-          layerShowPeriod:layerShowPeriod
+          layerShowPeriod:layerShowPeriod,
+          oldUrl:oldUrl,
+          nonBgImageState:this.nonBgImageState
         });
-        
+
         this.canvas.c.remove(this.canvas.c.getActiveObjects()[0])
         this.canvas.c.add(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
         this.canvas.c.renderAll();
         imgEl.remove();
       }      
+    },
+    showProductImage(){
+      var id = this.canvas.c.getActiveObject().id;
+      console.log(id)
+      if(id == "nonBgImage"){
+        this.insertEmpty(productImage,"productImage",nonBgImage);        
+        return true;
+      }
+      var activeObject = this.canvas.c.getActiveObject(); 
+      this.insertEmpty(activeObject.oldUrl,activeObject.id);
+
+    },
+
+    removeBg(){
+
+      var oldUrl = this.canvas.c.getActiveObject()._element.currentSrc;
+      var id = this.canvas.c.getActiveObject().id;
+      if(id == "productImage"){
+        this.insertEmpty(nonBgImage,"nonBgImage",productImage);        
+        return true;
+      }
+      const image = new Image();
+      image.src = oldUrl;
+      image.onload = ({target}) =>{
+
+        const w = Math.round(target.width);
+        const h = Math.round(target.height);
+        const canvas = document.createElement("canvas");
+        
+        canvas.width = w;
+        canvas.height = h;
+        const canvasContext = canvas.getContext("2d");
+        canvasContext.drawImage(target,0,0,target.width,target.height,0,0,w,h);
+        const canvasImageData = canvasContext.getImageData(0,0,w,h);
+
+        for(let index=0,dataLength = canvasImageData.data.length;index<dataLength;index += 4){
+          const r = canvasImageData.data[index];
+          const g = canvasImageData.data[index + 1];
+          const b = canvasImageData.data[index + 2];
+
+          if([r,g,b].every((item)=> item > 240))
+            canvasImageData.data[index + 3] = 0;
+        }
+
+        target.width = w;
+        target.height = h;
+        canvasContext.putImageData(canvasImageData,0,0);
+        document.body.append(canvas);   
+        console.log(canvas.toDataURL());
+        this.insertEmpty(canvas.toDataURL(),id,oldUrl);        
+      }
     }
   },
   watch:{
-    emptyPatternState(){
-      var id = this.canvas.c.getActiveObjects()[0].id;
-      if(id  == "nonBgImage" || id == "trimImage" || id=="productImage"){
-        if(this.emptyPatternState == "nonBgImage"){
-          this.insertEmpty(nonBgImage);
-          return true;
-        }else if(this.emptyPatternState == "trimImage"){
-          this.insertEmpty(trimImage);
-          return true;
-        }else{
-          this.insertEmpty(productImage);
-          return true;
-        }
-      }
-    }
   }
 };
 </script>

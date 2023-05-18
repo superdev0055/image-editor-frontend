@@ -80,9 +80,10 @@ export default {
         ...defaultPosition,
         ...option,
 	      fontFamily: 'Courier New',
-        fontSize: 80,
+        fontSize: 20,
         id: uuid(),
       });
+
       text.set("width",text.width);
       var rect = new fabric.Rect({
           height: 0,
@@ -91,13 +92,12 @@ export default {
           strokeWidth:0,
           opacity: 100,
           id:"virtural"
-      });      
+      });
       var group = new fabric.Group([rect, text]);
       group.set({
         id:uuid(),
         left:0-group.width,
         customType:"text",
-        padding:10,
         item_name:this.canvas.editor.getName("text"),
         layerShowPeriod:{
           mode:'',
@@ -108,7 +108,37 @@ export default {
       });
 
 	    group.setCoords();	
+      group.on({
+          'scaling': function(e) {
+            console.log(this.left,this.top);
+            console.log(this._objects[0].left,this._objects[0].top)
+              var obj = this,
+                  w = obj.width * obj.scaleX,
+                  h = obj.height * obj.scaleY,
+                  s = obj.strokeWidth;
 
+              obj.set({
+                  'height'     : h,
+                  'width'      : w,
+                  'scaleX'     : 1,
+                  'scaleY'     : 1,
+              });
+
+              obj._objects[0].set({
+                  'height'     : h,
+                  'width'      : w,
+                  'scaleX'     : 1,
+                  'scaleY'     : 1,
+                  "left":0 - (obj.width) / 2,
+                  "top":0 - (obj.height) / 2
+              });
+
+              obj._objects[1].set({
+                "left":0 - (obj.width) / 2,
+                "top":0 - (obj.height) / 2,
+              });              
+          }
+      });        
       this.canvas.c.add(group);
       rect.set("width",group.width*group.scaleX+5);
       rect.set("height",group.height*group.scaleY+5);

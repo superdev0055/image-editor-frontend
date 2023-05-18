@@ -81,10 +81,11 @@
       </Content>
     </div>
   </div>
-  
 </template>
+
 <script>
 
+// import Jimp from 'jimp';
 // import element
 import importFile from '@/components/importFile.vue';
 
@@ -122,6 +123,7 @@ export default {
     }
 
   },
+
   data() {
     return {
       canvasName:'New template',
@@ -143,6 +145,31 @@ export default {
   },
 
   mounted() {
+    // Jimp.read('@/assets/img/ImgW1.png')
+    //   .then(image => {
+    //       image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+    //           var red   = this.bitmap.data[idx + 0];
+    //           var green = this.bitmap.data[idx + 1];
+    //           var blue  = this.bitmap.data[idx + 2];
+    //           var alpha = this.bitmap.data[idx + 3];
+
+    //           // if the pixel color is in the range of the background color
+    //           if (red > 200 && green > 200 && blue > 200) { 
+    //               // make this pixel transparent
+    //               this.bitmap.data[idx + 0] = 0;
+    //               this.bitmap.data[idx + 1] = 0;
+    //               this.bitmap.data[idx + 2] = 0;
+    //               this.bitmap.data[idx + 3] = 0;
+    //           }
+    //       });
+    //       image.write('output.png');
+    //   })
+    //   .catch(err => {
+    //       console.error(err);
+    //   });
+
+
+
 
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
@@ -169,18 +196,20 @@ export default {
           const activeObject = this.canvas.getActiveObjects();
           if (activeObject) {
             activeObject.map((item) => {
+
               if(item.id == "productImage" || item.id == "trimImage" || item.id == "nonBgImage"){
                 return false;
               }else{
                 this.canvas.remove(item)
               }
+
             });
           }
           this.canvas.requestRenderAll();
           this.canvas.discardActiveObject();          
         }
       });      
-    },2000);
+    },1000);
 
 
   },

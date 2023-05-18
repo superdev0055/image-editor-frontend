@@ -7,14 +7,6 @@
                         <h6 style="font-weight: bold;">Preview</h6>
                     </div>
 
-                    <div class="ivu-space-item col-3">
-                        <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: auto;">
-                            <!-- <button class="ivu-btn ivu-btn-text ivu-btn-large" type="button"> -->
-                                <p class="refresh-btn ivu-btn ivu-btn-text ivu-btn-normal" @click="showPreview"><Icon type="md-sync" />Refresh</p>
-                            <!-- </button> -->
-                        </div>
-                    </div>
-
                     <div class="ivu-space-item col-5">
                         <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 100%">
                             <i class="ivu-icon ivu-icon-ios-loading ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
@@ -24,6 +16,13 @@
                             </span>
                         </div>
                     </div>
+
+                    <div class="ivu-space-item col-3">
+                        <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: auto;">
+                            <p class="refresh-btn ivu-btn ivu-btn-text ivu-btn-normal" @click="showPreview"><Icon type="md-sync" />Refresh</p>
+                        </div>
+                    </div>
+
                     <br />
                 </div>
             </div>
@@ -38,15 +37,7 @@
                     >
                     <div class="row">
                         <div class="col-10">
-                            <div class="font-s">{{item.title}}</div>
-                            <div class="font-s">{{item.id}}</div>
                             <div class="font-s">{{item.brand}}</div>
-                        </div>
-
-                        <div class="col-2">
-                            <button class="ivu-btn ivu-btn-text ivu-btn-large ivu-btn-circle ivu-btn-icon-only" type="button">
-                                <Icon type="ios-information-circle-outline" />
-                            </button>
                         </div>
 
                     </div>
@@ -72,7 +63,6 @@ export default {
     components:{
         Loader,
     },
-
     data() {
 
         return{
@@ -92,22 +82,25 @@ export default {
   },
 
   methods: {
+    showPreview(){
+        this.loaderActive = true;
 
-        showPreview(){
-            getShortTags().then((tags)=>{
-                getPreviewImage(this.keyword).then((res)=>{
-                    this.product_images = res.data;
-                }).then((result)=>{
-                    this.product_images.forEach(async (item,index)=>{
-                        var first_product_image =  item;
-                        if(first_product_image!=null){
-                            await this.canvas.editor.changeProductImageLists(first_product_image,tags.data,index);
-                        }
-                    });
-                });   
-            });
-        },
-
+        getShortTags().then((tags)=>{
+            getPreviewImage(this.keyword).then((res)=>{
+                this.product_images = res.data;
+            }).then(()=>{
+                this.product_images.forEach(async (item,index)=>{
+                    var first_product_image =  item;
+                    if(first_product_image!=null){
+                        await this.canvas.editor.changeProductImageLists(first_product_image,tags.data,index);
+                    }
+                });
+            });   
+        });
+        setTimeout(() => {
+          this.loaderActive = false;
+        }, 7000);
+    },
     }
 };
 </script>

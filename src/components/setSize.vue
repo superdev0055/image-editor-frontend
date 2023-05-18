@@ -129,21 +129,23 @@ export default {
     changeTab(name){
       //when preview tab is pressed,load data from endpoint. 
       if(name == "name3"){
-        this.$refs.form.loaderActive = true;
         this.$refs.form.showPreview();
-        setTimeout(() => {
-          this.$refs.form.loaderActive = false;
-        }, 7000);
       }
 
     },
     setSize() {
       this.canvas.c.discardActiveObject();
+      this.$Spin.show();      
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
+      setTimeout(() => {
+        this.$Spin.hide();      
+        
+      }, 500);
     },    
     changeSelect(evt){
+      console.log(evt);
       var resolution = evt.split("x");
-      if(resolution[0] == ''){
+      if(evt == 'custom-size'){
         this.selected = '';
       }else{
         this.width = Number(resolution[0]);
@@ -156,6 +158,7 @@ export default {
   watch:{
     width(){
       this.selected = "custom-size";
+      console.log(this.width,this.height);
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
       this.canvas.c.discardActiveObject();
       this.canvas.c.renderAll();      

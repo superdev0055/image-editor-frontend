@@ -20,11 +20,13 @@
               <Input suffix="ios-search" placeholder="Enter text" v-model="keyword_template"/>
             </div>
             <div  class="col-md-4">
-              <Select @on-change="groupChange" clearable>
-                  <Option v-for="item in group_types_template" :value="item" :key="item">{{ item}}</Option>
-              </Select>
+                <b-form-select class="mb-3" v-model="selected_template_type" @change="groupChange" size="sm">
+                  <option v-for="item in group_types_template" :value="item" :key="item">{{item}}</option>
+                </b-form-select>              
             </div>              
           </div>
+
+          <!-- <loader :active="loaderActive" style="z-index:100000"></loader> -->
           
           <div
             id="main"
@@ -61,11 +63,10 @@
                 <Input suffix="ios-search" placeholder="Enter text" v-model="keyword_element"/>
               </div>
 
-                <div  class="col-md-4">
-                  <Select @on-change="elementChange" clearable>
-                      <Option v-for="item in group_types_element" :value="item" :key="item">{{ item}}</Option>
-                  </Select>                  
-
+                <div class="col-md-4">
+                  <b-form-select class="mb-3" v-model="selected_element_type" @change="elementChange" size="sm">
+                    <option v-for="item in group_types_element" :value="item" :key="item">{{item}}</option>
+                  </b-form-select>                        
                 </div>              
             </div>
             
@@ -82,7 +83,6 @@
               </div>
 
             </div>            
-            
           </div>
         </div>
 
@@ -98,6 +98,7 @@ import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
 import {productImage} from '@/utils/imgConstant';
 import {getAllTemps,getTempById,getUserTempById,getAllElements,getElementById} from "@/service/endpoint";
+import loader from "./loader.vue";
 export default {
   name: 'ToolBar',
   mixins: [select],
@@ -109,6 +110,8 @@ export default {
       loading: true,
       border: true,
       hover: true,
+      selected_template_type:'All templates',
+      selected_element_type:'All elements',
       keyword_template:'',
       keyword_element:'',
       group_types_template: '',  
@@ -116,15 +119,21 @@ export default {
       demoTempLists:'',
       filterResultDemoLists:'',
       elementLists:'',
-      filterResultElementLists:''
+      filterResultElementLists:'',
+      loaderActive:true
     };
   },
+  component:{
+    loader
+  },
+
   created() {
     this.event.on('selectOne', (items) => {
       this.isLock = !items[0].hasControls;
       this.mSelectActive = items[0];
     });
   },
+
   mounted(){
     if(this.path.slice(8) == "create"){
       this.insertProductImage(productImage);
@@ -132,13 +141,22 @@ export default {
       this.insertFileFromJSON(this.param_id);
     }
   },  
+
   methods: {
     groupChange(evt){
-      this.filterResultDemoLists = this.filterDemoTempLists('type',evt);
+      if(evt == "All templates"){
+        this.filterResultDemoLists = this.demoTempLists;
+      }else{
+        this.filterResultDemoLists = this.filterDemoTempLists('type',evt);
+      }
     },
 
     elementChange(evt){
-      this.filterResultElementLists = this.filterElementLists('type',evt);
+      if(evt = "All elements"){
+        this.filterResultElementLists = this.elementLists;
+      }else{
+        this.filterResultElementLists = this.filterElementLists('type',evt);
+      }
     },
 
     filterElementLists(search_type,value){
@@ -185,7 +203,6 @@ export default {
       }
     },
 
-
     canvasUpdateByJson(jsonFile){
       this.canvas.c.loadFromJSON(jsonFile, () => {
         this.canvas.c.renderAll.bind(canvas.c);
@@ -226,10 +243,9 @@ export default {
         var data = res.data;
         var jsonFile = JSON.stringify(data);
         this.canvasUpdateByJson(jsonFile);
-        
         document.getElementById("canvasName").value = data.template_name;
         this.template = false;
-        
+
       });
     },
 
@@ -271,12 +287,12 @@ export default {
           }
           var gfg = new fabric.ActiveSelection(temp, {
             canvas:this.canvas.c,
-          });        
+          });   
+          this.canvas.c.centerObject(gfg);     
           this.canvas.c.setActiveObject(gfg);
           this.canvas.c.requestRenderAll();           
           this.element = false;
         }, 200);
-           
 
       });      
     },
@@ -287,16 +303,22 @@ export default {
         var templist = new Array();
         var tempTypes = [];
         var data = resp.data;
+
         if(data){
 
           data.forEach((e ,i)=> {
+            if(i==0){
+              tempTypes.push("All templates");
+            }            
             var template_id = data[i].template_id;
             var template_name = data[i].template_name;
             var template_image_url = data[i].template_image_url;
             var group_type = data[i].group_type;
+
             if(tempTypes.includes(group_type) == false){
               tempTypes.push(group_type)
             }
+
             templist.push({
               template_id:template_id,
               group_type:group_type,
@@ -305,6 +327,7 @@ export default {
             });           
 
           });     
+
           this.group_types_template = tempTypes;
           this.demoTempLists = templist;
           this.filterResultDemoLists = templist;
@@ -325,6 +348,9 @@ export default {
         var tempTypes = [];
         if(data){
           data.forEach((e ,i)=> {
+            if(i==0){
+              tempTypes.push("All Elements");
+            }
             var id = data[i].id;
             var title = data[i].title;
             var image_url = data[i].image_url;
@@ -383,6 +409,7 @@ export default {
           const imgInstance = new this.fabric.Image(imgEl, {
             id: "productImage",
             item_name:name,
+            nonBgImageState:false,
             layerShowPeriod:{
               mode:'',
               startDate:'',
@@ -416,6 +443,7 @@ export default {
         const imgInstance = new this.fabric.Image(imgEl, {
           id: uuid(),
           item_name:name,
+          nonBgImageState:false,
           layerShowPeriod:{
             mode:'',
             startDate:'',

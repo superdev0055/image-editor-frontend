@@ -1,13 +1,14 @@
 <template>
     <div class="setBox">
-
       <div v-show="textType.includes(mSelectOneTypeProps[0])" class="mt-3 mb-3">
         <!-- control part -->
         <div class="control" style="margin-left:15px">
           <div class="row mt-3 mb-3" style="align-items: center;">
+
             <div class="col col-lg-7">
               Size
             </div>
+            
             <div class="input-size">
               <div class="content">
                 <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text">
@@ -497,7 +498,11 @@ export default {
       this.canvas.c.on("object:moving",(e)=>{
         this.baseAttr.top = this.canvas.c.getActiveObject().top;
         this.baseAttr.left =this.canvas.c.getActiveObject().left;
-      })       
+      });       
+      this.canvas.c.on("object:modified",(e)=>{
+        this.baseAttr.width = this.canvas.c.getActiveObject().width;
+        this.baseAttr.height =this.canvas.c.getActiveObject().height;
+      });             
       this.event.on('selectOne', (e) => {
         if(e[0].type == "group"){
           const activeObject = e[0]._objects[1];
@@ -526,7 +531,7 @@ export default {
       this.initSet();
       getShortTags().then((res)=>{
         this.tags = res.data
-      })
+      });     
     },
 
     methods:{
@@ -539,6 +544,7 @@ export default {
             this.canvas.c.renderAll();
           }
         },      
+
         changeBorderState(value){
           if(value == false){
 
