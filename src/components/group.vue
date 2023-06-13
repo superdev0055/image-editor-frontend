@@ -3,28 +3,32 @@
     <Button :disabled="!isMultiple" @click="previewCustomImage" type="primary" shape="circle" icon="md-albums">
       Group into Custom Image
     </Button>
-    <Modal
-      v-model="groupState"
+    <Modal 
+      v-model="groupState" 
       title="Custom Image Creation"
-      @on-ok="createCustomImage"
       ok-text = "Create"
       width="50%"
       style="margin-top:-50px"
       >
-      <div class="row">
-        <label class="col-md-3">Name</label>
-        <b-form-input class="col-md-5" size="sm" v-model="customImageName"></b-form-input>
-        <div style="width:100%;margin-top:10px" class="text-center">
-          <img class="ivu-image-img" style=" height: calc(100vh - 300px);width:calc(100vh - 300px)" alt="" id='previewCustomImageBox' src=""  loading="eager">
-        </div>        
-      </div>
-    </Modal>        
+        <template #header>
+          <h4 style="text-align:center">Custom Image Creation</h4>
+        </template>
+        <div class="row">
+          <label class="col-md-3">Name</label>
+          <b-form-input class="col-md-5" size="sm" v-model="customImageName"></b-form-input>
+          <div style="width:100%;margin-top:10px" class="text-center">
+            <img class="ivu-image-img" style=" height: calc(100vh - 300px);width:calc(100vh - 300px)" alt="" id='previewCustomImageBox' src=""  loading="eager">
+          </div>        
+        </div>
+        <template #footer>
+          <Button type="error" size="large" long @click="createCustomImage">save</Button>
+        </template>
+    </Modal>    
   </div>
 </template>
 
 <script>
 import select from '@/mixins/select';
-import { v4 as uuid } from 'uuid';
 
 export default {
   name: 'ToolBar',
@@ -39,7 +43,7 @@ export default {
     this.event.on('selectMultiple', (e) => {
       this.mSelectMode = 'multiple';
       this.mSelectId = '';
-      this.mSelectIds = e.map((item) => item.id);            
+      this.mSelectIds = e.map((item) => item.id);  
     }); 
   },
   computed: {
@@ -49,17 +53,20 @@ export default {
     },
     // Is it multiple choice
     isMultiple() {
-      return this.mSelectMode === 'multiple';
+      return this.mSelectMode == 'multiple';
     },
   },
   methods: {
     createCustomImage(){
 
       if(this.customImageName == ''){
-        alert("Please input Name.");
-        return false;
+        this.$Notice.warning({
+            desc: 'Please input Name.'
+        });
+        return true;
       }else{
         this.canvas.editor.group(this.customImageName);
+        this.groupState=false;
       }
 
     },

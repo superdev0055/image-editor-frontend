@@ -153,7 +153,7 @@
           </div>
           <!-- emptypattern part -->
           <div>
-            <div class="" style="height:40px;margin-right:15px;">
+            <div v-if="baseAttr.id === 'productImage' || baseAttr.id === 'nonBgImage'" class="" style="height:40px;margin-right:15px;">
               <div style="float:left">
                 Remove white background
               </div>                
@@ -161,41 +161,8 @@
                 <Switch size="small" v-model="nonBgImageState" @on-change="nonproductImageChange"/>
               </div>
             </div>          
-            <!-- <div class="" style="height:40px;margin-right:15px;">
-              <div class="float:left">
-                Trim image
-              </div>                
-              <div class="" style="float:right">
-                <Switch size="small" v-model="trimImageState" @on-change="trimImage"/>
-              </div>
-            </div>           -->
           </div>
-          <!---------------fit mode -------------->
-          <!-- <div class="row mb-3" style="">
-            <div class="col col-lg-8">
-              Fit mode
-            </div>                
-            <div class="col-lg-3" style="text-align: right; maring-right: 5px;">
-              <Button type="text" @click="()=>fitImage('clip')">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <rect id="bound" x="0" y="0" width="24" height="24"/>
-                      <rect id="Rectangle-151" fill="#000000" opacity="0.3" x="4" y="4" width="8" height="16"/>
-                      <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
-                  </g>
-                </svg>
-              </Button>
-              <Button type="text" @click="()=>fitImage('fit')">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <polygon id="Bound" points="0 0 24 0 24 24 0 24"/>
-                        <path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"/>
-                    </g>
-                </svg>
-              </Button>
-            </div>
-          </div>        -->
-          <!---------------fit mode -------------->
+
           <div class="mt-4" style="height:30px;margin-right:15px;">
             <div class="" style="float:left">
               Alignment
@@ -321,10 +288,7 @@ export default {
       isLock: false,
       isView:true,
       nonBgImageState:false,
-      // productImageState:"productImage", //emptyPatternState includes 'productImage' ,'trimImage',"nonproductImage" 
-      // nonBgImageState:false,
-      // trimImageState:false,  
-      // showProduct:false,
+      imageStatus:'',
       
       // common element
       baseType: [
@@ -396,8 +360,13 @@ export default {
     };
   },
 
-  created() {
-
+  created(){
+    this.canvas.c.on("object:scaling",(opt)=>{
+      var activeObject = this.canvas.c.getActiveObject();
+      if(activeObject.customType == "productImage"){
+        this.controlProductImage()
+      }
+    }),
     this.event.on('selectUpdate', () => {
       if(this.canvas.c.getActiveObject().name == "picture"){
         this.canvas.c.getActiveObject().clipState = this.imageShowMode;
@@ -405,23 +374,13 @@ export default {
     });
 
     this.event.on('selectOne', (items) => {
-
       this.isLock = !items[0].hasControls;
       this.mSelectActive = items[0];      
-      var activeObject = this.canvas.c.getActiveObjects()[0]; 
-      // if(activeObject.id == "productImage" || activeObject.id =='nonBgImage' || activeObject.id == 'trimImage'){
-
-      //   this.showProduct = true;
-
-      // }else{
-
-      //   this.showProduct = false;
-      // } 
-      
+      var activeObject = this.canvas.c.getActiveObjects()[0];      
 
       if (activeObject) {
-
         // base
+        this.baseAttr.id = activeObject.id;
         this.baseAttr.item_name = activeObject.item_name;
         this.baseAttr.round = activeObject.get('rx');
         this.baseAttr.height = activeObject.get('height');
@@ -442,41 +401,50 @@ export default {
         this.baseAttr.padding = activeObject.get('padding') || 0;
         this.baseAttr.layerShowPeriod = activeObject.get("layerShowPeriod");
         if(items[0].type == "group"){
+          const groupObj = items[0];
+          const rectObj = items[0]._objects[0];
+          const textObj = items[0]._objects[1];
+          //<!----------------- group property --------------->
+          this.fontAttr.position = groupObj.position;
+          this.fontAttr.fontLists = window.globalFonts;
+          this.fontAttr.selected_text_manage_type = groupObj.texthandle || "automatic";
+          //<!----------------- end group property --------------->
 
-          var activeObject = items[0]._objects[1];
-          this.fontAttr.string = activeObject.get('text');
-          this.fontAttr.fontSize = activeObject.get('fontSize');
-          this.fontAttr.fontFamily = activeObject.get('fontFamily');
-          this.fontAttr.lineHeight = activeObject.get('lineHeight');
-          this.fontAttr.textAlign = activeObject.get('textAlign');
-          this.fontAttr.underline = activeObject.get('underline');
-          this.fontAttr.linethrough = activeObject.get('linethrough');
-          this.fontAttr.charSpacing = activeObject.get('charSpacing');
-          this.fontAttr.overline = activeObject.get('overline');
-          this.fontAttr.fontStyle = activeObject.get('fontStyle');
-          this.fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
-          this.fontAttr.fontWeight = activeObject.get('fontWeight');      
-        }
+          //<!----------------- rect property --------------->
+          this.fontAttr.rectFill = rectObj.get('fill') || '';
+          this.fontAttr.round = rectObj.get('ry') || 0;
+          this.fontAttr.stroke = rectObj.get('stroke') || '';
+          this.fontAttr.strokeWidth = rectObj.get('strokeWidth') || 0;     
+          this.fontAttr.strokeLabel = rectObj.get('strokeLabel') || "solid";  
+          //<!----------------- end rect property --------------->
 
-        //layerRestricion
+          //<!----------------- end text property --------------->
+          this.fontAttr.fill = textObj.get('fill') || '';
+          this.fontAttr.text = textObj.get('text') || '';
+          this.fontAttr.fontSize = textObj.get('fontSize');
+          this.fontAttr.fontFamily = textObj.get('fontFamily');
+          this.fontAttr.underline = textObj.get('underline');
+          this.fontAttr.overline = textObj.get('overline');
+          this.fontAttr.fontStyle = textObj.get('fontStyle');
+          this.fontAttr.fontWeight = textObj.get('fontWeight');
+          this.fontAttr.selected_fontfamily = textObj.fontFamily;   
+
+        // //layerRestricion
         this.setLayerShowPeriod();
         setTimeout(() => {
           this.generateLayerPeriod();     
         }, 300);
-        //layerRestricion
-
-        //productimagestate
-        this.initialProductImageState();
-
+        // //layerRestricion
+        }
       }
 
     });
   },
 
   mounted(){
-    setInterval(() => {
-      this.canvas.editor.checkLayerPeriod();
-    }, 1000);    
+    // setInterval(() => {
+    //   this.canvas.editor.checkLayerPeriod();
+    // }, 1000);    
 
   },
 
@@ -484,23 +452,53 @@ export default {
   },
 
   methods: {
-    initialProductImageState(){
-      var productImageState = this.canvas.c.getActiveObject().nonBgImageState;
-      console.log(productImageState)
-      this.nonBgImageState = productImageState;
-      // if(productImageState == true){
-      //   this.productImageState = "productImage"
-      //   this.nonBgImageState = false;
-      //   this.showProductImage = true;
+    controlProductImage(){
+      
+      const activeObject = this.canvas.c.getActiveObject(),
+      w = activeObject.width * activeObject.scaleX,
+      h = activeObject.height * activeObject.scaleY
 
-      // }else{
-      //   this.productImageState = "nonBgImage"
+      activeObject.set({
+        'height'     : h,
+        'width'      : w,
+        'scaleX'     : 1,
+        'scaleY'     : 1,
+      }).setCoords();
+      activeObject._objects[0].set({
+        'height'     : h,
+        'width'      : w,
+        'scaleX'     : 1,
+        'scaleY'     : 1,
+        "left":0 - (activeObject.width*activeObject.scaleX) / 2,
+        "top":0 - (activeObject.height*activeObject.scaleY) / 2
+      }).setCoords();
 
-      //   this.nonBgImageState = true;
-      //   this.showProductImage = false;   
+      var rectW = activeObject.width;
+      var imageW = activeObject._objects[1].width;
+      var image_scale_x = rectW/imageW;
+      var rectH = activeObject.height;
+      var imageH = activeObject._objects[1].height ;
+      var image_scale_y = rectH/imageH;	
 
-      // }
-    },
+      if(activeObject.width<=activeObject.height){
+        activeObject._objects[1].set({
+          "left":0 - (activeObject._objects[1].width * activeObject._objects[1].scaleX) / 2,
+          "top":0 - (activeObject._objects[1].height * image_scale_x) / 2,
+        }).setCoords();	
+        activeObject._objects[1].set("scaleX",image_scale_x).setCoords();
+        activeObject._objects[1].set("scaleY",image_scale_x).setCoords();
+      }else{
+        activeObject._objects[1].set({
+          "left":0 - (activeObject._objects[1].width * activeObject._objects[1].scaleX) / 2,
+          "top":0 - (activeObject._objects[1].height * image_scale_y) / 2,
+        }).setCoords();
+        activeObject._objects[1].set("scaleX",image_scale_y).setCoords();
+        activeObject._objects[1].set("scaleY",image_scale_y).setCoords();
+      }
+      this.canvas.c.requestRenderAll();
+
+    },    
+
     setLayerShowPeriod(){
       var state = this.baseAttr.layerShowPeriod;
 
@@ -513,7 +511,6 @@ export default {
 
     changeLayerShowPeriod(key,value){
       var activeObject = this.canvas.c.getActiveObject();
-
       switch(key){
         case "mode":
           activeObject.layerShowPeriod.mode = value;    
@@ -521,7 +518,6 @@ export default {
           break;
 
         case "startDate":
-
           activeObject.layerShowPeriod.startDate = value;  
           this.baseAttr.layerShowPeriod.startDate = value
           break;
@@ -536,9 +532,7 @@ export default {
     },
 
     generateLayerPeriod(){
-
       if(document.getElementById('genLayerPeriod') != null){
-        
         if(this.baseAttr.layerShowPeriod.startDate != ''){
           if(this.baseAttr.layerShowPeriod.mode == "except"){
             document.getElementById('genLayerPeriod').value = "Generation stopped from "+this.baseAttr.layerShowPeriod.startDate; 
@@ -561,88 +555,22 @@ export default {
           }else{
             document.getElementById('genLayerPeriod').value = "Generated from "+this.baseAttr.layerShowPeriod.startDate+" until "+this.baseAttr.layerShowPeriod.endDate; 
           }             
-          
         }
+
         if(this.baseAttr.layerShowPeriod.startDate == "" && this.baseAttr.layerShowPeriod.endDate == ""){
           document.getElementById('genLayerPeriod').value = "Generated all the time"; 
         }         
 
-
       }
 
     },
-    fitImage(value){
-      var activeObject = this.canvas.c.getActiveObject();
-      
-      activeObject.set("width",this.baseAttr.width);
-      activeObject.set("height",this.baseAttr.height);
-      
-      this.canvas.c.renderAll();
-
-      if(value == "clip"){
-        if(this.imageShowMode == "clip"){
-          return;
-        }else{
-          this.imageShowMode = "clip";
-          activeObject._objects[1].set({
-            left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
-            top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
-          });          
-          if(activeObject.width<activeObject.height){
-            this.imgHeightClip(activeObject.height);
-          }else{
-            this.imgWidthClip(activeObject.width);
-          }
-        }
-
-      }else{
-        this.imageShowMode = "fit";
-        
-        var activeObject = this.canvas.c.getActiveObject();
-        activeObject._objects[1].set({
-          left:activeObject._objects[1].left/activeObject._objects[1].scaleX,
-          top:activeObject._objects[1].top/activeObject._objects[1].scaleX,
-          scaleX:1,
-          scaleY:1,
-        });        
-
-        this.canvas.c.renderAll();
-      }
-
-    },
-
-    // //emptyImage
-    // nonproductImage(evt){
-    //   this.nonBgImageState = evt
-    //   this.checkEmpty();
-    // },
-    // trimImage(evt){
-    //   this.trimImageState = evt
-    //   this.checkEmpty();
-    // }, 
-    // checkEmpty(){
-    //   if(this.trimImageState == true){
-    //     this.productImageState = "trimImage";
-    //     return;
-    //   }
-    //   if(this.nonBgImageState == true){
-    //     this.productImageState = "nonBgImage";
-    //     return;
-    //   }
-    //   this.productImageState = "productImage";
-    // },
-
-    //emptyImage
 
     nonproductImageChange(evt){
-      console.log(evt)
       if(evt == true){
         this.nonBgImageState = true;
-        this.removeBg();
         return true;
       }else{
         this.nonBgImageState = false;
-        this.showProductImage();
         return true;
       }      
     }, 
@@ -654,13 +582,11 @@ export default {
     view(){
       this.isView = false;
       this.changeCommon("opacity",0);
-      this.lock();
     },
 
     unView(){
       this.isView = true
       this.changeCommon("opacity",100);
-      this.unLock();      
     },
 
     doLock(isLock) {
@@ -817,9 +743,11 @@ export default {
         return;
       }
       activeObject && activeObject.set(key, Number(evt.target.value));
+      this.controlProductImage();
       this.canvas.c.renderAll();
     },
     // border settings
+
     borderSet(key) {
       const activeObject = this.canvas.c.getActiveObjects()[0];
       if (activeObject) {
@@ -829,24 +757,63 @@ export default {
       }
     },
 
-    insertEmpty(file,id,oldUrl=''){
-      var originLeft = this.canvas.c.getActiveObjects()[0].left;
-      var originTop = this.canvas.c.getActiveObjects()[0].top;
-      var originHeight = this.canvas.c.getActiveObjects()[0].height;
-      var originWidth = this.canvas.c.getActiveObjects()[0].width;
-      var originScaleX = this.canvas.c.getActiveObjects()[0].scaleX;
-      var originScaleY = this.canvas.c.getActiveObjects()[0].scaleY;      
-      var item_name = this.canvas.c.getActiveObjects()[0].item_name;
+    insertEmpty(file,bgState){
+      var originLeft = this.canvas.c.getActiveObject().left;
+      var originTop = this.canvas.c.getActiveObject().top;
+      var originHeight = this.canvas.c.getActiveObject().height;
+      var originWidth = this.canvas.c.getActiveObject().width;
+      var originScaleX = this.canvas.c.getActiveObject().scaleX;
+      var originScaleY = this.canvas.c.getActiveObject().scaleY;  
+
+      var rectLeft = this.canvas.c.getActiveObject()._objects[0].left;
+      var rectTop = this.canvas.c.getActiveObject()._objects[0].top;
+      var rectHeight = this.canvas.c.getActiveObject()._objects[0].height;
+      var rectWidth = this.canvas.c.getActiveObject()._objects[0].width;
+      var rectScaleX = this.canvas.c.getActiveObject()._objects[0].scaleX;
+      var rectScaleY = this.canvas.c.getActiveObject()._objects[0].scaleY;
+
+      var imageLeft = this.canvas.c.getActiveObject()._objects[1].left;
+      var imageTop = this.canvas.c.getActiveObject()._objects[1].top;
+      var imageHeight = this.canvas.c.getActiveObject()._objects[1].height;
+      var imageWidth = this.canvas.c.getActiveObject()._objects[1].width;
+      var imageScaleX = this.canvas.c.getActiveObject()._objects[1].scaleX;
+      var imageScaleY = this.canvas.c.getActiveObject()._objects[1].scaleY;
+
+      var item_name = this.canvas.c.getActiveObject().item_name;
       var angle = this.canvas.c.getActiveObject().angle; 
       var opacity = this.canvas.c.getActiveObject().opacity;
       var layerShowPeriod = this.canvas.c.getActiveObject().layerShowPeriod;
+      
+      
       const imgEl = document.createElement('img');
       imgEl.src = file
       document.body.appendChild(imgEl);
       imgEl.onload = () => {
         // Create a product image
         const imgInstance = new this.fabric.Image(imgEl, {
-          id:id,
+          id: "productImage",
+          item_name:item_name,
+          left: imageLeft,
+          top: imageTop,
+          scaleX: imageScaleX,
+          scaleY: imageScaleY,
+          opacity:opacity,          
+        });
+        var rect = new fabric.Rect({
+          left: rectLeft,
+          top: rectTop,
+          width: rectWidth,
+          height: rectHeight,
+          scaleX: rectScaleX,
+          scaleY: rectScaleY,          
+          fill: '',
+          strokeWidth:0,
+          opacity: 100
+        });           
+
+        var group = new fabric.Group([rect, imgInstance],{
+          id:"productImage",
+          bgState:bgState,
           item_name:item_name,
           left:originLeft,
           top:originTop,
@@ -854,73 +821,39 @@ export default {
           height:originHeight,
           scaleX:originScaleX,
           scaleY:originScaleY,
+          layerShowPeriod:layerShowPeriod,          
           angle:angle,
-          opacity:opacity,
-          layerShowPeriod:layerShowPeriod,
-          oldUrl:oldUrl,
-          nonBgImageState:this.nonBgImageState
+          customType:"productImage"
+        });
+        var objects = this.canvas.c.getActiveObjects();
+        var productIndex = objects.findIndex(el=>{
+          return el.customType == "productImage";
         });
 
         this.canvas.c.remove(this.canvas.c.getActiveObjects()[0])
-        this.canvas.c.add(imgInstance);
-        this.canvas.c.setActiveObject(imgInstance);
-        this.canvas.c.renderAll();
-        imgEl.remove();
-      }      
-    },
-    showProductImage(){
-      var id = this.canvas.c.getActiveObject().id;
-      console.log(id)
-      if(id == "nonBgImage"){
-        this.insertEmpty(productImage,"productImage",nonBgImage);        
-        return true;
-      }
-      var activeObject = this.canvas.c.getActiveObject(); 
-      this.insertEmpty(activeObject.oldUrl,activeObject.id);
-
-    },
-
-    removeBg(){
-
-      var oldUrl = this.canvas.c.getActiveObject()._element.currentSrc;
-      var id = this.canvas.c.getActiveObject().id;
-      if(id == "productImage"){
-        this.insertEmpty(nonBgImage,"nonBgImage",productImage);        
-        return true;
-      }
-      const image = new Image();
-      image.src = oldUrl;
-      image.onload = ({target}) =>{
-
-        const w = Math.round(target.width);
-        const h = Math.round(target.height);
-        const canvas = document.createElement("canvas");
-        
-        canvas.width = w;
-        canvas.height = h;
-        const canvasContext = canvas.getContext("2d");
-        canvasContext.drawImage(target,0,0,target.width,target.height,0,0,w,h);
-        const canvasImageData = canvasContext.getImageData(0,0,w,h);
-
-        for(let index=0,dataLength = canvasImageData.data.length;index<dataLength;index += 4){
-          const r = canvasImageData.data[index];
-          const g = canvasImageData.data[index + 1];
-          const b = canvasImageData.data[index + 2];
-
-          if([r,g,b].every((item)=> item > 240))
-            canvasImageData.data[index + 3] = 0;
+        this.canvas.c.add(group);
+        this.canvas.c.setActiveObject(group);
+        console.log(objects.length - productIndex)
+        for(var i=0;i<objects.length - productIndex;i++){
+          const activeObject = this.canvas.c.getActiveObject();
+          activeObject && activeObject.sendBackwards();   
         }
-
-        target.width = w;
-        target.height = h;
-        canvasContext.putImageData(canvasImageData,0,0);
-        document.body.append(canvas);   
-        console.log(canvas.toDataURL());
-        this.insertEmpty(canvas.toDataURL(),id,oldUrl);        
-      }
+     
+        imgEl.remove();      
+        this.controlProductImage();
+        this.canvas.c.renderAll();
+      }      
     }
   },
   watch:{
+    nonBgImageState(){
+      var bgState = this.canvas.c.getActiveObject().bgState;
+      if(bgState == false){
+        this.insertEmpty(nonBgImage,true);
+      }else{
+        this.insertEmpty(productImage,false);
+      }
+    }
   }
 };
 </script>

@@ -6,6 +6,7 @@ import FontFaceObserver from 'fontfaceobserver';
  * @param {Blob|File} file
  * @return {String}
  */
+
 export function getImgStr(file) {
   return new Promise((resolve, reject) => {
     try {
@@ -30,8 +31,6 @@ export function downFontByJSON(str) {
   const fontFamilys = JSON.parse(str)
     .objects.filter(
       (item) =>
-        // 为text 并且不为包含字体
-        // eslint-disable-next-line implicit-arrow-linebreak
         item.type.includes('text') && !skipFonts.includes(item.fontFamily)
     )
     .map((item) => item.fontFamily);
@@ -39,12 +38,12 @@ export function downFontByJSON(str) {
     const font = new FontFaceObserver(fontName);
     return font.load(null, 150000);
   });
-  return Promise.all(fontFamilysAll);
+    return Promise.all(fontFamilysAll);
 }
 
 
 /**
- * @description: 选择文件
+ * @description:
  * @param {Object} options accept = '', capture = false, multiple = false
  * @return {Promise}
  */

@@ -235,6 +235,7 @@ function initAligningGuidelines(canvas) {
     for (let i = verticalLines.length; i--; ) {
       drawVerticalLine(verticalLines[i]);
     }
+
     for (let j = horizontalLines.length; j--; ) {
       drawHorizontalLine(horizontalLines[j]);
     }

@@ -44,7 +44,7 @@
       </div>
     </draggable>
 
-    <group></group>
+    <!-- <group></group> -->
     </div>
 </template>
 <style scoped>
@@ -74,7 +74,7 @@ import select from '@/mixins/select';
 import { VueDraggableNext } from 'vue-draggable-next'
 import dele from "./del.vue";
 import clone from "./clone.vue";
-import group from "./group.vue";
+// import group from "./group.vue";
 
 import { v4 as uuid } from 'uuid';
 const lockAttrs = [
@@ -92,7 +92,7 @@ export default defineComponent({
     draggable: VueDraggableNext,
     dele,
     clone,
-    group
+    // group
   },
   data() {
     return {
@@ -169,7 +169,6 @@ export default defineComponent({
     unView(item){
       item.set('opacity',(100/100));
       this.canvas.c.renderAll();
-      // this.unLock(item);      
     },
     doLock(id) {
       this.list.forEach((arg)=>{

@@ -31,7 +31,6 @@ export default {
   created() {
     // line drawing
     this.drawHandler = initializeLineDrawing(this.canvas.c, defaultPosition);
-
     this.canvas.c.on('drop', (opt) => {
       // The distance of the canvas element from the left and top of the browser
       const offset = {
@@ -80,10 +79,9 @@ export default {
         ...defaultPosition,
         ...option,
 	      fontFamily: 'Courier New',
-        fontSize: 20,
+        fontSize: 60,
         id: uuid(),
       });
-
       text.set("width",text.width);
       var rect = new fabric.Rect({
           height: 0,
@@ -91,7 +89,7 @@ export default {
           fill: '',
           strokeWidth:0,
           opacity: 100,
-          id:"virtural"
+          id:"virtural",
       });
       var group = new fabric.Group([rect, text]);
       group.set({
@@ -99,54 +97,28 @@ export default {
         left:0-group.width,
         customType:"text",
         item_name:this.canvas.editor.getName("text"),
+        angle:0,
         layerShowPeriod:{
           mode:'',
           startDate:'',
           endDate:''
         },
-
+        texthandle:"automatic",
+        position:{
+          positionX:"left",
+          positionY:"top"
+        },
+		    originPoistion:"left",        
       });
-
-	    group.setCoords();	
-      group.on({
-          'scaling': function(e) {
-            console.log(this.left,this.top);
-            console.log(this._objects[0].left,this._objects[0].top)
-              var obj = this,
-                  w = obj.width * obj.scaleX,
-                  h = obj.height * obj.scaleY,
-                  s = obj.strokeWidth;
-
-              obj.set({
-                  'height'     : h,
-                  'width'      : w,
-                  'scaleX'     : 1,
-                  'scaleY'     : 1,
-              });
-
-              obj._objects[0].set({
-                  'height'     : h,
-                  'width'      : w,
-                  'scaleX'     : 1,
-                  'scaleY'     : 1,
-                  "left":0 - (obj.width) / 2,
-                  "top":0 - (obj.height) / 2
-              });
-
-              obj._objects[1].set({
-                "left":0 - (obj.width) / 2,
-                "top":0 - (obj.height) / 2,
-              });              
-          }
-      });        
+      
+	    group.setCoords();
       this.canvas.c.add(group);
-      rect.set("width",group.width*group.scaleX+5);
-      rect.set("height",group.height*group.scaleY+5);
+      rect.set("width",group.width*group.scaleX);
+      rect.set("height",group.height*group.scaleY);
       this.canvas.c.centerObject(group);
       this.canvas.c.setActiveObject(group);
     },
     
-
     addImg(e) {
       const imgEl = e.target.cloneNode(true);
       const imgInstance = new this.fabric.Image(imgEl, {

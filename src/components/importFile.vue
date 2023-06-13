@@ -1,15 +1,16 @@
 <template>
   <div>
+     
     <DropdownItem @click="insertImg"><Icon type="ios-image" /><span style="margin-left:10px">Upload image</span></DropdownItem>
     <!-- <DropdownItem @click="insert"><Icon type="ios-image" /><span style="margin-left:10px">json</span></DropdownItem> -->
     <DropdownItem @click="loadTemplate"><Icon type="ios-image" /><span style="margin-left:10px">templates</span></DropdownItem>
     <DropdownItem @click="loadElement"><Icon type="ios-image" /><span style="margin-left:10px">elements</span></DropdownItem>
+    
     <Modal
       v-model="template"
       title="Choose the Template"
       :footer-hide="true"
       width="60%"
-      :loading="loading"
       >
       <div class="row">
         <div class="col-md-2">
@@ -17,27 +18,26 @@
         <div class="col-md-9" >
           <div class="template-header row">
             <div  class="col-md-8">
-              <Input suffix="ios-search" placeholder="Enter text" v-model="keyword_template"/>
+              <Input suffix="ios-search" placeholder="Enter word for search" v-model="keyword_template"/>
             </div>
             <div  class="col-md-4">
-                <b-form-select class="mb-3" v-model="selected_template_type" @change="groupChange" size="sm">
-                  <option v-for="item in group_types_template" :value="item" :key="item">{{item}}</option>
-                </b-form-select>              
+              <b-form-select class="mb-3" v-model="selected_template_type" @change="groupChange" size="sm">
+                <option v-for="item in group_types_template" :value="item" :key="item">{{item}}</option>
+              </b-form-select>              
             </div>              
           </div>
 
-          <!-- <loader :active="loaderActive" style="z-index:100000"></loader> -->
-          
+          <Loader :active="loading" class="child"/>
           <div
             id="main"
             class="template-content"
             v-for="(item, index) in filterResultDemoLists"
             :key="index"
             >
-
-            <div class="image-box" imgId = {{item.template_id}} @click="()=>insertDemoTemplate(item.template_id)">
-              <img v-bind:src="item.template_image_url" style="width:150px;height:150px;" id="images0"/>
-              <div><span>{{item.template_name}}</span></div>
+            
+            <div class="image-box" imgId = {{item.id}} @click="()=>insertDemoTemplate(item.id)">
+              <img v-bind:src="item.image_url" style="width:150px;height:150px;" id="images0"/>
+              <div><span>{{item.name}}</span></div>
             </div>
 
           </div>
@@ -50,17 +50,14 @@
         title="Choose the Template"
         :footer-hide="true"
         width="60%"
-        :loading="loading"
         >
         <div class="row">
           <div class="col-md-2">
-            <!-- asdfasdf -->
           </div>
           <div class="col-md-9" >
             <div class="template-header row">
-
               <div  class="col-md-8">
-                <Input suffix="ios-search" placeholder="Enter text" v-model="keyword_element"/>
+                <Input suffix="ios-search" placeholder="Enter word for search" v-model="keyword_element"/>
               </div>
 
                 <div class="col-md-4">
@@ -69,17 +66,17 @@
                   </b-form-select>                        
                 </div>              
             </div>
-            
+            <Loader :active="loading" class="child"/>
             <div
               id="main"
               class="template-content"
               v-for="(item, index) in filterResultElementLists"
               :key="index"
               >
-
+  
               <div class="image-box" imgId = {{item.id}} @click="()=>insertElement(item.id)">
                 <img v-bind:src="item.image_url" style="width:150px;height:150px;" id="images0"/>
-                <div><span style="color:red;font-weight:bold">{{item.title}}</span></div>
+                <div><span style="color:red;font-weight:bold">{{item.name}}</span></div>
               </div>
 
             </div>            
@@ -93,12 +90,14 @@
 </template>
 
 <script>
-import { getImgStr, selectFiles,downFontByJSON } from '@/utils/utils';
+
+import { getImgStr, selectFiles} from '@/utils/utils';
 import select from '@/mixins/select';
 import { v4 as uuid } from 'uuid';
 import {productImage} from '@/utils/imgConstant';
 import {getAllTemps,getTempById,getUserTempById,getAllElements,getElementById} from "@/service/endpoint";
-import loader from "./loader.vue";
+import Loader from "./loader1.vue";
+import OpenType from 'opentype.js';
 export default {
   name: 'ToolBar',
   mixins: [select],
@@ -107,7 +106,7 @@ export default {
     return {
       element:false,
       template:false,
-      loading: true,
+      loading: false,
       border: true,
       hover: true,
       selected_template_type:'All templates',
@@ -123,8 +122,8 @@ export default {
       loaderActive:true
     };
   },
-  component:{
-    loader
+  components:{
+    Loader
   },
 
   created() {
@@ -152,7 +151,7 @@ export default {
     },
 
     elementChange(evt){
-      if(evt = "All elements"){
+      if(evt == "All elements"){
         this.filterResultElementLists = this.elementLists;
       }else{
         this.filterResultElementLists = this.filterElementLists('type',evt);
@@ -161,9 +160,10 @@ export default {
 
     filterElementLists(search_type,value){
       if(this.elementLists != ''){
+
         if(search_type == 'keyword'){
           let filteredElementLists = this.elementLists.filter((el) => {
-            return el.title.toLowerCase().includes(value);
+            return el.name.toLowerCase().includes(value);
           })
           let orderedElementLists = filteredElementLists.sort((a, b) => {
             return b.upvoted - a.upvoted;
@@ -178,6 +178,7 @@ export default {
           });
           return orderedElementLists;          
         }
+
       }
     },
 
@@ -185,7 +186,7 @@ export default {
       if(this.demoTempLists != ''){
         if(search_type == 'keyword'){
           let filteredDemoLists = this.demoTempLists.filter((el) => {
-            return el.template_name.toLowerCase().includes(value);
+            return el.name.toLowerCase().includes(value);
           })
           let orderedDemoLists = filteredDemoLists.sort((a, b) => {
             return b.upvoted - a.upvoted;
@@ -204,6 +205,7 @@ export default {
     },
 
     canvasUpdateByJson(jsonFile){
+
       this.canvas.c.loadFromJSON(jsonFile, () => {
         this.canvas.c.renderAll.bind(canvas.c);
         const workspace = this.canvas.c.getObjects().find((item) => item.id === 'workspace');
@@ -211,16 +213,46 @@ export default {
         workspace.set('selectable', false);
         workspace.set('hasControls', false);
         this.canvas.editor.editorWorkspace.setSize(workspace.width, workspace.height);
+        // this.canvas.c.getObjects().filter(arg=>{
+        //   arg
+        // });
+
+
         this.canvas.c.renderAll();
         this.canvas.c.requestRenderAll();
-      });      
-    },
+      });
 
+    },
+    loadFonts(fontLists){
+      if(!window.globalFonts){
+        window.globalFonts = fontLists;
+      }else{
+        var temp = [...window.globalFonts, ... fontLists];
+        window.globalFonts = Array.from(new Set(temp.map(JSON.stringify)), JSON.parse);
+      }
+      window.globalFonts.forEach(el=>{
+        if(el.ttf_base64 != ''){
+          const charArray = el.ttf_base64.split('').map(function (char) {
+            return char.charCodeAt(0);
+          });
+
+          const uint8Array = new Uint8Array(charArray);
+          const fontBuffer = uint8Array.buffer;   
+          const font = OpenType.parse(fontBuffer);
+          var fontName = font.names.fontFamily.en;            
+          var fontFace = new FontFace(fontName, fontBuffer);
+          document.fonts.add(fontFace);    
+        }
+      }); 
+    },
     insertFileFromJSON(id){
       getUserTempById(id)
         .then(resp => {
           var data = resp.data;
-          document.getElementById("canvasName").value = data.template_name;
+          document.getElementById("canvasName").value = data.name;
+          if(data.fontLists){
+            this.loadFonts(data.fontLists);         
+          }
           var jsonFile = JSON.stringify(data);
           this.canvas.c.loadFromJSON(jsonFile, () => {
             this.canvas.c.renderAll.bind(canvas.c);
@@ -229,6 +261,7 @@ export default {
               workspace.set('selectable', false);
               workspace.set('hasControls', false);
               this.canvas.editor.editorWorkspace.setSize(workspace.width, workspace.height);
+
               this.canvas.c.requestRenderAll();
               this.canvas.c.renderAll();
           });
@@ -239,9 +272,9 @@ export default {
     },
     insertDemoTemplate(id){
       getTempById(id).then(res=>{
-
         var data = res.data;
         var jsonFile = JSON.stringify(data);
+        this.loadFonts(data.fontLists);         
         this.canvasUpdateByJson(jsonFile);
         document.getElementById("canvasName").value = data.template_name;
         this.template = false;
@@ -278,6 +311,7 @@ export default {
 
         }
 
+        this.loadFonts(data.fontLists);         
         this.canvasUpdateByJson(dataUrl);
         setTimeout(() => {
           var temp = [];
@@ -299,7 +333,8 @@ export default {
 
     loadTemplate(){
       this.template = true; 
-      getAllTemps().then((resp)=>{
+      this.loading = true;
+      getAllTemps().then(async (resp)=>{
         var templist = new Array();
         var tempTypes = [];
         var data = resp.data;
@@ -310,9 +345,9 @@ export default {
             if(i==0){
               tempTypes.push("All templates");
             }            
-            var template_id = data[i].template_id;
-            var template_name = data[i].template_name;
-            var template_image_url = data[i].template_image_url;
+            var id = data[i].id;
+            var name = data[i].name;
+            var image_url = data[i].image_url;
             var group_type = data[i].group_type;
 
             if(tempTypes.includes(group_type) == false){
@@ -320,10 +355,10 @@ export default {
             }
 
             templist.push({
-              template_id:template_id,
+              id:id,
               group_type:group_type,
-              template_name:template_name,
-              template_image_url:template_image_url
+              name:name,
+              image_url:image_url
             });           
 
           });     
@@ -331,28 +366,29 @@ export default {
           this.group_types_template = tempTypes;
           this.demoTempLists = templist;
           this.filterResultDemoLists = templist;
-
+        
+          await (this.loading = false);
         }
       }).catch(error => {
             console.log(error);
       });
+      
     },
     
-    loadElement(){
+    async loadElement(){   
       this.element = true;
-
-      getAllElements().then((resp)=>{
-
+      this.loading = true;
+      await getAllElements().then((resp)=>{
         var templist = new Array();
         var data = resp.data;
         var tempTypes = [];
         if(data){
           data.forEach((e ,i)=> {
             if(i==0){
-              tempTypes.push("All Elements");
+              tempTypes.push("All elements");
             }
             var id = data[i].id;
-            var title = data[i].title;
+            var name = data[i].name;
             var image_url = data[i].image_url;
             var group_type = data[i].group_type;
             if(tempTypes.includes(group_type) == false){
@@ -361,7 +397,7 @@ export default {
             templist.push({
               id:id,
               group_type:group_type,
-              title:title,
+              name:name,
               image_url:image_url
             });           
 
@@ -374,6 +410,7 @@ export default {
       }).catch(error => {
         console.log(error);
       });         
+      await (this.loading = false);
     },
 
     insert() {
@@ -397,37 +434,55 @@ export default {
         });
       });
     },
+
     // insert empty file
     insertProductImage(file,type) {
-       setTimeout(() => {
+        setTimeout(() => {
+        
           const imgEl = document.createElement('img');
           imgEl.src = file || this.imgFile;
           document.body.appendChild(imgEl);
           imgEl.onload = () => {
             // Create a picture object
-          var name = this.canvas.editor.getName("image");
-          const imgInstance = new this.fabric.Image(imgEl, {
-            id: "productImage",
-            item_name:name,
-            nonBgImageState:false,
-            layerShowPeriod:{
-              mode:'',
-              startDate:'',
-              endDate:''
-            }
-          });
-          
-          this.canvas.c.add(imgInstance);
-          this.canvas.c.centerObject(imgInstance);
-          this.canvas.c.setActiveObject(imgInstance);
-          this.canvas.c.renderAll();
+            const imgInstance = new this.fabric.Image(imgEl, {
+              id: "productImage",
+              name: 'Product Image',
+            });
+            var rect = new fabric.Rect({
+                height: 0,
+                width: 0,
+                fill: '',
+                strokeWidth:0,
+                opacity: 100,
+                id:"virtural"
+            });      
 
-          // set zoom
-          imgEl.remove();
+            var group = new fabric.Group([rect, imgInstance]);
+            group.set({
+              id: "productImage",
+              item_name:'Product Image',
+              layerShowPeriod:{
+                mode:'',
+                startDate:'',
+                endDate:''
+              },
+              bgState:false,
+              customType:"productImage",
+              left:0-group.width,
+            });
+            
+            this.canvas.c.add(group);
+            rect.set("width",group.width*group.scaleX);
+            rect.set("height",group.height*group.scaleY);
+            this.canvas.c.centerObject(group);
+            this.canvas.c.setActiveObject(group);
+            this.canvas.c.renderAll();
+            // set zoom
+            imgEl.remove();
 
              
         };          
-      }, 100);
+      }, 100); 
     },    
     
     // insert image file
@@ -440,6 +495,9 @@ export default {
         // Create a picture object
 
         var name = this.canvas.editor.getName("image");
+        var product = this.canvas.c.getObjects().filter(arg=>{
+          return arg.id == "productImage"
+        })
         const imgInstance = new this.fabric.Image(imgEl, {
           id: uuid(),
           item_name:name,
@@ -448,12 +506,10 @@ export default {
             mode:'',
             startDate:'',
             endDate:''
-          }          
+          },
+       
         }).setCoords();
-
         this.canvas.c.add(imgInstance);
-
-        this.canvas.c.centerObject(imgInstance);
         this.canvas.c.setActiveObject(imgInstance);
 
         // // Remove image elements from the page
@@ -506,5 +562,16 @@ export default {
 .template-style{
   border-radius:10px;
   cursor: pointer;
+}
+
+.child {
+  // width: 50px;
+  // height: 50px;
+  /* Center vertically and horizontally */
+  z-index: 10000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px; /* Apply negative top and left margins to truly center the element */
 }
 </style>

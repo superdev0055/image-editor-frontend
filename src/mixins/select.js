@@ -25,6 +25,13 @@ export default {
           this.mSelectIds = e.map((item) => item.id);          
           return;          
         }
+        if(e[0].customType == "productImage"){
+          this.mSelectMode = 'one';
+          this.mSelectId = e[0].id;
+          this.mSelectOneType = "image";
+          this.mSelectIds = e.map((item) => item.id);          
+          return;          
+        }        
       }
       this.mSelectMode = 'one';
       this.mSelectId = e[0].id;
@@ -36,10 +43,6 @@ export default {
       this.mSelectMode = 'multiple';
       this.mSelectId = '';
       this.mSelectIds = e.map((item) => item.id);      
-      // this.mSelectMode = 'multiple';
-      // this.mSelectId = e[0].id;
-      // this.mSelectOneType = e[0].type;
-      // this.mSelectIds = e.map((item) => item.id);
     });
 
     this.event.on('selectCancel', () => {

@@ -53,18 +53,19 @@ function initControlsRotate(canvas) {
   // When rendering, execute
   canvas.on('after:render', () => {
     if (canvas.getActiveObject()) {
-      fabric.Object.prototype.controls.mtr.cursorStyle = rotateIcon(
-        Number(canvas.getActiveObject().angle.toFixed(2))
-      );
-      fabric.Object.prototype.controls.mtr2.cursorStyle = rotateIcon(
-        Number(canvas.getActiveObject().angle.toFixed(2)) + 90
-      );
-      fabric.Object.prototype.controls.mtr3.cursorStyle = rotateIcon(
-        Number(canvas.getActiveObject().angle.toFixed(2)) + 180
-      );
-      fabric.Object.prototype.controls.mtr4.cursorStyle = rotateIcon(
-        Number(canvas.getActiveObject().angle.toFixed(2)) + 270
-      );
+
+      // fabric.Object.prototype.controls.mtr.cursorStyle = rotateIcon(
+      //   Number(canvas.getActiveObject().angle.toFixed(2))
+      // );
+      // fabric.Object.prototype.controls.mtr2.cursorStyle = rotateIcon(
+      //   Number(canvas.getActiveObject().angle.toFixed(2)) + 90
+      // );
+      // fabric.Object.prototype.controls.mtr3.cursorStyle = rotateIcon(
+      //   Number(canvas.getActiveObject().angle.toFixed(2)) + 180
+      // );
+      // fabric.Object.prototype.controls.mtr4.cursorStyle = rotateIcon(
+      //   Number(canvas.getActiveObject().angle.toFixed(2)) + 270
+      // );
     }
   });
 

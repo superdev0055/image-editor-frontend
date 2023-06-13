@@ -135,15 +135,9 @@ export default {
     },
     setSize() {
       this.canvas.c.discardActiveObject();
-      this.$Spin.show();      
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
-      setTimeout(() => {
-        this.$Spin.hide();      
-        
-      }, 500);
     },    
     changeSelect(evt){
-      console.log(evt);
       var resolution = evt.split("x");
       if(evt == 'custom-size'){
         this.selected = '';
@@ -158,7 +152,6 @@ export default {
   watch:{
     width(){
       this.selected = "custom-size";
-      console.log(this.width,this.height);
       this.canvas.editor.editorWorkspace.setSize(Number(this.width), Number(this.height));
       this.canvas.c.discardActiveObject();
       this.canvas.c.renderAll();      

@@ -118,6 +118,7 @@ function peakControl() {
     render: renderIconEdge,
   });
 }
+
 // delete
 function deleteControl(canvas) {
   const deleteIcon =
@@ -199,6 +200,9 @@ function initControls(canvas) {
   intervalControl(canvas);
   // Rotate icon
   rotationControl(canvas);
+  fabric.util.addListener(document.getElementsByClassName('upper-canvas')[0], 'contextmenu', function(e) {
+    e.preventDefault();
+  });
   // selected style
   fabric.Object.prototype.set({
     transparentCorners: false,
@@ -267,6 +271,7 @@ function initControls(canvas) {
    
   });
   
+    
   fabric.Arrow.fromObject = function(object, callback) {
       return fabric.Object._fromObject('Arrow', object, callback);
     };  

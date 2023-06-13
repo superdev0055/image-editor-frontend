@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const server_url='https://image-editro-backend.onrender.com';
+const server_url='https://img-v-b.onrender.com';
+// const server_url='https://image-editro-backend.onrender.com';
+
 // const server_url='http://localhost:3000';
 
 //user template

@@ -254,6 +254,21 @@ export default {
     this.initSet();
   },
   created(){
+    this.canvas.c.on("object:scaling",(opt)=>{
+    	var currObj = this.canvas.c.getActiveObject();
+      if (currObj.type === 'rect') {
+        var newWidth = currObj.width * currObj.scaleX,
+            newHeight = currObj.height * currObj.scaleY;
+
+          currObj.set({
+            'width': newWidth,
+            'height': newHeight,
+            scaleX: 1,
+            scaleY: 1
+          });
+      }
+			this.canvas.c.renderAll();
+    });    
     this.event.on('selectOne', (items) => {
           // base
           var activeObject = this.canvas.c.getActiveObjects()[0];        

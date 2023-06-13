@@ -1,5 +1,12 @@
 <template>
   <div class="home">
+    <!-- <div style="width:100%">
+      <div style="width:400px;height:400px;background-color:yellow;position:fixed;z-index:10000;margin-left:auto">
+      <loader :active="true" style="z-index:100000;width:200px;height:200px;"></loader>
+      </div>
+    </div>     -->
+<!-- <div class="container"> -->
+<!-- </div>     -->
     <header class="header text-center row" style="width: 100%;z-index:100000">
       <div class="">
 
@@ -11,13 +18,13 @@
         <Modal
           v-model="modal"
           title="Change Name"
-          :on-ok="saveName"
           >
           <div class="row">
             <label class="col-md-3">Name</label>
-            <b-form-input class="col-md-8" size="sm" v-model="canvasName" id="canvasName"></b-form-input>
+            <b-form-input class="col-md-8" size="sm" v-model="canvasName" id="inputCanvasName"></b-form-input>
           </div>
         </Modal>          
+
       </div>
       <div class="col-6">
         <!-- <Button class="ivu-btn ivu-btn-text" icon="ios-flash" size="small">Liver Preview</Button>
@@ -30,7 +37,10 @@
       </div> -->
     </header>
     <div>
-      <Content style="display: flex; height: calc(100vh - 64px);">
+
+
+      <Content style="display: flex; height: calc(100vh - 64px);" id="content">
+        <!-- <loader class="child" :active="true"></loader> -->
         
         <!-- --------------------------------- Import Button(+) ----------------------------------- -->
         <Dropdown class="m-md-4 plus-btn" v-if="show" placement="bottom-start">
@@ -46,7 +56,6 @@
 
         <!-- --------------------------------- Left Side ----------------------------------- -->
         <div id="workspace">
-          <!-- <div class="canvas-box"> -->
           <div>
             <div class="inside-shadow">
             
@@ -59,7 +68,7 @@
             </div>
 
             <!-- --------------------------------- Main Content ----------------------------------- -->
-            <canvas id="canvas" :class="ruler ? 'design-stage-grid' : ''"></canvas>
+            <canvas id="canvas"></canvas>
             <!-- --------------------------------- End Main Content ----------------------------------- -->
 
             <!-- --------------------------------- Footer ----------------------------------- -->
@@ -74,6 +83,8 @@
         <div class="right-box">
           <div v-if="show">
             <set-size></set-size> 
+           <group></group>
+
           </div>
             <attribute v-if="show"></attribute>            
         </div>
@@ -95,15 +106,15 @@ import zoom from '@/components/zoom.vue';
 // left component
 import tools from '@/components/tools.vue';
 import setSize from '@/components/setSize.vue';
+import group from '@/components/group.vue';
 
 // right side component
 import attribute from '@/components/attribute.vue';
 
 // functional components
 import EventHandle from '@/utils/eventHandler';
-
+import loader from "@/components/loader.vue"
 import "@/assets/css/main.css"
-
 import { fabric } from 'fabric';
 import Editor from '@/core';
 import $ from "jquery";
@@ -141,41 +152,21 @@ export default {
     attribute,
     importFile,
     save,
-    zoom
+    zoom,
+    loader,
+    group
   },
 
   mounted() {
-    // Jimp.read('@/assets/img/ImgW1.png')
-    //   .then(image => {
-    //       image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
-    //           var red   = this.bitmap.data[idx + 0];
-    //           var green = this.bitmap.data[idx + 1];
-    //           var blue  = this.bitmap.data[idx + 2];
-    //           var alpha = this.bitmap.data[idx + 3];
-
-    //           // if the pixel color is in the range of the background color
-    //           if (red > 200 && green > 200 && blue > 200) { 
-    //               // make this pixel transparent
-    //               this.bitmap.data[idx + 0] = 0;
-    //               this.bitmap.data[idx + 1] = 0;
-    //               this.bitmap.data[idx + 2] = 0;
-    //               this.bitmap.data[idx + 3] = 0;
-    //           }
-    //       });
-    //       image.write('output.png');
-    //   })
-    //   .catch(err => {
-    //       console.error(err);
-    //   });
-
-
-
-
     this.canvas = new fabric.Canvas('canvas', {
       fireRightClick: true,
       stopContextMenu: true,
       controlsAboveOverlay: true,
+      perPixelTargetFind: true,               
+      targetFindTolerance: 4,                 
+      preserveObjectStacking: true         
     });
+
     canvas.c = this.canvas;
     event.init(canvas.c);
     canvas.editor = new Editor(canvas.c);
@@ -184,10 +175,10 @@ export default {
     canvas.c.renderAll();
     setTimeout(() => {
 
-      if(canvas.c.template_name == undefined || canvas.c.template_name == ''){
+      if(canvas.c.name == undefined || canvas.c.name == ''){
         this.canvasName = "New template"
       }else{
-        this.canvasName = canvas.c.template_name;
+        this.canvasName = canvas.c.name;
       }
 
       //when delete keyboard press, select element is deleted
@@ -196,26 +187,29 @@ export default {
           const activeObject = this.canvas.getActiveObjects();
           if (activeObject) {
             activeObject.map((item) => {
-
               if(item.id == "productImage" || item.id == "trimImage" || item.id == "nonBgImage"){
                 return false;
               }else{
                 this.canvas.remove(item)
               }
-
             });
           }
           this.canvas.requestRenderAll();
           this.canvas.discardActiveObject();          
         }
       });      
+      const windowObj = window;
+      windowObj.addEventListener('resize', this.handleResize);
+      // call the handler once to get the initial width and height values
+      this.handleResize(this);      
     },1000);
 
 
   },
   methods:{
-    saveName(){
-    }
+      handleResize() {
+        canvas.editor.editorWorkspace.setSize(900,900);    
+      }
   }
   
 };
@@ -225,6 +219,7 @@ export default {
   
 #canvas {
   filter: drop-shadow(0px 5px 10px #d1d1d1);
+  overflow-y: scroll;
 }
 span {
   font-size: 12px !important;
@@ -239,5 +234,13 @@ span {
   padding: 10px;
   border-radius:10px
 }
-
+.child {
+  background-color: red;
+  /* Center vertically and horizontally */
+  z-index: 10000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px; /* Apply negative top and left margins to truly center the element */
+}
 </style>

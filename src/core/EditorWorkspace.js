@@ -23,7 +23,9 @@ class EditorWorkspace {
 
   //Initialize the background
   _initBackground() {
-    this.canvas.setBackgroundColor({source: transParent, repeat: 'repeat'});    
+    if(this.canvas.backgroundColor == ''){
+      this.canvas.setBackgroundColor({source: transParent, repeat: 'repeat'});    
+    }
     this.canvas.backgroundImage = '';
     this.canvas.setWidth(this.workspaceEl.offsetWidth);
     this.canvas.setHeight(this.workspaceEl.offsetHeight);
@@ -33,8 +35,7 @@ class EditorWorkspace {
   }
 
   setSize(width, height) {
-    // this._initBackground();
-
+    this._initBackground();
     this.option.width = width;
     this.option.height = height;
     // //reset workspace
@@ -58,7 +59,6 @@ class EditorWorkspace {
       fill: '',
       width,
       height,
-      
       id: 'workspace',
     });
     workspace.set('selectable', false);
@@ -174,12 +174,23 @@ class EditorWorkspace {
     } // 
     return viewPortHeight / this.option.height;
   }
-
+  _setScale(){
+    let zoom = this.canvas.getZoom();
+    const center = this.canvas.getCenter();
+    this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
+    this.canvas.renderAll();    
+  }
+  
   // enlarge
   big() {
+
     let zoomRatio = this.canvas.getZoom();
     zoomRatio += 0.05;
     const center = this.canvas.getCenter();
+    const height = this.canvas.getHeight() * (1+zoomRatio);
+    const width = this.canvas.getWidth()* (1+zoomRatio);   
+    this.canvas.setHeight(height * zoomRatio);
+    this.canvas.setWidth(width * zoomRatio);    
     this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoomRatio);
   }
 
@@ -247,17 +258,16 @@ class EditorWorkspace {
     });
 
     this.canvas.on('mouse:wheel', function (opt) {
-      const delta = opt.e.deltaY;
-      let zoom = this.getZoom();
-      zoom *= 0.999 ** delta;
-      if (zoom > 20) zoom = 20;
-      if (zoom < 0.01) zoom = 0.01;
-      const center = this.getCenter();
-      this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
-      opt.e.preventDefault();
-      opt.e.stopPropagation();
-      this.renderAll();
-
+      // const delta = opt.e.deltaY;
+      // let zoom = this.getZoom();
+      // zoom *= 0.999 ** delta;
+      // if (zoom > 20) zoom = 20;
+      // if (zoom < 0.01) zoom = 0.01;
+      // const center = this.getCenter();
+      // this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
+      // opt.e.preventDefault();
+      // opt.e.stopPropagation();
+      // this.renderAll();
     });
   }
 

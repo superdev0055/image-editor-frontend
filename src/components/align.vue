@@ -97,7 +97,7 @@
         </svg>
       </Button>
     </Tooltip>
-    <Tooltip :content="'bottom'">
+    <Tooltip :content="'bottom'" :placement="'left-start'">
       <Button  @click="bottom" size="small" type="text">
         <svg
           t="1650442674784"
@@ -126,6 +126,7 @@ import select from '@/mixins/select';
 export default {
   name: 'ToolBar',
   mixins: [select],
+  props:["strokeWidth"],
   data() {
     return {
       id: '',
@@ -140,41 +141,46 @@ export default {
     // align left
     left() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject) {
+      if (activeObject && activeObject._objects[1].width!=activeObject.width) {
         activeObject.forEachObject((item) => {
-          if(item.id != "virtural"){
+          if(item.type == "i-text"){
             item.set({
-              left: -activeObject.width/2
+              left: -activeObject.width/2 + this.strokeWidth
             });            
             this.canvas.c.renderAll();
           }
         });
+        activeObject.set('position',{positionX:"left",positionY:activeObject?activeObject.position.positionY:-(activeObject.height / 2)});
+        activeObject.originPoistion = "left";        
       }
+            
     },
     // right align
     right() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject) {
+      if (activeObject && activeObject._objects[1].width!=activeObject.width) {
         const activeSelection = activeObject;
         const activeObjectLeft = activeObject.width / 2;
         activeSelection.forEachObject((item) => {
-          if(item.id != "virtural"){
+          if(item.type == "i-text"){
             item.set({
-              left: activeObjectLeft - item.width * item.scaleX,
+              left: activeObjectLeft - item.width * item.scaleX - this.strokeWidth,
             });    
             item.setCoords();
             this.canvas.c.renderAll();
           }          
         });
+      activeObject.set('position',{positionX:"right",positionY:activeObject?activeObject.position.positionY:-(activeObject.height / 2)});
+      activeObject.originPoistion = "right";        
       }      
     },
     // horizontal center alignment
     xcenter() {
       const activeObject = this.canvas.c.getActiveObject();
-      if (activeObject) {
+      if (activeObject && activeObject._objects[1].width!=activeObject.width) {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
-          if(item.id != "virtural"){
+          if(item.type == "i-text"){
             item.set({
               left: 0 - (item.width * item.scaleX) / 2,
             });
@@ -184,6 +190,8 @@ export default {
 
         });
       }
+        activeObject.set('position',{positionX:"xCenter",positionY:activeObject?activeObject.position.positionY:-(activeObject.height / 2)});
+        activeObject.originPoistion = "xCenter";        
     },
     // vertical center alignment
     ycenter() {
@@ -191,13 +199,16 @@ export default {
       if (activeObject) {
         const activeSelection = activeObject;
         activeSelection.forEachObject((item) => {
-          item.set({
-            top: 0 - (item.height * item.scaleY) / 2,
-          });
-          item.setCoords();
-          this.canvas.c.renderAll();
+          if(item.type == "i-text"){
+            item.set({
+              top: 0 - (item.height * item.scaleY) / 2,
+            });
+            item.setCoords();
+            this.canvas.c.renderAll();
+          }          
         });
       }
+        activeObject.set('position',{positionY:"yCenter",positionX:activeObject?activeObject.position.positionX:-(activeObject.width) / 2});
     },
     // align top
     top() {
@@ -206,15 +217,17 @@ export default {
         const activeSelection = activeObject;
         const activeObjectTop = -(activeObject.height / 2);
         activeSelection.forEachObject((item) => {
-          if(item.id != "virtural"){
+          if(item.type == "i-text"){
             item.set({
-              top: activeObjectTop,
+              top: activeObjectTop + this.strokeWidth,
             });
             item.setCoords();
             this.canvas.c.renderAll();
           }
         });
       }      
+      
+        activeObject.set('position',{positionY:"top",positionX:activeObject?activeObject.position.positionX:-(activeObject.width) / 2});
     },
     // Bottom alignment
     bottom() {
@@ -223,15 +236,16 @@ export default {
         const activeSelection = activeObject;
         const activeObjectTop = activeObject.height / 2;
         activeSelection.forEachObject((item) => {
-          if(item.id != "virtural"){
+          if(item.type == "i-text"){
             item.set({
-              top: activeObjectTop - item.height * item.scaleY,
+              top: activeObjectTop - item.height * item.scaleY - this.strokeWidth,
             });
             item.setCoords();
             this.canvas.c.renderAll();
           }
         });
       }      
+        activeObject.set('position',{positionY:"bottom",positionX:activeObject?activeObject.position.positionX:-(activeObject.width) / 2});
     },
     // horizontal average alignment
     xequation() {

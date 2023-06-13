@@ -11,32 +11,32 @@ const keyNames = {
   ctrlv: 'ctrl+v',
 };
 
-function copyElement(canvas) {
-  let copyEl = null;
+// function copyElement(canvas) {
+//   let copyEl = null;
 
-  // 复制
-  hotkeys(keyNames.ctrlc, () => {
-    const activeObject = canvas.getActiveObjects();
-    if (activeObject.length === 0) return;
-    canvas.getActiveObject().clone((_copyEl) => {
-      canvas.discardActiveObject();
-      _copyEl.set({
-        left: _copyEl.left + 20,
-        top: _copyEl.top + 20,
-        evented: true,
-        id: uuid(),
-      });
-      copyEl = _copyEl;
-      // Message.success('copy successfully');
-    });
-  });
-  // 粘贴
-  hotkeys(keyNames.ctrlv, () => {
-    // if (!copyEl) return Message.warning('No content to copy');
-    canvas.add(copyEl);
-    canvas.setActiveObject(copyEl);
-  });
-}
+//   // 复制
+//   hotkeys(keyNames.ctrlc, () => {
+//     const activeObject = canvas.getActiveObjects();
+//     if (activeObject.length === 0) return;
+//     canvas.getActiveObject().clone((_copyEl) => {
+//       canvas.discardActiveObject();
+//       _copyEl.set({
+//         left: _copyEl.left + 20,
+//         top: _copyEl.top + 20,
+//         evented: true,
+//         id: uuid(),
+//       });
+//       copyEl = _copyEl;
+//       // Message.success('copy successfully');
+//     });
+//   });
+//   // 粘贴
+//   hotkeys(keyNames.ctrlv, () => {
+//     // if (!copyEl) return Message.warning('No content to copy');
+//     canvas.add(copyEl);
+//     canvas.setActiveObject(copyEl);
+//   });
+// }
 
 function initHotkeys(canvas) {
   // delete shortcut
@@ -73,7 +73,7 @@ function initHotkeys(canvas) {
   });
 
   // copy and paste
-  copyElement(canvas);
+  // copyElement(canvas);
 }
 
 export default initHotkeys;
